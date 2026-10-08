@@ -6,7 +6,7 @@ GitHub shows traffic (views, clones, referrers) for the last 14 days and then de
 - top referrers and popular pages
 - stars, forks and release asset download counts
 - npm downloads (daily, last 14 days, and last month) for packages you maintain
-- NuGet downloads per version for packages you own
+- NuGet downloads for packages you own: all time per version, and the last 6 weeks per version and per client (so you can see how much is build servers, crawlers or browsers)
 
 Run it at least every 13 days. Over time you build up a history GitHub doesn't keep.
 
@@ -63,7 +63,7 @@ macOS or Linux, with cron (cron can't count 13 days, so run it on the 1st and 15
 ## Limits
 
 - GitHub doesn't say who viewed or cloned, and it doesn't separate bots from people. Your own CI runs count as clones.
-- NuGet publishes all-time totals only. To see recent downloads, compare two runs in `downloads.csv`.
+- NuGet's search API runs on two replicas that lag behind nuget.org and disagree; one reported 0 for a package nuget.org showed 251 for. The script takes the highest of both replicas and the 6-week stats report (the JSON behind the package page's Full stats link). That report is undocumented and could change.
 - The npm stats API rate-limits bursts. The script waits a second between packages and backs off on HTTP 429.
 
 ## License

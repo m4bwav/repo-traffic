@@ -6,8 +6,9 @@ Each run writes, under the data directory:
   snapshots/YYYY-MM-DD/github.json   per repo: daily views and clones,
                                      referrers, popular paths, stars, forks,
                                      release asset downloads
-  snapshots/YYYY-MM-DD/packages.json npm daily downloads, NuGet downloads
-                                     per version
+  snapshots/YYYY-MM-DD/packages.json npm daily downloads; NuGet downloads
+                                     all time per version, and last 6
+                                     weeks per version and client
   snapshots/YYYY-MM-DD/summary.md    top-N tables for that run
   daily.csv      one row per repo per day, merged across runs
   downloads.csv  one row per package per run
@@ -107,11 +108,30 @@ def packages_snapshot(today):
             npm[name] = {"daily": rng.get("downloads", []), "last_month": month.get("downloads", 0)}
             time.sleep(1)
     if CFG["nuget_owner"]:
-        data = http_json("https://azuresearch-usnc.nuget.org/query?take=1000&prerelease=true&q=owner:"
-                         + CFG["nuget_owner"])
-        for d in data["data"]:
-            nuget[d["id"]] = {"total": d["totalDownloads"],
-                              "versions": {v["version"]: v["downloads"] for v in d["versions"]}}
+        # The two search replicas lag and disagree on all-time counts (on
+        # 2026-10-08 one said 0 for a package nuget.org showed 251 for), so
+        # take the higher. The stats report behind the package page's
+        # "Full stats" covers the last 6 weeks, split by version and client.
+        packages = {}
+        for host in ("azuresearch-usnc", "azuresearch-ussc"):
+            data = http_json(f"https://{host}.nuget.org/query?take=1000&prerelease=true"
+                             "&semVerLevel=2.0.0&q=owner:" + CFG["nuget_owner"]) or {"data": []}
+            for d in data["data"]:
+                if d["totalDownloads"] >= packages.get(d["id"], {}).get("totalDownloads", -1):
+                    packages[d["id"]] = d
+        for pid, d in packages.items():
+            report = http_json(f"https://www.nuget.org/stats/reports/packages/{pid}?groupby=Version") or {}
+            versions, clients = {}, {}
+            for fact in report.get("Facts", []):
+                dims, n = fact["Dimensions"], fact["Amount"]
+                versions[dims["Version"]] = versions.get(dims["Version"], 0) + n
+                clients[dims["ClientName"]] = clients.get(dims["ClientName"], 0) + n
+            nuget[pid] = {"total": max(d["totalDownloads"], report.get("Total") or 0),
+                          "versions": {v["version"]: v["downloads"] for v in d["versions"]},
+                          "last_6_weeks": report.get("Total"),
+                          "last_6_weeks_versions": versions,
+                          "last_6_weeks_clients": clients}
+            time.sleep(1)
     return {"npm": npm, "nuget": nuget}
 
 
@@ -147,14 +167,14 @@ def append_downloads_csv(psnap, gsnap, today):
     with path.open("a", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
         if new:
-            w.writerow(["snapshot", "registry", "package", "last_14_days", "last_month", "total"])
+            w.writerow(["snapshot", "registry", "package", "last_14_days", "last_month", "last_6_weeks", "total"])
         for name, d in psnap["npm"].items():
-            w.writerow([today, "npm", name, sum(x["downloads"] for x in d["daily"]), d["last_month"], ""])
+            w.writerow([today, "npm", name, sum(x["downloads"] for x in d["daily"]), d["last_month"], "", ""])
         for name, d in psnap["nuget"].items():
-            w.writerow([today, "nuget", name, "", "", d["total"]])
+            w.writerow([today, "nuget", name, "", "", d["last_6_weeks"], d["total"]])
         for name, d in gsnap.items():
             if release_total(d):
-                w.writerow([today, "github-release", name, "", "", release_total(d)])
+                w.writerow([today, "github-release", name, "", "", "", release_total(d)])
 
 
 def top_tables(gsnap, psnap, n):
@@ -169,8 +189,9 @@ def top_tables(gsnap, psnap, n):
         ("npm downloads", ["Package", "Last 14 days", "Last month"],
          sorted(((k, sum(x["downloads"] for x in d["daily"]), d["last_month"])
                  for k, d in psnap["npm"].items()), key=lambda r: -r[1])),
-        ("NuGet downloads, all time", ["Package", "Total"],
-         sorted(((k, d["total"]) for k, d in psnap["nuget"].items()), key=lambda r: -r[1])),
+        ("NuGet downloads", ["Package", "Last 6 weeks", "All time"],
+         sorted(((k, d["last_6_weeks"] or 0, d["total"]) for k, d in psnap["nuget"].items()),
+                key=lambda r: (-r[1], -r[2]))),
         ("GitHub release asset downloads, all time", ["Repo", "Downloads"],
          sorted(((k, release_total(d)) for k, d in gsnap.items() if release_total(d)), key=lambda r: -r[1])),
     ]
