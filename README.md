@@ -1,5 +1,7 @@
 # repo-traffic
 
+![A glowing line chart on a dark blue background runs into an open box that catches the data points](https://raw.githubusercontent.com/m4bwav/repo-traffic/v1.0.0b1/docs/images/banner.jpg)
+
 [![PyPI](https://img.shields.io/pypi/v/repo-traffic)](https://pypi.org/project/repo-traffic/)
 [![ci](https://github.com/m4bwav/repo-traffic/actions/workflows/ci.yml/badge.svg)](https://github.com/m4bwav/repo-traffic/actions/workflows/ci.yml)
 [![Downloads](https://img.shields.io/pypi/dm/repo-traffic)](https://pypistats.org/packages/repo-traffic)
@@ -59,7 +61,9 @@ data/
     summary.md       the top-N tables as markdown
 ```
 
-`daily.csv` is merged across runs, so runs that overlap don't create duplicates. The other CSVs grow by one block of rows per run. The data folder can include traffic for private repos, so keep it out of public repositories; point `--data` at a notes vault or a private repo if you want it somewhere else.
+![Line chart of daily views for three example repos over 40 days, from late August to early October; the lines run on without a break where the three runs overlap](https://raw.githubusercontent.com/m4bwav/repo-traffic/v1.0.0b1/docs/images/daily-views.png)
+
+`daily.csv` is merged across runs, so runs that overlap don't create duplicates. The chart above is drawn from the `daily.csv` that three runs 13 days apart wrote for three example repos (invented data; [how it was made](docs/images/README.md)). The other CSVs grow by one block of rows per run. The data folder can include traffic for private repos, so keep it out of public repositories; point `--data` at a notes vault or a private repo if you want it somewhere else.
 
 When one source fails (npm rate-limits you, a NuGet search server is down), the run keeps everything else, says what it missed in `run.log` and the summary, and exits with status 1. Bad arguments exit with 2. If the last complete run is more than 14 days old, the run says how many days of GitHub traffic were lost.
 
