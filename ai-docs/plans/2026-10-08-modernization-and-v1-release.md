@@ -77,6 +77,7 @@ Exceptions to the recording (E1 to E5), one entry each in tests/golden/exception
 | E3 | `no-push-access` | `null` traffic, summary shows 0, nothing said | same data, plus `traffic_error` in that repository's github.json entry, a "No traffic access" line in summary.md and stdout, and the count in run.log |
 | E4 | `gh-login-fails-logs-to-default-data` | FAILED logged in `data/` next to the script | logged in the `--data` folder |
 | E5 | `downloads-csv-old-header` | 7-column rows under a 6-column header | file migrated to the current header once, downloads.csv.bak kept, rows appended |
+| E7 | `no-push-access` (found in Phase 2, 2026-10-08) | ties keep API order: gamma-private (0/0) before delta-empty | ties by name: delta-empty before gamma-private. The plan's claim that no recorded tie changes was wrong for this one case |
 
 Added outputs that change every recorded case get one more entry: if D10's repos.csv is ruled yes, every successful case gains that file (E6), and D7's gap line appears only in `second-run-merges-daily` if ever (13 days: no gap line, so no change).
 
@@ -93,9 +94,9 @@ pyproject.toml with PEP 621 metadata, hatchling (at least 1.26) as the backend, 
 ### Phase 1: plan
 - [x] This plan. Ruled 2026-10-08 (Status). **Stop**: the maintainer rules on D1 to D18 and E1 to E5
 ### Phase 2: rewrite on branch v1
-- [ ] Golden test first, green against the rewrite with the exceptions file; canary red, reverted, green; recording untouched since 896876d
-- [ ] Unit tests, coverage, ruff, size gate; pyproject; workflows and Dependabot from the templates; lint-workflows clean
-- [ ] README (install per OS, usage, limits), CHANGELOG, SECURITY.md, AGENTS.md
+- [x] Golden test first, green against the rewrite with the exceptions file; canary red, reverted, green; recording untouched since 896876d (log)
+- [x] Unit tests, coverage, ruff, size gate; pyproject; workflows and Dependabot from the templates; lint-workflows clean. Departure from D13: one approval gate (the pypi environment) covers PyPI and the GitHub Release, which follows it; no separate release environment
+- [x] README (install per OS, usage, limits), CHANGELOG, SECURITY.md, AGENTS.md
 - [ ] Pushed, pull request with a "For review" list
 ### Phase 3: review
 - [ ] Independent read-only review; findings fixed with tests; summary on the pull request
