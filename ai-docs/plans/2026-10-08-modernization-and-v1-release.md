@@ -15,7 +15,7 @@ The first package-modernize run on a Python command-line tool, and the first com
 
 ## Status
 
-Active. Phase 2 (rewrite) from 2026-10-08. Ruling on 2026-10-08, quoted: "I'll try to setup pypi account, do everything else that you can": D3 yes (PyPI; the maintainer sets up the account and the pending publisher), every other recommendation stands, so D10's repos.csv and PyPI downloads are in (E6).
+Active. Phases 0 to 4 done on 2026-10-08; pull request #1 green, waiting for the maintainer's merge, then the 1.0.0b1 tag (HANDOFF.md). Ruling on 2026-10-08, quoted: "I'll try to setup pypi account, do everything else that you can": D3 yes (PyPI; the maintainer sets up the account and the pending publisher), every other recommendation stands, so D10's repos.csv and PyPI downloads are in (E6).
 
 ## Goal
 
@@ -97,11 +97,11 @@ pyproject.toml with PEP 621 metadata, hatchling (at least 1.26) as the backend, 
 - [x] Golden test first, green against the rewrite with the exceptions file; canary red, reverted, green; recording untouched since 896876d (log)
 - [x] Unit tests, coverage, ruff, size gate; pyproject; workflows and Dependabot from the templates; lint-workflows clean. Departure from D13: one approval gate (the pypi environment) covers PyPI and the GitHub Release, which follows it; no separate release environment
 - [x] README (install per OS, usage, limits), CHANGELOG, SECURITY.md, AGENTS.md
-- [ ] Pushed, pull request with a "For review" list
+- [x] Pushed, pull request with a "For review" list
 ### Phase 3: review
-- [ ] Independent read-only review; findings fixed with tests; summary on the pull request
+- [x] Independent read-only review; findings fixed with tests; summary on the pull request
 ### Phase 4: CI, settings, merge
-- [ ] CI green on all rows; rulesets and settings (D15); merge; tag v0.1.0 on 9b6e754
+- [ ] CI green on all rows (done); rulesets and settings (D15, done); tag v0.1.0 on 9b6e754 (done); merge (waits for the maintainer)
 ### Phase 5 and 6: rehearsal and release
 - [ ] 1.0.0b1 tagged, gated, approved, verified (GitHub Release assets, attestations; PyPI if D3)
 - [ ] 1.0.0 the same; CHANGELOG dated
