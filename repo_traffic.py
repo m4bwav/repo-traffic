@@ -24,6 +24,7 @@ folder sit next to this script; run as the repo-traffic command, in the
 current folder. Exit status: 0 ok, 1 a source failed or the run failed,
 2 bad arguments. Run with --help for the flags.
 """
+
 import argparse
 import csv
 import datetime as dt
@@ -126,8 +127,10 @@ def http_json(url, tries=5):
 
 
 def repos(owner):
-    out, _ = gh_call(["repo", "list", owner, "--limit", "1000", "--json",
-                      "name,isPrivate,isFork,stargazerCount,forkCount"], check=True)
+    out, _ = gh_call(
+        ["repo", "list", owner, "--limit", "1000", "--json", "name,isPrivate,isFork,stargazerCount,forkCount"],
+        check=True,
+    )
     return json.loads(out)
 
 
@@ -141,17 +144,24 @@ def github_snapshot(owner, failures):
     for repo in listed:
         full = "%s/%s" % (owner, repo["name"])
         releases, _ = gh("repos/%s/releases?per_page=100" % full)
-        entry = {"private": repo["isPrivate"], "fork": repo["isFork"],
-                 "stars": repo["stargazerCount"], "forks": repo["forkCount"]}
+        entry = {
+            "private": repo["isPrivate"],
+            "fork": repo["isFork"],
+            "stars": repo["stargazerCount"],
+            "forks": repo["forkCount"],
+        }
         errors = []
-        for key, path in (("views", "traffic/views?per=day"), ("clones", "traffic/clones?per=day"),
-                          ("referrers", "traffic/popular/referrers"), ("paths", "traffic/popular/paths")):
+        for key, path in (
+            ("views", "traffic/views?per=day"),
+            ("clones", "traffic/clones?per=day"),
+            ("referrers", "traffic/popular/referrers"),
+            ("paths", "traffic/popular/paths"),
+        ):
             entry[key], err = gh("repos/%s/%s" % (full, path))
             if err:
                 errors.append(err)
         entry["release_downloads"] = {
-            rel["tag_name"]: {a["name"]: a["download_count"] for a in rel.get("assets", [])}
-            for rel in releases or []
+            rel["tag_name"]: {a["name"]: a["download_count"] for a in rel.get("assets", [])} for rel in releases or []
         }
         if errors:
             entry["traffic_error"] = errors[0]
@@ -191,8 +201,9 @@ def nuget_snapshot(owner, failures, notes):
     nuget, packages, down = {}, {}, []
     for host in NUGET_HOSTS:
         try:
-            data = http_json("https://%s.nuget.org/query?take=1000&prerelease=true"
-                             "&semVerLevel=2.0.0&q=owner:%s" % (host, owner)) or {"data": []}
+            data = http_json(
+                "https://%s.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:%s" % (host, owner)
+            ) or {"data": []}
             for d in data["data"]:
                 if d["totalDownloads"] >= packages.get(d["id"], {}).get("totalDownloads", -1):
                     packages[d["id"]] = d
@@ -215,11 +226,13 @@ def nuget_snapshot(owner, failures, notes):
                 dims, n = fact["Dimensions"], fact["Amount"]
                 versions[dims["Version"]] = versions.get(dims["Version"], 0) + n
                 clients[dims["ClientName"]] = clients.get(dims["ClientName"], 0) + n
-            nuget[pid] = {"total": max(d["totalDownloads"], report.get("Total") or 0),
-                          "versions": {v["version"]: v["downloads"] for v in d["versions"]},
-                          "last_6_weeks": report.get("Total"),
-                          "last_6_weeks_versions": versions,
-                          "last_6_weeks_clients": clients}
+            nuget[pid] = {
+                "total": max(d["totalDownloads"], report.get("Total") or 0),
+                "versions": {v["version"]: v["downloads"] for v in d["versions"]},
+                "last_6_weeks": report.get("Total"),
+                "last_6_weeks_versions": versions,
+                "last_6_weeks_clients": clients,
+            }
         except SOURCE_ERRORS as e:
             failures.append("nuget %s (%s)" % (pid, describe(e)))
         time.sleep(1)
@@ -240,10 +253,17 @@ def pypi_snapshot(names, today, failures):
                 time.sleep(1)
                 continue
             overall = http_json("https://pypistats.org/api/packages/%s/overall?mirrors=false" % slug) or {}
-            daily = [{"downloads": r["downloads"], "day": r["date"]} for r in overall.get("data", [])
-                     if r.get("category") == "without_mirrors" and start <= r["date"] <= end]
-            pypi[name] = {"daily": daily, "last_day": recent["data"]["last_day"],
-                          "last_week": recent["data"]["last_week"], "last_month": recent["data"]["last_month"]}
+            daily = [
+                {"downloads": r["downloads"], "day": r["date"]}
+                for r in overall.get("data", [])
+                if r.get("category") == "without_mirrors" and start <= r["date"] <= end
+            ]
+            pypi[name] = {
+                "daily": daily,
+                "last_day": recent["data"]["last_day"],
+                "last_week": recent["data"]["last_week"],
+                "last_month": recent["data"]["last_month"],
+            }
         except SOURCE_ERRORS as e:
             failures.append("pypi %s (%s)" % (name, describe(e)))
         time.sleep(1)
@@ -318,8 +338,17 @@ def append_repos_csv(path, gsnap, today):
     f, w = open_csv_for_append(path, REPOS_HEADER)
     with f:
         for name, d in gsnap.items():
-            w.writerow([today, name, str(d["private"]).lower(), str(d["fork"]).lower(), d["stars"], d["forks"],
-                        release_total(d)])
+            w.writerow(
+                [
+                    today,
+                    name,
+                    str(d["private"]).lower(),
+                    str(d["fork"]).lower(),
+                    d["stars"],
+                    d["forks"],
+                    release_total(d),
+                ]
+            )
 
 
 def top_tables(gsnap, psnap, n):
@@ -331,28 +360,52 @@ def top_tables(gsnap, psnap, n):
 
     # Every table breaks ties by name last, so equal counts list the same way every run.
     tables = [
-        ("Unique cloners, last 14 days", ["Repo", "Unique cloners", "Clones"],
-         sorted(((k, *u(d, "clones")) for k, d in gsnap.items()), key=lambda r: (-r[1], -r[2], r[0]))),
-        ("Unique visitors, last 14 days", ["Repo", "Unique visitors", "Views"],
-         sorted(((k, *u(d, "views")) for k, d in gsnap.items()), key=lambda r: (-r[1], -r[2], r[0]))),
-        ("npm downloads", ["Package", "Last 14 days", "Last month"],
-         sorted(((k, daily_sum(d), d["last_month"]) for k, d in psnap["npm"].items()), key=lambda r: (-r[1], r[0]))),
-        ("NuGet downloads", ["Package", "Last 6 weeks", "All time"],
-         sorted(((k, d["last_6_weeks"] or 0, d["total"]) for k, d in psnap["nuget"].items()),
-                key=lambda r: (-r[1], -r[2], r[0]))),
-        ("PyPI downloads", ["Package", "Last 14 days", "Last month"],
-         sorted(((k, daily_sum(d), d["last_month"]) for k, d in psnap.get("pypi", {}).items()),
-                key=lambda r: (-r[1], r[0]))),
-        ("GitHub release asset downloads, all time", ["Repo", "Downloads"],
-         sorted(((k, release_total(d)) for k, d in gsnap.items() if release_total(d)), key=lambda r: (-r[1], r[0]))),
+        (
+            "Unique cloners, last 14 days",
+            ["Repo", "Unique cloners", "Clones"],
+            sorted(((k, *u(d, "clones")) for k, d in gsnap.items()), key=lambda r: (-r[1], -r[2], r[0])),
+        ),
+        (
+            "Unique visitors, last 14 days",
+            ["Repo", "Unique visitors", "Views"],
+            sorted(((k, *u(d, "views")) for k, d in gsnap.items()), key=lambda r: (-r[1], -r[2], r[0])),
+        ),
+        (
+            "npm downloads",
+            ["Package", "Last 14 days", "Last month"],
+            sorted(((k, daily_sum(d), d["last_month"]) for k, d in psnap["npm"].items()), key=lambda r: (-r[1], r[0])),
+        ),
+        (
+            "NuGet downloads",
+            ["Package", "Last 6 weeks", "All time"],
+            sorted(
+                ((k, d["last_6_weeks"] or 0, d["total"]) for k, d in psnap["nuget"].items()),
+                key=lambda r: (-r[1], -r[2], r[0]),
+            ),
+        ),
+        (
+            "PyPI downloads",
+            ["Package", "Last 14 days", "Last month"],
+            sorted(
+                ((k, daily_sum(d), d["last_month"]) for k, d in psnap.get("pypi", {}).items()),
+                key=lambda r: (-r[1], r[0]),
+            ),
+        ),
+        (
+            "GitHub release asset downloads, all time",
+            ["Repo", "Downloads"],
+            sorted(((k, release_total(d)) for k, d in gsnap.items() if release_total(d)), key=lambda r: (-r[1], r[0])),
+        ),
     ]
     out = []
     for title, head, rows in tables:
         if not rows:
             continue
         out += ["## %s" % title, "", "| # | " + " | ".join(head) + " |", "|---|" + "---|" * len(head)]
-        out += ["| %d | " % i + " | ".join(f"{x:,}" if isinstance(x, int) else str(x) for x in r) + " |"
-                for i, r in enumerate(rows[:n], 1)]
+        out += [
+            "| %d | " % i + " | ".join(f"{x:,}" if isinstance(x, int) else str(x) for x in r) + " |"
+            for i, r in enumerate(rows[:n], 1)
+        ]
         out.append("")
     return "\n".join(out)
 
@@ -372,7 +425,10 @@ def gap_warning(log_path, today):
     if last is None or (today - last).days <= 14:
         return None
     return "gap: %d days since the last complete run (%s); GitHub traffic from before %s was not saved" % (
-        (today - last).days, last, today - dt.timedelta(days=14))
+        (today - last).days,
+        last,
+        today - dt.timedelta(days=14),
+    )
 
 
 def write_log(data, text):
@@ -384,7 +440,8 @@ def write_log(data, text):
 def parse_args(argv):
     p = argparse.ArgumentParser(
         prog="repo-traffic",
-        description="Save GitHub traffic and npm, NuGet and PyPI download counts before GitHub's 14 days run out.")
+        description="Save GitHub traffic and npm, NuGet and PyPI download counts before GitHub's 14 days run out.",
+    )
     p.add_argument("--owner", help="GitHub owner whose repos to read (default: the gh login)")
     p.add_argument("--npm-user", help="npm username whose packages to count (default: npm skipped)")
     p.add_argument("--nuget-owner", help="nuget.org owner whose packages to count (default: NuGet skipped)")
@@ -418,14 +475,18 @@ def snapshot(cfg, data, today):
     gap = gap_warning(data / "run.log", today)
     gsnap = github_snapshot(owner, failures)
     (snapdir / "github.json").write_text(json.dumps(gsnap, indent=1), encoding="utf-8")
-    psnap = {"npm": npm_snapshot(cfg["npm_user"], today, failures) if cfg["npm_user"] else {},
-             "nuget": nuget_snapshot(cfg["nuget_owner"], failures, notes) if cfg["nuget_owner"] else {}}
+    psnap = {
+        "npm": npm_snapshot(cfg["npm_user"], today, failures) if cfg["npm_user"] else {},
+        "nuget": nuget_snapshot(cfg["nuget_owner"], failures, notes) if cfg["nuget_owner"] else {},
+    }
     if cfg["pypi_packages"]:
         psnap["pypi"] = pypi_snapshot(cfg["pypi_packages"], today, failures)
     (snapdir / "packages.json").write_text(json.dumps(psnap, indent=1), encoding="utf-8")
     merge_daily_csv(data / "daily.csv", gsnap)
-    for name, write in (("downloads.csv", lambda p: append_downloads_csv(p, psnap, gsnap, today.isoformat())),
-                        ("repos.csv", lambda p: append_repos_csv(p, gsnap, today.isoformat()))):
+    for name, write in (
+        ("downloads.csv", lambda p: append_downloads_csv(p, psnap, gsnap, today.isoformat())),
+        ("repos.csv", lambda p: append_repos_csv(p, gsnap, today.isoformat())),
+    ):
         try:
             write(data / name)
         except ValueError as e:
@@ -435,10 +496,10 @@ def snapshot(cfg, data, today):
     if no_access:
         summary += ("\n" if summary else "") + (
             "## No traffic access\n\nGitHub refused traffic for %s (it needs push access): %s\n"
-            % ("this repo" if len(no_access) == 1 else "these repos", ", ".join(no_access)))
+            % ("this repo" if len(no_access) == 1 else "these repos", ", ".join(no_access))
+        )
     if failures:
-        summary += ("\n" if summary else "") + "## Not counted this run\n\n" + "".join(
-            "- %s\n" % x for x in failures)
+        summary += ("\n" if summary else "") + "## Not counted this run\n\n" + "".join("- %s\n" % x for x in failures)
     head = "# Repo traffic for %s, %s\n\n" % (owner, today) + ("> %s\n\n" % gap if gap else "")
     (snapdir / "summary.md").write_text(head + summary, encoding="utf-8")
     counts = "%d repos, %d npm, %d nuget" % (len(gsnap), len(psnap["npm"]), len(psnap["nuget"]))

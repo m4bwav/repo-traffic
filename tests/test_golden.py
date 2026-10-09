@@ -13,6 +13,7 @@ the file for this OS (and still fails, so a write is never a pass).
 REPO_TRAFFIC_SCRIPT points the test at another copy of the script, such as
 the one an installed wheel put in site-packages.
 """
+
 import json
 import os
 import sys
@@ -84,8 +85,10 @@ def test_both_exception_files_cover_the_same_fields():
     if not all(f.exists() for f in files):
         pytest.skip("one exceptions file is missing")
     win, posix = (json.loads(f.read_text(encoding="utf-8")) for f in files)
-    shape = [{c: {r: (e["change"], sorted(e["fields"])) for r, e in runs.items()} for c, runs in x.items()}
-             for x in (win, posix)]
+    shape = [
+        {c: {r: (e["change"], sorted(e["fields"])) for r, e in runs.items()} for c, runs in x.items()}
+        for x in (win, posix)
+    ]
     assert shape[0] == shape[1]
 
 
@@ -98,7 +101,10 @@ def test_case_matches_recording_except_ruled_changes(case, results):
         diff = differences(recorded, new)
         entry = listed.get(str(i), {"change": [], "fields": {}})
         unlisted = {k: v for k, v in diff.items() if k not in entry["fields"]}
-        assert not unlisted, "run %d differs from the recording in fields no exception names: %s" % (i, sorted(unlisted))
+        assert not unlisted, "run %d differs from the recording in fields no exception names: %s" % (
+            i,
+            sorted(unlisted),
+        )
         stale = [k for k in entry["fields"] if k not in diff]
         assert not stale, "run %d: listed exceptions no longer differ: %s" % (i, stale)
         for k, v in entry["fields"].items():
@@ -114,7 +120,9 @@ def test_write_exceptions(results):
         for i, (recorded, new) in enumerate(zip(RECORDING["cases"][case], results[case])):
             diff = differences(recorded, new)
             if diff:
-                changes = CASE_CHANGES.get(case) or (["E6"] if all(k.endswith("/repos.csv") for k in diff) else ["UNRULED"])
+                changes = CASE_CHANGES.get(case) or (
+                    ["E6"] if all(k.endswith("/repos.csv") for k in diff) else ["UNRULED"]
+                )
                 out.setdefault(case, {})[str(i)] = {"change": changes, "fields": diff}
     EXCEPTIONS_PATH.write_bytes(json.dumps(out, indent=1, sort_keys=True).encode("utf-8") + b"\n")
     pytest.fail("wrote %s: review it, then run again without the variable" % EXCEPTIONS_PATH.name)
