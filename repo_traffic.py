@@ -438,10 +438,14 @@ def write_log(data, text):
 
 
 def parse_args(argv):
-    p = argparse.ArgumentParser(
+    parser = argparse.ArgumentParser(
         prog="repo-traffic",
         description="Save GitHub traffic and npm, NuGet and PyPI download counts before GitHub's 14 days run out.",
+        add_help=False,
     )
+    # A named group, so --help reads the same on every Python (3.9 titles the default group "optional arguments").
+    p = parser.add_argument_group("options")
+    p.add_argument("-h", "--help", action="help", help="show this help message and exit")
     p.add_argument("--owner", help="GitHub owner whose repos to read (default: the gh login)")
     p.add_argument("--npm-user", help="npm username whose packages to count (default: npm skipped)")
     p.add_argument("--nuget-owner", help="nuget.org owner whose packages to count (default: NuGet skipped)")
@@ -450,7 +454,7 @@ def parse_args(argv):
     p.add_argument("--top", type=int, help="rows per summary table (default: 10)")
     p.add_argument("--config", help="settings file (default: repo_traffic.json in the settings folder)")
     p.add_argument("--version", action="version", version="%(prog)s " + __version__)
-    return p.parse_args(argv)
+    return parser.parse_args(argv)
 
 
 def configure(args, base):

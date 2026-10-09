@@ -29,3 +29,12 @@
 ## [2026-10-08] update | Ruling: D3 yes, the rest as recommended
 
 - Quote: "I'll try to setup pypi account, do everything else that you can". PyPI account and pending publisher are the maintainer's (unconfirmed until the 1.0.0b1 publish job runs).
+
+## [2026-10-08] update | Phase 2: rewrite on v1
+
+- Rewrite in repo_traffic.py (543 lines, stdlib only): argparse, isolated source failures, repos.csv, PyPI via pypistats.org, gap warning, CSV header migration, name tie-break. 283d465, 663af0b, 7d3b176.
+- Golden exceptions: Windows file written by the test and reviewed field by field; posix file written on ubuntu-24.04 and macos-latest by a throwaway workflow on branch golden-posix-scratch (run 37875372415; both artifacts sha256 fe5c0d2c..., matching the logged hashes; capture.py --check passed on macOS too). posix and Windows differ only in line endings (scratch compare script). Branch deleted after.
+- New exception E7 found while writing them: the name tie-break reorders gamma-private (no access, 0/0) after delta-empty in no-push-access; the plan said no recorded tie would change. Added to the plan and the pull request's For review list.
+- Canary: `+ 1` planted in release_total, golden test 14 failed / 7 passed; `git checkout -- repo_traffic.py`, 21 passed. `git diff --exit-code 896876d` on the recording files: empty.
+- Unit tests: 47, branch coverage 99 percent. Size: 543 lines, wheel 11.7 KB, 0 dependencies (green). lint-workflows.sh: WORKFLOWS CLEAN.
+- Fresh clone of v1: CI commands on Python 3.9.25 (failed once: argparse on 3.9 titles help "optional arguments:"; fixed with a named "options" group) and 3.14.6: 68 passed, ruff clean, build and twine PASSED.
