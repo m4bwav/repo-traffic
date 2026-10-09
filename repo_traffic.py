@@ -28,7 +28,9 @@ current folder. Exit status: 0 ok, 1 a source failed or the run failed,
 import argparse
 import csv
 import datetime as dt
+import http.client
 import json
+import math
 import re
 import shutil
 import socket
@@ -46,7 +48,9 @@ DEFAULTS = {"owner": None, "npm_user": None, "nuget_owner": None, "pypi_packages
 USER_AGENT = "repo-traffic"
 NUGET_HOSTS = ("azuresearch-usnc", "azuresearch-ussc")
 # Errors a source can fail with: network, HTTP, a cut-off body, a changed shape.
-SOURCE_ERRORS = (OSError, ValueError, KeyError, TypeError, subprocess.CalledProcessError)
+SOURCE_ERRORS = (OSError, http.client.HTTPException, ValueError, KeyError, TypeError, subprocess.CalledProcessError)
+# Of those, the ones that mean a server is down rather than answering in a shape we do not expect.
+NETWORK_ERRORS = (OSError, http.client.HTTPException)
 # Keeps gh from flashing a console window when the scheduler runs pythonw.
 NO_WINDOW = {"creationflags": subprocess.CREATE_NO_WINDOW} if sys.platform == "win32" else {}
 DOWNLOADS_HEADER = ["snapshot", "registry", "package", "last_14_days", "last_month", "last_6_weeks", "total"]
@@ -92,9 +96,12 @@ def gh_login():
 
 def retry_wait(e, attempt):
     try:
-        return min(float(e.headers.get("Retry-After")), 120.0)
+        wait = float(e.headers.get("Retry-After"))
+        if math.isfinite(wait):
+            return min(max(wait, 0.0), 120.0)
     except (TypeError, ValueError, AttributeError):
-        return 10 * (attempt + 1)
+        pass
+    return 10 * (attempt + 1)
 
 
 def http_json(url, tries=5):
@@ -113,7 +120,7 @@ def http_json(url, tries=5):
                 time.sleep(retry_wait(e, i))
                 continue
             raise
-        except (urllib.error.URLError, socket.timeout, ConnectionError):
+        except (urllib.error.URLError, socket.timeout, ConnectionError, http.client.HTTPException):
             if not last:
                 time.sleep(5)
                 continue
@@ -207,8 +214,12 @@ def nuget_snapshot(owner, failures, notes):
             for d in data["data"]:
                 if d["totalDownloads"] >= packages.get(d["id"], {}).get("totalDownloads", -1):
                     packages[d["id"]] = d
-        except SOURCE_ERRORS as e:
+        except NETWORK_ERRORS as e:
             down.append("%s (%s)" % (host, describe(e)))
+        except SOURCE_ERRORS as e:
+            # An answer in a shape this code does not know is a failure, not a replica that is down.
+            failures.append("nuget search %s (%s)" % (host, describe(e)))
+            return nuget
     if len(down) == len(NUGET_HOSTS):
         failures.append("nuget search: " + ", ".join(down))
         return nuget
@@ -273,7 +284,8 @@ def pypi_snapshot(names, today, failures):
 def merge_daily_csv(path, gsnap):
     rows = {}
     if path.exists():
-        with path.open(newline="", encoding="utf-8") as f:
+        # utf-8-sig: a file saved by Excel as "CSV UTF-8" starts with a byte order mark.
+        with path.open(newline="", encoding="utf-8-sig") as f:
             for r in csv.DictReader(f):
                 rows[(r["repo"], r["date"])] = r
     for name, d in gsnap.items():
@@ -294,20 +306,31 @@ def merge_daily_csv(path, gsnap):
 def open_csv_for_append(path, header, old_headers=()):
     """Open path to append rows under header: write the header to a new or
     empty file, migrate a file with an older header once (keeping NAME.bak),
-    and refuse a file whose header is unknown."""
+    and refuse a file whose header is unknown. Migration goes row by row: an
+    older version could append rows of the current width under its own header
+    (0.1.0 did), so a row as wide as the current header is kept as it is and a
+    row as wide as the old one is mapped by column name."""
     if path.exists() and path.stat().st_size:
-        with path.open(newline="", encoding="utf-8") as f:
-            first = next(csv.reader(f), [])
+        with path.open(newline="", encoding="utf-8-sig") as f:
+            rows = list(csv.reader(f))
+        first = rows[0] if rows else []
         if first in old_headers:
+            migrated = [header]
+            for n, row in enumerate(rows[1:], 2):
+                if len(row) == len(header):
+                    migrated.append(row)
+                elif len(row) == len(first):
+                    named = dict(zip(first, row))
+                    migrated.append([named.get(k, "") for k in header])
+                elif row:
+                    raise ValueError("%s line %d has %d columns; not migrating it" % (path.name, n, len(row)))
             shutil.copyfile(path, path.with_name(path.name + ".bak"))
-            with path.open(newline="", encoding="utf-8") as f:
-                rows = list(csv.DictReader(f))
             with path.open("w", newline="", encoding="utf-8") as f:
-                w = csv.writer(f)
-                w.writerow(header)
-                w.writerows([r.get(k, "") for k in header] for r in rows)
+                csv.writer(f).writerows(migrated)
         elif first != header:
-            raise ValueError("%s has an unknown header, so no rows were added: %s" % (path.name, ",".join(first)))
+            raise ValueError(
+                "%s has an unknown header, so no rows were added: %s" % (path.name, ascii(",".join(first))[1:-1])
+            )
         f = path.open("a", newline="", encoding="utf-8")
         return f, csv.writer(f)
     f = path.open("w", newline="", encoding="utf-8")
@@ -411,20 +434,24 @@ def top_tables(gsnap, psnap, n):
 
 
 def gap_warning(log_path, today):
-    """A warning when the last complete run is more than 14 days old: GitHub
-    has dropped the traffic in between."""
+    """A warning when the last run that saved GitHub traffic is more than 14
+    days old: GitHub has dropped the traffic in between. A partial run counts
+    unless the GitHub repo list was what failed."""
     last = None
     if log_path.exists():
         for line in log_path.read_text(encoding="utf-8").splitlines():
             parts = line.split(" ", 2)
-            if len(parts) > 1 and parts[1] == "ok":
+            saved = len(parts) > 2 and (
+                parts[1] == "ok" or (parts[1] == "partial" and "github repo list" not in parts[2])
+            )
+            if saved:
                 try:
                     last = dt.datetime.fromisoformat(parts[0]).date()
                 except ValueError:
                     pass
     if last is None or (today - last).days <= 14:
         return None
-    return "gap: %d days since the last complete run (%s); GitHub traffic from before %s was not saved" % (
+    return "gap: %d days since the last run that saved GitHub traffic (%s); traffic from before %s was not saved" % (
         (today - last).days,
         last,
         today - dt.timedelta(days=14),
@@ -442,6 +469,7 @@ def parse_args(argv):
         prog="repo-traffic",
         description="Save GitHub traffic and npm, NuGet and PyPI download counts before GitHub's 14 days run out.",
         add_help=False,
+        allow_abbrev=False,
     )
     # A named group, so --help reads the same on every Python (3.9 titles the default group "optional arguments").
     p = parser.add_argument_group("options")
@@ -457,6 +485,11 @@ def parse_args(argv):
     return parser.parse_args(argv)
 
 
+def settings_folder(args, base):
+    """The folder relative paths start from: the --config file's folder, else base."""
+    return Path(args.config).expanduser().resolve().parent if args.config else base
+
+
 def configure(args, base):
     cfg = dict(DEFAULTS)
     path = Path(args.config).expanduser() if args.config else base / "repo_traffic.json"
@@ -466,9 +499,22 @@ def configure(args, base):
         if getattr(args, key) is not None:
             cfg[key] = getattr(args, key)
     if args.pypi_packages is not None:
-        cfg["pypi_packages"] = [x.strip() for x in args.pypi_packages.split(",") if x.strip()]
+        cfg["pypi_packages"] = args.pypi_packages
+    if isinstance(cfg["pypi_packages"], str):
+        cfg["pypi_packages"] = cfg["pypi_packages"].split(",")
+    cfg["pypi_packages"] = [x.strip() for x in cfg["pypi_packages"] or [] if x.strip()]
     cfg["top"] = int(cfg["top"])
     return cfg
+
+
+def say(text, stream=None):
+    """print, but a console that cannot show a character gets a replacement instead of an error."""
+    stream = stream or sys.stdout
+    try:
+        print(text, file=stream)
+    except UnicodeEncodeError:
+        stream.buffer.write((text + "\n").encode(stream.encoding or "utf-8", "replace"))
+        stream.flush()
 
 
 def snapshot(cfg, data, today):
@@ -516,19 +562,20 @@ def snapshot(cfg, data, today):
         write_log(data, gap)
     write_log(data, "%s %s" % ("partial" if failures else "ok", "; ".join([counts] + extra)))
     if gap:
-        print(gap)
-    print(summary)
+        say(gap)
+    say(summary)
     if failures:
-        print("repo-traffic: some sources failed, see run.log: " + "; ".join(failures), file=sys.stderr)
+        say("repo-traffic: some sources failed, see run.log: " + "; ".join(failures), sys.stderr)
         return 1
     return 0
 
 
 def main(argv=None, base=None):
-    """Run one snapshot. base is the settings folder (default: the current folder)."""
+    """Run one snapshot. base is the settings folder (default: the current folder;
+    the --config file's folder when one is given)."""
     args = parse_args(sys.argv[1:] if argv is None else argv)
-    base = Path(base) if base is not None else Path.cwd()
-    data = base / "data"
+    base = settings_folder(args, Path(base) if base is not None else Path.cwd())
+    data = base / Path(args.data or "data").expanduser()
     try:
         cfg = configure(args, base)
         data = base / Path(cfg["data"]).expanduser()

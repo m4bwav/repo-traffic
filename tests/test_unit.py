@@ -521,11 +521,27 @@ def test_gap_warning(tmp_path):
     assert rt.gap_warning(log, TODAY) is None
     log.write_text("garbage\n2026-09-01T09:00:00 FAILED x\nnot-a-date ok 1\n", encoding="utf-8")
     assert rt.gap_warning(log, TODAY) is None
-    log.write_text("2026-09-20T09:00:00 ok 1 repos\n2026-09-30T09:00:00 partial 1 repos\n", encoding="utf-8")
+    log.write_text(
+        "2026-09-20T09:00:00 ok 1 repos\n2026-09-30T09:00:00 partial 0 repos; failed: github repo list (gh exited 1)\n",
+        encoding="utf-8",
+    )
     assert rt.gap_warning(log, TODAY) == (
-        "gap: 18 days since the last complete run (2026-09-20); GitHub traffic from before 2026-09-24 was not saved"
+        "gap: 18 days since the last run that saved GitHub traffic (2026-09-20); "
+        "traffic from before 2026-09-24 was not saved"
     )
     log.write_text("2026-09-24T09:00:00 ok 1 repos\n", encoding="utf-8")
+    assert rt.gap_warning(log, TODAY) is None
+
+
+def test_gap_warning_counts_partial_runs_that_saved_github(tmp_path):
+    # Review finding 2: a run where only npm failed still saved GitHub traffic.
+    log = tmp_path / "run.log"
+    log.write_text(
+        "2026-09-01T09:00:00 ok 1 repos\n"
+        "2026-09-14T09:00:00 partial 4 repos, 0 npm; failed: npm search (HTTP 404)\n"
+        "2026-09-27T09:00:00 partial 4 repos, 0 npm; failed: npm search (HTTP 404)\n",
+        encoding="utf-8",
+    )
     assert rt.gap_warning(log, TODAY) is None
 
 
@@ -634,7 +650,8 @@ def test_snapshot_partial_gap_and_pypi(tmp_path, monkeypatch, capsys):
     assert "repo-traffic: some sources failed, see run.log: github repo list (gh exited 1)" in out.err
     log = (data / "run.log").read_text(encoding="utf-8").splitlines()
     assert log[1].endswith(
-        " gap: 37 days since the last complete run (2026-09-01); GitHub traffic from before 2026-09-24 was not saved"
+        " gap: 37 days since the last run that saved GitHub traffic (2026-09-01); "
+        "traffic from before 2026-09-24 was not saved"
     )
     assert log[2].endswith(
         " partial 0 repos, 0 npm, 0 nuget, 1 pypi; failed: github repo list (gh exited 1); nuget replica down: x"
@@ -665,3 +682,131 @@ def test_snapshot_looks_up_the_owner(tmp_path, monkeypatch, capsys):
         .read_text(encoding="utf-8")
         .startswith("# Repo traffic for me, 2026-10-08")
     )
+
+
+# ---------------------------------------------------------------- review findings (Phase 3, 2026-10-08)
+
+
+def test_migration_keeps_rows_0_1_0_appended_in_the_new_width(tmp_path):
+    # Finding 1: 0.1.0 appended 7-column rows under the 6-column header of the first test runs.
+    path = tmp_path / "downloads.csv"
+    path.write_bytes(
+        b"snapshot,registry,package,last_14_days,last_month,total\r\n"
+        b"2026-10-01,npm,p,9,30,\r\n"
+        b"2026-10-02,nuget,Ex.Core,,,199,251\r\n"
+        b"2026-10-02,github-release,alpha,,,,9\r\n"
+    )
+    f, w = rt.open_csv_for_append(path, rt.DOWNLOADS_HEADER, rt.DOWNLOADS_OLD_HEADERS)
+    f.close()
+    assert path.read_text(encoding="utf-8").splitlines()[1:] == [
+        "2026-10-01,npm,p,9,30,,",
+        "2026-10-02,nuget,Ex.Core,,,199,251",
+        "2026-10-02,github-release,alpha,,,,9",
+    ]
+
+
+def test_migration_refuses_a_row_of_another_width(tmp_path):
+    path = tmp_path / "downloads.csv"
+    old = b"snapshot,registry,package,last_14_days,last_month,total\r\n1,2,3\r\n"
+    path.write_bytes(old)
+    with pytest.raises(ValueError, match="line 2 has 3 columns"):
+        rt.open_csv_for_append(path, rt.DOWNLOADS_HEADER, rt.DOWNLOADS_OLD_HEADERS)
+    assert path.read_bytes() == old and not (tmp_path / "downloads.csv.bak").exists()
+
+
+def test_csv_with_a_byte_order_mark_is_read(tmp_path):
+    # Finding 3: Excel's "CSV UTF-8" starts the file with U+FEFF.
+    path = tmp_path / "repos.csv"
+    path.write_bytes(b"\xef\xbb\xbf" + ",".join(rt.REPOS_HEADER).encode() + b"\r\n")
+    f, w = rt.open_csv_for_append(path, rt.REPOS_HEADER)
+    with f:
+        w.writerow(["2026-10-08", "r", "false", "false", 1, 0, 0])
+    assert path.read_bytes().endswith(b"\r\n2026-10-08,r,false,false,1,0,0\r\n")
+    daily = tmp_path / "daily.csv"
+    daily.write_bytes(b"\xef\xbb\xbfrepo,date,views,views_uniques,clones,clones_uniques\r\nr,2026-10-01,1,1,0,0\r\n")
+    rt.merge_daily_csv(daily, {})
+    assert daily.read_bytes() == b"repo,date,views,views_uniques,clones,clones_uniques\r\nr,2026-10-01,1,1,0,0\r\n"
+
+
+def test_unknown_header_message_is_ascii(tmp_path):
+    path = tmp_path / "x.csv"
+    path.write_text("caf\u00e9,\u2603\n", encoding="utf-8")
+    with pytest.raises(ValueError) as e:
+        rt.open_csv_for_append(path, ["a"])
+    assert str(e.value).isascii()
+
+
+def test_say_replaces_what_the_console_cannot_show():
+    class Console(io.TextIOWrapper):
+        pass
+
+    raw = io.BytesIO()
+    stream = Console(raw, encoding="cp1252")
+    rt.say("snow \u2603", stream)
+    assert raw.getvalue() == b"snow ?\n"
+    rt.say("plain", None)  # under pythonw sys.stdout can be None; print then does nothing
+
+
+def test_http_json_retries_a_cut_off_body(monkeypatch, sleeps):
+    # Finding 4: http.client.IncompleteRead is neither an OSError nor a ValueError.
+    calls = []
+
+    def urlopen(req, timeout=None):
+        calls.append(1)
+        if len(calls) == 1:
+            raise rt.http.client.IncompleteRead(b"{")
+        return FakeResponse(b"{}")
+
+    monkeypatch.setattr(rt.urllib.request, "urlopen", urlopen)
+    assert rt.http_json("https://a/") == {}
+    assert sleeps == [5]
+    assert issubclass(rt.http.client.IncompleteRead, rt.SOURCE_ERRORS)
+
+
+def test_nuget_replica_in_an_unknown_shape_is_a_failure(web, sleeps):
+    # Finding 10: a changed answer is not "a replica down" with exit 0.
+    web[USNC] = [{"unexpected": True}]
+    web[USSC] = [search(("A", 5))]
+    failures, notes = [], []
+    assert rt.nuget_snapshot("n", failures, notes) == {}
+    assert failures == ["nuget search azuresearch-usnc (KeyError: 'data')"] and notes == []
+
+
+def test_config_folder_is_the_settings_folder(tmp_path, monkeypatch):
+    # Finding 5: `repo-traffic --config C:\rt\repo_traffic.json` from System32 writes next to the config.
+    folder = tmp_path / "rt"
+    folder.mkdir()
+    (folder / "repo_traffic.json").write_text(json.dumps({"owner": "o"}), encoding="utf-8")
+    elsewhere = tmp_path / "cwd"
+    elsewhere.mkdir()
+    monkeypatch.chdir(elsewhere)
+    seen = []
+    monkeypatch.setattr(rt, "snapshot", lambda cfg, data, today: seen.append((cfg["owner"], data)) or 0)
+    assert rt.main(["--config", str(folder / "repo_traffic.json")]) == 0
+    assert seen == [("o", folder / "data")]
+    (folder / "repo_traffic.json").write_text("{broken", encoding="utf-8")
+    with pytest.raises(ValueError):
+        rt.main(["--config", str(folder / "repo_traffic.json"), "--data", "out"])
+    assert "FAILED JSONDecodeError" in (folder / "out" / "run.log").read_text(encoding="utf-8")
+
+
+def test_no_abbreviated_flags():
+    # Finding 6: --own must not mean --owner.
+    with pytest.raises(SystemExit) as e:
+        rt.parse_args(["--own", "a"])
+    assert e.value.code == 2
+
+
+def test_pypi_packages_as_a_string_in_the_config(tmp_path):
+    # Finding 7.
+    (tmp_path / "repo_traffic.json").write_text(json.dumps({"pypi_packages": "foo, bar"}), encoding="utf-8")
+    assert rt.configure(rt.parse_args([]), tmp_path)["pypi_packages"] == ["foo", "bar"]
+    (tmp_path / "repo_traffic.json").write_text(json.dumps({"pypi_packages": None}), encoding="utf-8")
+    assert rt.configure(rt.parse_args([]), tmp_path)["pypi_packages"] == []
+
+
+def test_retry_after_negative_or_not_a_number():
+    # Finding 8.
+    assert rt.retry_wait(http_error(429, {"Retry-After": "-5"}), 0) == 0.0
+    assert rt.retry_wait(http_error(429, {"Retry-After": "nan"}), 0) == 10
+    assert rt.retry_wait(http_error(429, {"Retry-After": "inf"}), 1) == 20

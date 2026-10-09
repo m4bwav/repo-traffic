@@ -43,7 +43,7 @@ Every flag is optional. With no `--owner` it uses the logged-in `gh` account, an
 | `--top` | `top` | 10 |
 | `--config` | | `repo_traffic.json` |
 
-Where it looks: the `repo-traffic` command reads `repo_traffic.json` and writes `data/` in the current folder; `python repo_traffic.py` uses the folder the script is in. A relative `--data` is taken from that same folder. `--help` lists the flags, `--version` prints the version.
+Where it looks: the `repo-traffic` command reads `repo_traffic.json` and writes `data/` in the current folder; `python repo_traffic.py` uses the folder the script is in; with `--config`, the config file's folder is used instead. A relative `--data` is taken from that same folder, so `repo-traffic --config /path/to/repo_traffic.json` works from anywhere, a scheduler included. `--help` lists the flags, `--version` prints the version.
 
 Each run prints the top-N tables and writes to the data folder:
 

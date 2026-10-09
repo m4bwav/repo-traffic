@@ -1,5 +1,5 @@
 # Development only; repo-traffic itself needs nothing beyond the standard library.
-# Pinned exactly; Dependabot proposes updates after a three-day cooldown.
+# Pinned exactly; Dependabot proposes updates after a seven-day cooldown.
 pytest==9.1.1; python_version >= "3.10"
 pytest==8.4.2; python_version < "3.10"
 coverage==7.16.2; python_version >= "3.10"
