@@ -1,0 +1,2375 @@
+{
+ "captured_with": {
+  "machine": "x86_64",
+  "platform": "posix",
+  "python": "3.14.4"
+ },
+ "cases": {
+  "downloads-csv-old-header": [
+   {
+    "exit": 0,
+    "files": {
+     "data/daily.csv": "repo,date,views,views_uniques,clones,clones_uniques\r\nalpha-lib,2026-09-25,10,4,0,0\r\nalpha-lib,2026-09-26,6,3,3,2\r\nalpha-lib,2026-09-27,0,0,5,5\r\nalpha-lib,2026-09-28,8,5,0,0\r\nbeta-tool,2026-10-01,5,5,0,0\r\nbeta-tool,2026-10-02,0,0,2,1\r\ngamma-private,2026-10-06,7,5,0,0\r\ngamma-private,2026-10-07,1,1,2,1\r\n",
+     "data/downloads.csv": "snapshot,registry,package,last_14_days,last_month,total\r\n2026-10-01,npm,alpha-lib,9,30,\r\n2026-10-08,npm,alpha-lib,20,40,,\r\n2026-10-08,npm,@octo-example/beta,3,3,,\r\n2026-10-08,npm,gamma-cli,20,41,,\r\n2026-10-08,nuget,Example.Core,,,251,251\r\n2026-10-08,nuget,Example.Tools,,,42,3923\r\n2026-10-08,github-release,alpha-lib,,,,9\r\n",
+     "data/run.log": "2026-10-08T09:00:00 ok 4 repos, 3 npm, 2 nuget\n",
+     "data/snapshots/2026-10-08/github.json": "{\n \"alpha-lib\": {\n  \"private\": false,\n  \"fork\": false,\n  \"stars\": 12,\n  \"forks\": 3,\n  \"views\": {\n   \"count\": 24,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-09-25T00:00:00Z\",\n     \"count\": 10,\n     \"uniques\": 4\n    },\n    {\n     \"timestamp\": \"2026-09-26T00:00:00Z\",\n     \"count\": 6,\n     \"uniques\": 3\n    },\n    {\n     \"timestamp\": \"2026-09-27T00:00:00Z\",\n     \"count\": 0,\n     \"uniques\": 0\n    },\n    {\n     \"timestamp\": \"2026-09-28T00:00:00Z\",\n     \"count\": 8,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 8,\n   \"uniques\": 5,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-09-26T00:00:00Z\",\n     \"count\": 3,\n     \"uniques\": 2\n    },\n    {\n     \"timestamp\": \"2026-09-27T00:00:00Z\",\n     \"count\": 5,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"referrers\": [\n   {\n    \"referrer\": \"github.com\",\n    \"count\": 10,\n    \"uniques\": 4\n   },\n   {\n    \"referrer\": \"news.example\",\n    \"count\": 3,\n    \"uniques\": 2\n   }\n  ],\n  \"paths\": [\n   {\n    \"path\": \"/octo-example/alpha-lib\",\n    \"title\": \"alpha-lib\",\n    \"count\": 20,\n    \"uniques\": 6\n   }\n  ],\n  \"release_downloads\": {\n   \"v1.0.0\": {\n    \"alpha-1.0.0.zip\": 7,\n    \"alpha-1.0.0.tar.gz\": 2\n   },\n   \"v0.9.0\": {}\n  }\n },\n \"beta-tool\": {\n  \"private\": false,\n  \"fork\": true,\n  \"stars\": 0,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 5,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-10-01T00:00:00Z\",\n     \"count\": 5,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 2,\n   \"uniques\": 1,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-10-02T00:00:00Z\",\n     \"count\": 2,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {}\n },\n \"gamma-private\": {\n  \"private\": true,\n  \"fork\": false,\n  \"stars\": 0,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 8,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-10-06T00:00:00Z\",\n     \"count\": 7,\n     \"uniques\": 5\n    },\n    {\n     \"timestamp\": \"2026-10-07T00:00:00Z\",\n     \"count\": 1,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 2,\n   \"uniques\": 1,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-10-07T00:00:00Z\",\n     \"count\": 2,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {}\n },\n \"delta-empty\": {\n  \"private\": false,\n  \"fork\": false,\n  \"stars\": 1,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 0,\n   \"uniques\": 0,\n   \"views\": []\n  },\n  \"clones\": {\n   \"count\": 0,\n   \"uniques\": 0,\n   \"clones\": []\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {\n   \"v0.1.0\": {\n    \"delta.zip\": 0\n   }\n  }\n }\n}",
+     "data/snapshots/2026-10-08/packages.json": "{\n \"npm\": {\n  \"alpha-lib\": {\n   \"daily\": [\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-09-24\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-25\"\n    },\n    {\n     \"downloads\": 4,\n     \"day\": \"2026-09-26\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-09-27\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-28\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-29\"\n    },\n    {\n     \"downloads\": 3,\n     \"day\": \"2026-09-30\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-01\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-02\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-03\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-04\"\n    },\n    {\n     \"downloads\": 5,\n     \"day\": \"2026-10-05\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-06\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-07\"\n    }\n   ],\n   \"last_month\": 40\n  },\n  \"@octo-example/beta\": {\n   \"daily\": [\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-24\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-25\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-09-26\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-27\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-28\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-29\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-30\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-01\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-02\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-03\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-04\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-05\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-06\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-07\"\n    }\n   ],\n   \"last_month\": 3\n  },\n  \"gamma-cli\": {\n   \"daily\": [\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-09-24\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-25\"\n    },\n    {\n     \"downloads\": 4,\n     \"day\": \"2026-09-26\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-09-27\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-28\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-29\"\n    },\n    {\n     \"downloads\": 3,\n     \"day\": \"2026-09-30\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-01\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-02\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-03\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-04\"\n    },\n    {\n     \"downloads\": 5,\n     \"day\": \"2026-10-05\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-06\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-07\"\n    }\n   ],\n   \"last_month\": 41\n  }\n },\n \"nuget\": {\n  \"Example.Core\": {\n   \"total\": 251,\n   \"versions\": {\n    \"1.0.0\": 183\n   },\n   \"last_6_weeks\": 251,\n   \"last_6_weeks_versions\": {\n    \"1.0.0\": 199,\n    \"1.0.0-beta.1\": 52\n   },\n   \"last_6_weeks_clients\": {\n    \"NuGet Client\": 150,\n    \"(unknown)\": 49,\n    \"Go-http-client\": 52\n   }\n  },\n  \"Example.Tools\": {\n   \"total\": 3923,\n   \"versions\": {\n    \"2.0.0\": 3020,\n    \"1.0.0\": 903\n   },\n   \"last_6_weeks\": 42,\n   \"last_6_weeks_versions\": {\n    \"2.0.0\": 40,\n    \"1.0.0\": 2\n   },\n   \"last_6_weeks_clients\": {\n    \"NuGet Client\": 42\n   }\n  }\n }\n}",
+     "data/snapshots/2026-10-08/summary.md": "# Repo traffic for octo-example, 2026-10-08\n\n## Unique cloners, last 14 days\n\n| # | Repo | Unique cloners | Clones |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 8 |\n| 2 | beta-tool | 1 | 2 |\n| 3 | gamma-private | 1 | 2 |\n| 4 | delta-empty | 0 | 0 |\n\n## Unique visitors, last 14 days\n\n| # | Repo | Unique visitors | Views |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 24 |\n| 2 | gamma-private | 5 | 8 |\n| 3 | beta-tool | 5 | 5 |\n| 4 | delta-empty | 0 | 0 |\n\n## npm downloads\n\n| # | Package | Last 14 days | Last month |\n|---|---|---|---|\n| 1 | alpha-lib | 20 | 40 |\n| 2 | gamma-cli | 20 | 41 |\n| 3 | @octo-example/beta | 3 | 3 |\n\n## NuGet downloads\n\n| # | Package | Last 6 weeks | All time |\n|---|---|---|---|\n| 1 | Example.Core | 251 | 251 |\n| 2 | Example.Tools | 42 | 3,923 |\n\n## GitHub release asset downloads, all time\n\n| # | Repo | Downloads |\n|---|---|---|\n| 1 | alpha-lib | 9 |\n"
+    },
+    "gh_calls": [
+     [
+      "repo",
+      "list",
+      "octo-example",
+      "--limit",
+      "1000",
+      "--json",
+      "name,isPrivate,isFork,stargazerCount,forkCount"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/popular/paths"
+     ]
+    ],
+    "requests": [
+     {
+      "url": "registry.npmjs.org/-/v1/search?size=250&text=maintainer:npm-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/@octo-example/beta",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/@octo-example/beta",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/gamma-cli",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/gamma-cli",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "azuresearch-usnc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "azuresearch-ussc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "www.nuget.org/stats/reports/packages/Example.Core?groupby=Version",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "www.nuget.org/stats/reports/packages/Example.Tools?groupby=Version",
+      "user_agent": "repo-traffic"
+     }
+    ],
+    "sleeps": [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "stderr_last": "",
+    "stdout": "## Unique cloners, last 14 days\n\n| # | Repo | Unique cloners | Clones |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 8 |\n| 2 | beta-tool | 1 | 2 |\n| 3 | gamma-private | 1 | 2 |\n| 4 | delta-empty | 0 | 0 |\n\n## Unique visitors, last 14 days\n\n| # | Repo | Unique visitors | Views |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 24 |\n| 2 | gamma-private | 5 | 8 |\n| 3 | beta-tool | 5 | 5 |\n| 4 | delta-empty | 0 | 0 |\n\n## npm downloads\n\n| # | Package | Last 14 days | Last month |\n|---|---|---|---|\n| 1 | alpha-lib | 20 | 40 |\n| 2 | gamma-cli | 20 | 41 |\n| 3 | @octo-example/beta | 3 | 3 |\n\n## NuGet downloads\n\n| # | Package | Last 6 weeks | All time |\n|---|---|---|---|\n| 1 | Example.Core | 251 | 251 |\n| 2 | Example.Tools | 42 | 3,923 |\n\n## GitHub release asset downloads, all time\n\n| # | Repo | Downloads |\n|---|---|---|\n| 1 | alpha-lib | 9 |\n\n"
+   }
+  ],
+  "empty-account": [
+   {
+    "exit": 0,
+    "files": {
+     "data/daily.csv": "repo,date,views,views_uniques,clones,clones_uniques\r\n",
+     "data/downloads.csv": "snapshot,registry,package,last_14_days,last_month,last_6_weeks,total\r\n",
+     "data/run.log": "2026-10-08T09:00:00 ok 0 repos, 0 npm, 0 nuget\n",
+     "data/snapshots/2026-10-08/github.json": "{}",
+     "data/snapshots/2026-10-08/packages.json": "{\n \"npm\": {},\n \"nuget\": {}\n}",
+     "data/snapshots/2026-10-08/summary.md": "# Repo traffic for octo-example, 2026-10-08\n\n"
+    },
+    "gh_calls": [
+     [
+      "repo",
+      "list",
+      "octo-example",
+      "--limit",
+      "1000",
+      "--json",
+      "name,isPrivate,isFork,stargazerCount,forkCount"
+     ]
+    ],
+    "requests": [
+     {
+      "url": "registry.npmjs.org/-/v1/search?size=250&text=maintainer:npm-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "azuresearch-usnc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "azuresearch-ussc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example",
+      "user_agent": "repo-traffic"
+     }
+    ],
+    "sleeps": [],
+    "stderr_last": "",
+    "stdout": "\n"
+   }
+  ],
+  "flags-no-config": [
+   {
+    "exit": 0,
+    "files": {
+     "out/traffic/daily.csv": "repo,date,views,views_uniques,clones,clones_uniques\r\nalpha-lib,2026-09-25,10,4,0,0\r\nalpha-lib,2026-09-26,6,3,3,2\r\nalpha-lib,2026-09-27,0,0,5,5\r\nalpha-lib,2026-09-28,8,5,0,0\r\nbeta-tool,2026-10-01,5,5,0,0\r\nbeta-tool,2026-10-02,0,0,2,1\r\ngamma-private,2026-10-06,7,5,0,0\r\ngamma-private,2026-10-07,1,1,2,1\r\n",
+     "out/traffic/downloads.csv": "snapshot,registry,package,last_14_days,last_month,last_6_weeks,total\r\n2026-10-08,github-release,alpha-lib,,,,9\r\n",
+     "out/traffic/run.log": "2026-10-08T09:00:00 ok 4 repos, 0 npm, 0 nuget\n",
+     "out/traffic/snapshots/2026-10-08/github.json": "{\n \"alpha-lib\": {\n  \"private\": false,\n  \"fork\": false,\n  \"stars\": 12,\n  \"forks\": 3,\n  \"views\": {\n   \"count\": 24,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-09-25T00:00:00Z\",\n     \"count\": 10,\n     \"uniques\": 4\n    },\n    {\n     \"timestamp\": \"2026-09-26T00:00:00Z\",\n     \"count\": 6,\n     \"uniques\": 3\n    },\n    {\n     \"timestamp\": \"2026-09-27T00:00:00Z\",\n     \"count\": 0,\n     \"uniques\": 0\n    },\n    {\n     \"timestamp\": \"2026-09-28T00:00:00Z\",\n     \"count\": 8,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 8,\n   \"uniques\": 5,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-09-26T00:00:00Z\",\n     \"count\": 3,\n     \"uniques\": 2\n    },\n    {\n     \"timestamp\": \"2026-09-27T00:00:00Z\",\n     \"count\": 5,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"referrers\": [\n   {\n    \"referrer\": \"github.com\",\n    \"count\": 10,\n    \"uniques\": 4\n   },\n   {\n    \"referrer\": \"news.example\",\n    \"count\": 3,\n    \"uniques\": 2\n   }\n  ],\n  \"paths\": [\n   {\n    \"path\": \"/octo-example/alpha-lib\",\n    \"title\": \"alpha-lib\",\n    \"count\": 20,\n    \"uniques\": 6\n   }\n  ],\n  \"release_downloads\": {\n   \"v1.0.0\": {\n    \"alpha-1.0.0.zip\": 7,\n    \"alpha-1.0.0.tar.gz\": 2\n   },\n   \"v0.9.0\": {}\n  }\n },\n \"beta-tool\": {\n  \"private\": false,\n  \"fork\": true,\n  \"stars\": 0,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 5,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-10-01T00:00:00Z\",\n     \"count\": 5,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 2,\n   \"uniques\": 1,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-10-02T00:00:00Z\",\n     \"count\": 2,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {}\n },\n \"gamma-private\": {\n  \"private\": true,\n  \"fork\": false,\n  \"stars\": 0,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 8,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-10-06T00:00:00Z\",\n     \"count\": 7,\n     \"uniques\": 5\n    },\n    {\n     \"timestamp\": \"2026-10-07T00:00:00Z\",\n     \"count\": 1,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 2,\n   \"uniques\": 1,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-10-07T00:00:00Z\",\n     \"count\": 2,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {}\n },\n \"delta-empty\": {\n  \"private\": false,\n  \"fork\": false,\n  \"stars\": 1,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 0,\n   \"uniques\": 0,\n   \"views\": []\n  },\n  \"clones\": {\n   \"count\": 0,\n   \"uniques\": 0,\n   \"clones\": []\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {\n   \"v0.1.0\": {\n    \"delta.zip\": 0\n   }\n  }\n }\n}",
+     "out/traffic/snapshots/2026-10-08/packages.json": "{\n \"npm\": {},\n \"nuget\": {}\n}",
+     "out/traffic/snapshots/2026-10-08/summary.md": "# Repo traffic for octo-example, 2026-10-08\n\n## Unique cloners, last 14 days\n\n| # | Repo | Unique cloners | Clones |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 8 |\n\n## Unique visitors, last 14 days\n\n| # | Repo | Unique visitors | Views |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 24 |\n\n## GitHub release asset downloads, all time\n\n| # | Repo | Downloads |\n|---|---|---|\n| 1 | alpha-lib | 9 |\n"
+    },
+    "gh_calls": [
+     [
+      "repo",
+      "list",
+      "octo-example",
+      "--limit",
+      "1000",
+      "--json",
+      "name,isPrivate,isFork,stargazerCount,forkCount"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/popular/paths"
+     ]
+    ],
+    "requests": [],
+    "sleeps": [],
+    "stderr_last": "",
+    "stdout": "## Unique cloners, last 14 days\n\n| # | Repo | Unique cloners | Clones |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 8 |\n\n## Unique visitors, last 14 days\n\n| # | Repo | Unique visitors | Views |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 24 |\n\n## GitHub release asset downloads, all time\n\n| # | Repo | Downloads |\n|---|---|---|\n| 1 | alpha-lib | 9 |\n\n"
+   }
+  ],
+  "full": [
+   {
+    "exit": 0,
+    "files": {
+     "data/daily.csv": "repo,date,views,views_uniques,clones,clones_uniques\r\nalpha-lib,2026-09-25,10,4,0,0\r\nalpha-lib,2026-09-26,6,3,3,2\r\nalpha-lib,2026-09-27,0,0,5,5\r\nalpha-lib,2026-09-28,8,5,0,0\r\nbeta-tool,2026-10-01,5,5,0,0\r\nbeta-tool,2026-10-02,0,0,2,1\r\ngamma-private,2026-10-06,7,5,0,0\r\ngamma-private,2026-10-07,1,1,2,1\r\n",
+     "data/downloads.csv": "snapshot,registry,package,last_14_days,last_month,last_6_weeks,total\r\n2026-10-08,npm,alpha-lib,20,40,,\r\n2026-10-08,npm,@octo-example/beta,3,3,,\r\n2026-10-08,npm,gamma-cli,20,41,,\r\n2026-10-08,nuget,Example.Core,,,251,251\r\n2026-10-08,nuget,Example.Tools,,,42,3923\r\n2026-10-08,github-release,alpha-lib,,,,9\r\n",
+     "data/run.log": "2026-10-08T09:00:00 ok 4 repos, 3 npm, 2 nuget\n",
+     "data/snapshots/2026-10-08/github.json": "{\n \"alpha-lib\": {\n  \"private\": false,\n  \"fork\": false,\n  \"stars\": 12,\n  \"forks\": 3,\n  \"views\": {\n   \"count\": 24,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-09-25T00:00:00Z\",\n     \"count\": 10,\n     \"uniques\": 4\n    },\n    {\n     \"timestamp\": \"2026-09-26T00:00:00Z\",\n     \"count\": 6,\n     \"uniques\": 3\n    },\n    {\n     \"timestamp\": \"2026-09-27T00:00:00Z\",\n     \"count\": 0,\n     \"uniques\": 0\n    },\n    {\n     \"timestamp\": \"2026-09-28T00:00:00Z\",\n     \"count\": 8,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 8,\n   \"uniques\": 5,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-09-26T00:00:00Z\",\n     \"count\": 3,\n     \"uniques\": 2\n    },\n    {\n     \"timestamp\": \"2026-09-27T00:00:00Z\",\n     \"count\": 5,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"referrers\": [\n   {\n    \"referrer\": \"github.com\",\n    \"count\": 10,\n    \"uniques\": 4\n   },\n   {\n    \"referrer\": \"news.example\",\n    \"count\": 3,\n    \"uniques\": 2\n   }\n  ],\n  \"paths\": [\n   {\n    \"path\": \"/octo-example/alpha-lib\",\n    \"title\": \"alpha-lib\",\n    \"count\": 20,\n    \"uniques\": 6\n   }\n  ],\n  \"release_downloads\": {\n   \"v1.0.0\": {\n    \"alpha-1.0.0.zip\": 7,\n    \"alpha-1.0.0.tar.gz\": 2\n   },\n   \"v0.9.0\": {}\n  }\n },\n \"beta-tool\": {\n  \"private\": false,\n  \"fork\": true,\n  \"stars\": 0,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 5,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-10-01T00:00:00Z\",\n     \"count\": 5,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 2,\n   \"uniques\": 1,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-10-02T00:00:00Z\",\n     \"count\": 2,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {}\n },\n \"gamma-private\": {\n  \"private\": true,\n  \"fork\": false,\n  \"stars\": 0,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 8,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-10-06T00:00:00Z\",\n     \"count\": 7,\n     \"uniques\": 5\n    },\n    {\n     \"timestamp\": \"2026-10-07T00:00:00Z\",\n     \"count\": 1,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 2,\n   \"uniques\": 1,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-10-07T00:00:00Z\",\n     \"count\": 2,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {}\n },\n \"delta-empty\": {\n  \"private\": false,\n  \"fork\": false,\n  \"stars\": 1,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 0,\n   \"uniques\": 0,\n   \"views\": []\n  },\n  \"clones\": {\n   \"count\": 0,\n   \"uniques\": 0,\n   \"clones\": []\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {\n   \"v0.1.0\": {\n    \"delta.zip\": 0\n   }\n  }\n }\n}",
+     "data/snapshots/2026-10-08/packages.json": "{\n \"npm\": {\n  \"alpha-lib\": {\n   \"daily\": [\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-09-24\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-25\"\n    },\n    {\n     \"downloads\": 4,\n     \"day\": \"2026-09-26\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-09-27\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-28\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-29\"\n    },\n    {\n     \"downloads\": 3,\n     \"day\": \"2026-09-30\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-01\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-02\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-03\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-04\"\n    },\n    {\n     \"downloads\": 5,\n     \"day\": \"2026-10-05\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-06\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-07\"\n    }\n   ],\n   \"last_month\": 40\n  },\n  \"@octo-example/beta\": {\n   \"daily\": [\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-24\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-25\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-09-26\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-27\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-28\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-29\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-30\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-01\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-02\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-03\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-04\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-05\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-06\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-07\"\n    }\n   ],\n   \"last_month\": 3\n  },\n  \"gamma-cli\": {\n   \"daily\": [\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-09-24\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-25\"\n    },\n    {\n     \"downloads\": 4,\n     \"day\": \"2026-09-26\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-09-27\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-28\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-29\"\n    },\n    {\n     \"downloads\": 3,\n     \"day\": \"2026-09-30\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-01\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-02\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-03\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-04\"\n    },\n    {\n     \"downloads\": 5,\n     \"day\": \"2026-10-05\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-06\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-07\"\n    }\n   ],\n   \"last_month\": 41\n  }\n },\n \"nuget\": {\n  \"Example.Core\": {\n   \"total\": 251,\n   \"versions\": {\n    \"1.0.0\": 183\n   },\n   \"last_6_weeks\": 251,\n   \"last_6_weeks_versions\": {\n    \"1.0.0\": 199,\n    \"1.0.0-beta.1\": 52\n   },\n   \"last_6_weeks_clients\": {\n    \"NuGet Client\": 150,\n    \"(unknown)\": 49,\n    \"Go-http-client\": 52\n   }\n  },\n  \"Example.Tools\": {\n   \"total\": 3923,\n   \"versions\": {\n    \"2.0.0\": 3020,\n    \"1.0.0\": 903\n   },\n   \"last_6_weeks\": 42,\n   \"last_6_weeks_versions\": {\n    \"2.0.0\": 40,\n    \"1.0.0\": 2\n   },\n   \"last_6_weeks_clients\": {\n    \"NuGet Client\": 42\n   }\n  }\n }\n}",
+     "data/snapshots/2026-10-08/summary.md": "# Repo traffic for octo-example, 2026-10-08\n\n## Unique cloners, last 14 days\n\n| # | Repo | Unique cloners | Clones |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 8 |\n| 2 | beta-tool | 1 | 2 |\n| 3 | gamma-private | 1 | 2 |\n| 4 | delta-empty | 0 | 0 |\n\n## Unique visitors, last 14 days\n\n| # | Repo | Unique visitors | Views |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 24 |\n| 2 | gamma-private | 5 | 8 |\n| 3 | beta-tool | 5 | 5 |\n| 4 | delta-empty | 0 | 0 |\n\n## npm downloads\n\n| # | Package | Last 14 days | Last month |\n|---|---|---|---|\n| 1 | alpha-lib | 20 | 40 |\n| 2 | gamma-cli | 20 | 41 |\n| 3 | @octo-example/beta | 3 | 3 |\n\n## NuGet downloads\n\n| # | Package | Last 6 weeks | All time |\n|---|---|---|---|\n| 1 | Example.Core | 251 | 251 |\n| 2 | Example.Tools | 42 | 3,923 |\n\n## GitHub release asset downloads, all time\n\n| # | Repo | Downloads |\n|---|---|---|\n| 1 | alpha-lib | 9 |\n"
+    },
+    "gh_calls": [
+     [
+      "repo",
+      "list",
+      "octo-example",
+      "--limit",
+      "1000",
+      "--json",
+      "name,isPrivate,isFork,stargazerCount,forkCount"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/popular/paths"
+     ]
+    ],
+    "requests": [
+     {
+      "url": "registry.npmjs.org/-/v1/search?size=250&text=maintainer:npm-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/@octo-example/beta",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/@octo-example/beta",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/gamma-cli",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/gamma-cli",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "azuresearch-usnc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "azuresearch-ussc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "www.nuget.org/stats/reports/packages/Example.Core?groupby=Version",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "www.nuget.org/stats/reports/packages/Example.Tools?groupby=Version",
+      "user_agent": "repo-traffic"
+     }
+    ],
+    "sleeps": [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "stderr_last": "",
+    "stdout": "## Unique cloners, last 14 days\n\n| # | Repo | Unique cloners | Clones |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 8 |\n| 2 | beta-tool | 1 | 2 |\n| 3 | gamma-private | 1 | 2 |\n| 4 | delta-empty | 0 | 0 |\n\n## Unique visitors, last 14 days\n\n| # | Repo | Unique visitors | Views |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 24 |\n| 2 | gamma-private | 5 | 8 |\n| 3 | beta-tool | 5 | 5 |\n| 4 | delta-empty | 0 | 0 |\n\n## npm downloads\n\n| # | Package | Last 14 days | Last month |\n|---|---|---|---|\n| 1 | alpha-lib | 20 | 40 |\n| 2 | gamma-cli | 20 | 41 |\n| 3 | @octo-example/beta | 3 | 3 |\n\n## NuGet downloads\n\n| # | Package | Last 6 weeks | All time |\n|---|---|---|---|\n| 1 | Example.Core | 251 | 251 |\n| 2 | Example.Tools | 42 | 3,923 |\n\n## GitHub release asset downloads, all time\n\n| # | Repo | Downloads |\n|---|---|---|\n| 1 | alpha-lib | 9 |\n\n"
+   }
+  ],
+  "gh-login-fails-logs-to-default-data": [
+   {
+    "exit": 1,
+    "files": {
+     "data/run.log": "2026-10-08T09:00:00 FAILED CalledProcessError(1, ['gh', 'api', 'user', '-q', '.login'])\n"
+    },
+    "gh_calls": [
+     [
+      "api",
+      "user",
+      "-q",
+      ".login"
+     ]
+    ],
+    "requests": [],
+    "sleeps": [],
+    "stderr_last": "subprocess.CalledProcessError: Command '['gh', 'api', 'user', '-q', '.login']' returned non-zero exit status 1.",
+    "stdout": ""
+   }
+  ],
+  "help-flag-runs-a-snapshot": [
+   {
+    "exit": 0,
+    "files": {
+     "data/daily.csv": "repo,date,views,views_uniques,clones,clones_uniques\r\nalpha-lib,2026-09-25,10,4,0,0\r\nalpha-lib,2026-09-26,6,3,3,2\r\nalpha-lib,2026-09-27,0,0,5,5\r\nalpha-lib,2026-09-28,8,5,0,0\r\nbeta-tool,2026-10-01,5,5,0,0\r\nbeta-tool,2026-10-02,0,0,2,1\r\ngamma-private,2026-10-06,7,5,0,0\r\ngamma-private,2026-10-07,1,1,2,1\r\n",
+     "data/downloads.csv": "snapshot,registry,package,last_14_days,last_month,last_6_weeks,total\r\n2026-10-08,npm,alpha-lib,20,40,,\r\n2026-10-08,npm,@octo-example/beta,3,3,,\r\n2026-10-08,npm,gamma-cli,20,41,,\r\n2026-10-08,nuget,Example.Core,,,251,251\r\n2026-10-08,nuget,Example.Tools,,,42,3923\r\n2026-10-08,github-release,alpha-lib,,,,9\r\n",
+     "data/run.log": "2026-10-08T09:00:00 ok 4 repos, 3 npm, 2 nuget\n",
+     "data/snapshots/2026-10-08/github.json": "{\n \"alpha-lib\": {\n  \"private\": false,\n  \"fork\": false,\n  \"stars\": 12,\n  \"forks\": 3,\n  \"views\": {\n   \"count\": 24,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-09-25T00:00:00Z\",\n     \"count\": 10,\n     \"uniques\": 4\n    },\n    {\n     \"timestamp\": \"2026-09-26T00:00:00Z\",\n     \"count\": 6,\n     \"uniques\": 3\n    },\n    {\n     \"timestamp\": \"2026-09-27T00:00:00Z\",\n     \"count\": 0,\n     \"uniques\": 0\n    },\n    {\n     \"timestamp\": \"2026-09-28T00:00:00Z\",\n     \"count\": 8,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 8,\n   \"uniques\": 5,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-09-26T00:00:00Z\",\n     \"count\": 3,\n     \"uniques\": 2\n    },\n    {\n     \"timestamp\": \"2026-09-27T00:00:00Z\",\n     \"count\": 5,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"referrers\": [\n   {\n    \"referrer\": \"github.com\",\n    \"count\": 10,\n    \"uniques\": 4\n   },\n   {\n    \"referrer\": \"news.example\",\n    \"count\": 3,\n    \"uniques\": 2\n   }\n  ],\n  \"paths\": [\n   {\n    \"path\": \"/octo-example/alpha-lib\",\n    \"title\": \"alpha-lib\",\n    \"count\": 20,\n    \"uniques\": 6\n   }\n  ],\n  \"release_downloads\": {\n   \"v1.0.0\": {\n    \"alpha-1.0.0.zip\": 7,\n    \"alpha-1.0.0.tar.gz\": 2\n   },\n   \"v0.9.0\": {}\n  }\n },\n \"beta-tool\": {\n  \"private\": false,\n  \"fork\": true,\n  \"stars\": 0,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 5,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-10-01T00:00:00Z\",\n     \"count\": 5,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 2,\n   \"uniques\": 1,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-10-02T00:00:00Z\",\n     \"count\": 2,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {}\n },\n \"gamma-private\": {\n  \"private\": true,\n  \"fork\": false,\n  \"stars\": 0,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 8,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-10-06T00:00:00Z\",\n     \"count\": 7,\n     \"uniques\": 5\n    },\n    {\n     \"timestamp\": \"2026-10-07T00:00:00Z\",\n     \"count\": 1,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 2,\n   \"uniques\": 1,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-10-07T00:00:00Z\",\n     \"count\": 2,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {}\n },\n \"delta-empty\": {\n  \"private\": false,\n  \"fork\": false,\n  \"stars\": 1,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 0,\n   \"uniques\": 0,\n   \"views\": []\n  },\n  \"clones\": {\n   \"count\": 0,\n   \"uniques\": 0,\n   \"clones\": []\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {\n   \"v0.1.0\": {\n    \"delta.zip\": 0\n   }\n  }\n }\n}",
+     "data/snapshots/2026-10-08/packages.json": "{\n \"npm\": {\n  \"alpha-lib\": {\n   \"daily\": [\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-09-24\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-25\"\n    },\n    {\n     \"downloads\": 4,\n     \"day\": \"2026-09-26\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-09-27\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-28\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-29\"\n    },\n    {\n     \"downloads\": 3,\n     \"day\": \"2026-09-30\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-01\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-02\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-03\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-04\"\n    },\n    {\n     \"downloads\": 5,\n     \"day\": \"2026-10-05\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-06\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-07\"\n    }\n   ],\n   \"last_month\": 40\n  },\n  \"@octo-example/beta\": {\n   \"daily\": [\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-24\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-25\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-09-26\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-27\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-28\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-29\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-30\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-01\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-02\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-03\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-04\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-05\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-06\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-07\"\n    }\n   ],\n   \"last_month\": 3\n  },\n  \"gamma-cli\": {\n   \"daily\": [\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-09-24\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-25\"\n    },\n    {\n     \"downloads\": 4,\n     \"day\": \"2026-09-26\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-09-27\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-28\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-29\"\n    },\n    {\n     \"downloads\": 3,\n     \"day\": \"2026-09-30\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-01\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-02\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-03\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-04\"\n    },\n    {\n     \"downloads\": 5,\n     \"day\": \"2026-10-05\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-06\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-07\"\n    }\n   ],\n   \"last_month\": 41\n  }\n },\n \"nuget\": {\n  \"Example.Core\": {\n   \"total\": 251,\n   \"versions\": {\n    \"1.0.0\": 183\n   },\n   \"last_6_weeks\": 251,\n   \"last_6_weeks_versions\": {\n    \"1.0.0\": 199,\n    \"1.0.0-beta.1\": 52\n   },\n   \"last_6_weeks_clients\": {\n    \"NuGet Client\": 150,\n    \"(unknown)\": 49,\n    \"Go-http-client\": 52\n   }\n  },\n  \"Example.Tools\": {\n   \"total\": 3923,\n   \"versions\": {\n    \"2.0.0\": 3020,\n    \"1.0.0\": 903\n   },\n   \"last_6_weeks\": 42,\n   \"last_6_weeks_versions\": {\n    \"2.0.0\": 40,\n    \"1.0.0\": 2\n   },\n   \"last_6_weeks_clients\": {\n    \"NuGet Client\": 42\n   }\n  }\n }\n}",
+     "data/snapshots/2026-10-08/summary.md": "# Repo traffic for octo-example, 2026-10-08\n\n## Unique cloners, last 14 days\n\n| # | Repo | Unique cloners | Clones |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 8 |\n| 2 | beta-tool | 1 | 2 |\n| 3 | gamma-private | 1 | 2 |\n| 4 | delta-empty | 0 | 0 |\n\n## Unique visitors, last 14 days\n\n| # | Repo | Unique visitors | Views |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 24 |\n| 2 | gamma-private | 5 | 8 |\n| 3 | beta-tool | 5 | 5 |\n| 4 | delta-empty | 0 | 0 |\n\n## npm downloads\n\n| # | Package | Last 14 days | Last month |\n|---|---|---|---|\n| 1 | alpha-lib | 20 | 40 |\n| 2 | gamma-cli | 20 | 41 |\n| 3 | @octo-example/beta | 3 | 3 |\n\n## NuGet downloads\n\n| # | Package | Last 6 weeks | All time |\n|---|---|---|---|\n| 1 | Example.Core | 251 | 251 |\n| 2 | Example.Tools | 42 | 3,923 |\n\n## GitHub release asset downloads, all time\n\n| # | Repo | Downloads |\n|---|---|---|\n| 1 | alpha-lib | 9 |\n"
+    },
+    "gh_calls": [
+     [
+      "repo",
+      "list",
+      "octo-example",
+      "--limit",
+      "1000",
+      "--json",
+      "name,isPrivate,isFork,stargazerCount,forkCount"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/popular/paths"
+     ]
+    ],
+    "requests": [
+     {
+      "url": "registry.npmjs.org/-/v1/search?size=250&text=maintainer:npm-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/@octo-example/beta",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/@octo-example/beta",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/gamma-cli",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/gamma-cli",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "azuresearch-usnc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "azuresearch-ussc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "www.nuget.org/stats/reports/packages/Example.Core?groupby=Version",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "www.nuget.org/stats/reports/packages/Example.Tools?groupby=Version",
+      "user_agent": "repo-traffic"
+     }
+    ],
+    "sleeps": [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "stderr_last": "",
+    "stdout": "## Unique cloners, last 14 days\n\n| # | Repo | Unique cloners | Clones |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 8 |\n| 2 | beta-tool | 1 | 2 |\n| 3 | gamma-private | 1 | 2 |\n| 4 | delta-empty | 0 | 0 |\n\n## Unique visitors, last 14 days\n\n| # | Repo | Unique visitors | Views |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 24 |\n| 2 | gamma-private | 5 | 8 |\n| 3 | beta-tool | 5 | 5 |\n| 4 | delta-empty | 0 | 0 |\n\n## npm downloads\n\n| # | Package | Last 14 days | Last month |\n|---|---|---|---|\n| 1 | alpha-lib | 20 | 40 |\n| 2 | gamma-cli | 20 | 41 |\n| 3 | @octo-example/beta | 3 | 3 |\n\n## NuGet downloads\n\n| # | Package | Last 6 weeks | All time |\n|---|---|---|---|\n| 1 | Example.Core | 251 | 251 |\n| 2 | Example.Tools | 42 | 3,923 |\n\n## GitHub release asset downloads, all time\n\n| # | Repo | Downloads |\n|---|---|---|\n| 1 | alpha-lib | 9 |\n\n"
+   }
+  ],
+  "no-push-access": [
+   {
+    "exit": 0,
+    "files": {
+     "data/daily.csv": "repo,date,views,views_uniques,clones,clones_uniques\r\nalpha-lib,2026-09-25,10,4,0,0\r\nalpha-lib,2026-09-26,6,3,3,2\r\nalpha-lib,2026-09-27,0,0,5,5\r\nalpha-lib,2026-09-28,8,5,0,0\r\nbeta-tool,2026-10-01,5,5,0,0\r\nbeta-tool,2026-10-02,0,0,2,1\r\n",
+     "data/downloads.csv": "snapshot,registry,package,last_14_days,last_month,last_6_weeks,total\r\n2026-10-08,npm,alpha-lib,20,40,,\r\n2026-10-08,npm,@octo-example/beta,3,3,,\r\n2026-10-08,npm,gamma-cli,20,41,,\r\n2026-10-08,nuget,Example.Core,,,251,251\r\n2026-10-08,nuget,Example.Tools,,,42,3923\r\n2026-10-08,github-release,alpha-lib,,,,9\r\n",
+     "data/run.log": "2026-10-08T09:00:00 ok 4 repos, 3 npm, 2 nuget\n",
+     "data/snapshots/2026-10-08/github.json": "{\n \"alpha-lib\": {\n  \"private\": false,\n  \"fork\": false,\n  \"stars\": 12,\n  \"forks\": 3,\n  \"views\": {\n   \"count\": 24,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-09-25T00:00:00Z\",\n     \"count\": 10,\n     \"uniques\": 4\n    },\n    {\n     \"timestamp\": \"2026-09-26T00:00:00Z\",\n     \"count\": 6,\n     \"uniques\": 3\n    },\n    {\n     \"timestamp\": \"2026-09-27T00:00:00Z\",\n     \"count\": 0,\n     \"uniques\": 0\n    },\n    {\n     \"timestamp\": \"2026-09-28T00:00:00Z\",\n     \"count\": 8,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 8,\n   \"uniques\": 5,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-09-26T00:00:00Z\",\n     \"count\": 3,\n     \"uniques\": 2\n    },\n    {\n     \"timestamp\": \"2026-09-27T00:00:00Z\",\n     \"count\": 5,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"referrers\": [\n   {\n    \"referrer\": \"github.com\",\n    \"count\": 10,\n    \"uniques\": 4\n   },\n   {\n    \"referrer\": \"news.example\",\n    \"count\": 3,\n    \"uniques\": 2\n   }\n  ],\n  \"paths\": [\n   {\n    \"path\": \"/octo-example/alpha-lib\",\n    \"title\": \"alpha-lib\",\n    \"count\": 20,\n    \"uniques\": 6\n   }\n  ],\n  \"release_downloads\": {\n   \"v1.0.0\": {\n    \"alpha-1.0.0.zip\": 7,\n    \"alpha-1.0.0.tar.gz\": 2\n   },\n   \"v0.9.0\": {}\n  }\n },\n \"beta-tool\": {\n  \"private\": false,\n  \"fork\": true,\n  \"stars\": 0,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 5,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-10-01T00:00:00Z\",\n     \"count\": 5,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 2,\n   \"uniques\": 1,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-10-02T00:00:00Z\",\n     \"count\": 2,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {}\n },\n \"gamma-private\": {\n  \"private\": true,\n  \"fork\": false,\n  \"stars\": 0,\n  \"forks\": 0,\n  \"views\": null,\n  \"clones\": null,\n  \"referrers\": null,\n  \"paths\": null,\n  \"release_downloads\": {}\n },\n \"delta-empty\": {\n  \"private\": false,\n  \"fork\": false,\n  \"stars\": 1,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 0,\n   \"uniques\": 0,\n   \"views\": []\n  },\n  \"clones\": {\n   \"count\": 0,\n   \"uniques\": 0,\n   \"clones\": []\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {\n   \"v0.1.0\": {\n    \"delta.zip\": 0\n   }\n  }\n }\n}",
+     "data/snapshots/2026-10-08/packages.json": "{\n \"npm\": {\n  \"alpha-lib\": {\n   \"daily\": [\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-09-24\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-25\"\n    },\n    {\n     \"downloads\": 4,\n     \"day\": \"2026-09-26\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-09-27\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-28\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-29\"\n    },\n    {\n     \"downloads\": 3,\n     \"day\": \"2026-09-30\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-01\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-02\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-03\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-04\"\n    },\n    {\n     \"downloads\": 5,\n     \"day\": \"2026-10-05\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-06\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-07\"\n    }\n   ],\n   \"last_month\": 40\n  },\n  \"@octo-example/beta\": {\n   \"daily\": [\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-24\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-25\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-09-26\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-27\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-28\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-29\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-30\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-01\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-02\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-03\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-04\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-05\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-06\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-07\"\n    }\n   ],\n   \"last_month\": 3\n  },\n  \"gamma-cli\": {\n   \"daily\": [\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-09-24\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-25\"\n    },\n    {\n     \"downloads\": 4,\n     \"day\": \"2026-09-26\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-09-27\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-28\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-29\"\n    },\n    {\n     \"downloads\": 3,\n     \"day\": \"2026-09-30\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-01\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-02\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-03\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-04\"\n    },\n    {\n     \"downloads\": 5,\n     \"day\": \"2026-10-05\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-06\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-07\"\n    }\n   ],\n   \"last_month\": 41\n  }\n },\n \"nuget\": {\n  \"Example.Core\": {\n   \"total\": 251,\n   \"versions\": {\n    \"1.0.0\": 183\n   },\n   \"last_6_weeks\": 251,\n   \"last_6_weeks_versions\": {\n    \"1.0.0\": 199,\n    \"1.0.0-beta.1\": 52\n   },\n   \"last_6_weeks_clients\": {\n    \"NuGet Client\": 150,\n    \"(unknown)\": 49,\n    \"Go-http-client\": 52\n   }\n  },\n  \"Example.Tools\": {\n   \"total\": 3923,\n   \"versions\": {\n    \"2.0.0\": 3020,\n    \"1.0.0\": 903\n   },\n   \"last_6_weeks\": 42,\n   \"last_6_weeks_versions\": {\n    \"2.0.0\": 40,\n    \"1.0.0\": 2\n   },\n   \"last_6_weeks_clients\": {\n    \"NuGet Client\": 42\n   }\n  }\n }\n}",
+     "data/snapshots/2026-10-08/summary.md": "# Repo traffic for octo-example, 2026-10-08\n\n## Unique cloners, last 14 days\n\n| # | Repo | Unique cloners | Clones |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 8 |\n| 2 | beta-tool | 1 | 2 |\n| 3 | gamma-private | 0 | 0 |\n| 4 | delta-empty | 0 | 0 |\n\n## Unique visitors, last 14 days\n\n| # | Repo | Unique visitors | Views |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 24 |\n| 2 | beta-tool | 5 | 5 |\n| 3 | gamma-private | 0 | 0 |\n| 4 | delta-empty | 0 | 0 |\n\n## npm downloads\n\n| # | Package | Last 14 days | Last month |\n|---|---|---|---|\n| 1 | alpha-lib | 20 | 40 |\n| 2 | gamma-cli | 20 | 41 |\n| 3 | @octo-example/beta | 3 | 3 |\n\n## NuGet downloads\n\n| # | Package | Last 6 weeks | All time |\n|---|---|---|---|\n| 1 | Example.Core | 251 | 251 |\n| 2 | Example.Tools | 42 | 3,923 |\n\n## GitHub release asset downloads, all time\n\n| # | Repo | Downloads |\n|---|---|---|\n| 1 | alpha-lib | 9 |\n"
+    },
+    "gh_calls": [
+     [
+      "repo",
+      "list",
+      "octo-example",
+      "--limit",
+      "1000",
+      "--json",
+      "name,isPrivate,isFork,stargazerCount,forkCount"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/popular/paths"
+     ]
+    ],
+    "requests": [
+     {
+      "url": "registry.npmjs.org/-/v1/search?size=250&text=maintainer:npm-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/@octo-example/beta",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/@octo-example/beta",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/gamma-cli",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/gamma-cli",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "azuresearch-usnc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "azuresearch-ussc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "www.nuget.org/stats/reports/packages/Example.Core?groupby=Version",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "www.nuget.org/stats/reports/packages/Example.Tools?groupby=Version",
+      "user_agent": "repo-traffic"
+     }
+    ],
+    "sleeps": [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "stderr_last": "",
+    "stdout": "## Unique cloners, last 14 days\n\n| # | Repo | Unique cloners | Clones |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 8 |\n| 2 | beta-tool | 1 | 2 |\n| 3 | gamma-private | 0 | 0 |\n| 4 | delta-empty | 0 | 0 |\n\n## Unique visitors, last 14 days\n\n| # | Repo | Unique visitors | Views |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 24 |\n| 2 | beta-tool | 5 | 5 |\n| 3 | gamma-private | 0 | 0 |\n| 4 | delta-empty | 0 | 0 |\n\n## npm downloads\n\n| # | Package | Last 14 days | Last month |\n|---|---|---|---|\n| 1 | alpha-lib | 20 | 40 |\n| 2 | gamma-cli | 20 | 41 |\n| 3 | @octo-example/beta | 3 | 3 |\n\n## NuGet downloads\n\n| # | Package | Last 6 weeks | All time |\n|---|---|---|---|\n| 1 | Example.Core | 251 | 251 |\n| 2 | Example.Tools | 42 | 3,923 |\n\n## GitHub release asset downloads, all time\n\n| # | Repo | Downloads |\n|---|---|---|\n| 1 | alpha-lib | 9 |\n\n"
+   }
+  ],
+  "npm-429-every-time": [
+   {
+    "exit": 1,
+    "files": {
+     "data/run.log": "2026-10-08T09:00:00 FAILED <HTTPError 429: 'Too Many Requests'>\n",
+     "data/snapshots/2026-10-08/github.json": "{\n \"alpha-lib\": {\n  \"private\": false,\n  \"fork\": false,\n  \"stars\": 12,\n  \"forks\": 3,\n  \"views\": {\n   \"count\": 24,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-09-25T00:00:00Z\",\n     \"count\": 10,\n     \"uniques\": 4\n    },\n    {\n     \"timestamp\": \"2026-09-26T00:00:00Z\",\n     \"count\": 6,\n     \"uniques\": 3\n    },\n    {\n     \"timestamp\": \"2026-09-27T00:00:00Z\",\n     \"count\": 0,\n     \"uniques\": 0\n    },\n    {\n     \"timestamp\": \"2026-09-28T00:00:00Z\",\n     \"count\": 8,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 8,\n   \"uniques\": 5,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-09-26T00:00:00Z\",\n     \"count\": 3,\n     \"uniques\": 2\n    },\n    {\n     \"timestamp\": \"2026-09-27T00:00:00Z\",\n     \"count\": 5,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"referrers\": [\n   {\n    \"referrer\": \"github.com\",\n    \"count\": 10,\n    \"uniques\": 4\n   },\n   {\n    \"referrer\": \"news.example\",\n    \"count\": 3,\n    \"uniques\": 2\n   }\n  ],\n  \"paths\": [\n   {\n    \"path\": \"/octo-example/alpha-lib\",\n    \"title\": \"alpha-lib\",\n    \"count\": 20,\n    \"uniques\": 6\n   }\n  ],\n  \"release_downloads\": {\n   \"v1.0.0\": {\n    \"alpha-1.0.0.zip\": 7,\n    \"alpha-1.0.0.tar.gz\": 2\n   },\n   \"v0.9.0\": {}\n  }\n },\n \"beta-tool\": {\n  \"private\": false,\n  \"fork\": true,\n  \"stars\": 0,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 5,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-10-01T00:00:00Z\",\n     \"count\": 5,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 2,\n   \"uniques\": 1,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-10-02T00:00:00Z\",\n     \"count\": 2,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {}\n },\n \"gamma-private\": {\n  \"private\": true,\n  \"fork\": false,\n  \"stars\": 0,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 8,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-10-06T00:00:00Z\",\n     \"count\": 7,\n     \"uniques\": 5\n    },\n    {\n     \"timestamp\": \"2026-10-07T00:00:00Z\",\n     \"count\": 1,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 2,\n   \"uniques\": 1,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-10-07T00:00:00Z\",\n     \"count\": 2,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {}\n },\n \"delta-empty\": {\n  \"private\": false,\n  \"fork\": false,\n  \"stars\": 1,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 0,\n   \"uniques\": 0,\n   \"views\": []\n  },\n  \"clones\": {\n   \"count\": 0,\n   \"uniques\": 0,\n   \"clones\": []\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {\n   \"v0.1.0\": {\n    \"delta.zip\": 0\n   }\n  }\n }\n}"
+    },
+    "gh_calls": [
+     [
+      "repo",
+      "list",
+      "octo-example",
+      "--limit",
+      "1000",
+      "--json",
+      "name,isPrivate,isFork,stargazerCount,forkCount"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/popular/paths"
+     ]
+    ],
+    "requests": [
+     {
+      "url": "registry.npmjs.org/-/v1/search?size=250&text=maintainer:npm-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib",
+      "user_agent": "repo-traffic"
+     }
+    ],
+    "sleeps": [
+     10.0,
+     20.0,
+     30.0,
+     40.0
+    ],
+    "stderr_last": "urllib.error.HTTPError: HTTP Error 429: Too Many Requests",
+    "stdout": ""
+   }
+  ],
+  "npm-429-then-ok": [
+   {
+    "exit": 0,
+    "files": {
+     "data/daily.csv": "repo,date,views,views_uniques,clones,clones_uniques\r\nalpha-lib,2026-09-25,10,4,0,0\r\nalpha-lib,2026-09-26,6,3,3,2\r\nalpha-lib,2026-09-27,0,0,5,5\r\nalpha-lib,2026-09-28,8,5,0,0\r\nbeta-tool,2026-10-01,5,5,0,0\r\nbeta-tool,2026-10-02,0,0,2,1\r\ngamma-private,2026-10-06,7,5,0,0\r\ngamma-private,2026-10-07,1,1,2,1\r\n",
+     "data/downloads.csv": "snapshot,registry,package,last_14_days,last_month,last_6_weeks,total\r\n2026-10-08,npm,alpha-lib,20,40,,\r\n2026-10-08,npm,@octo-example/beta,3,3,,\r\n2026-10-08,npm,gamma-cli,20,41,,\r\n2026-10-08,nuget,Example.Core,,,251,251\r\n2026-10-08,nuget,Example.Tools,,,42,3923\r\n2026-10-08,github-release,alpha-lib,,,,9\r\n",
+     "data/run.log": "2026-10-08T09:00:00 ok 4 repos, 3 npm, 2 nuget\n",
+     "data/snapshots/2026-10-08/github.json": "{\n \"alpha-lib\": {\n  \"private\": false,\n  \"fork\": false,\n  \"stars\": 12,\n  \"forks\": 3,\n  \"views\": {\n   \"count\": 24,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-09-25T00:00:00Z\",\n     \"count\": 10,\n     \"uniques\": 4\n    },\n    {\n     \"timestamp\": \"2026-09-26T00:00:00Z\",\n     \"count\": 6,\n     \"uniques\": 3\n    },\n    {\n     \"timestamp\": \"2026-09-27T00:00:00Z\",\n     \"count\": 0,\n     \"uniques\": 0\n    },\n    {\n     \"timestamp\": \"2026-09-28T00:00:00Z\",\n     \"count\": 8,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 8,\n   \"uniques\": 5,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-09-26T00:00:00Z\",\n     \"count\": 3,\n     \"uniques\": 2\n    },\n    {\n     \"timestamp\": \"2026-09-27T00:00:00Z\",\n     \"count\": 5,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"referrers\": [\n   {\n    \"referrer\": \"github.com\",\n    \"count\": 10,\n    \"uniques\": 4\n   },\n   {\n    \"referrer\": \"news.example\",\n    \"count\": 3,\n    \"uniques\": 2\n   }\n  ],\n  \"paths\": [\n   {\n    \"path\": \"/octo-example/alpha-lib\",\n    \"title\": \"alpha-lib\",\n    \"count\": 20,\n    \"uniques\": 6\n   }\n  ],\n  \"release_downloads\": {\n   \"v1.0.0\": {\n    \"alpha-1.0.0.zip\": 7,\n    \"alpha-1.0.0.tar.gz\": 2\n   },\n   \"v0.9.0\": {}\n  }\n },\n \"beta-tool\": {\n  \"private\": false,\n  \"fork\": true,\n  \"stars\": 0,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 5,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-10-01T00:00:00Z\",\n     \"count\": 5,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 2,\n   \"uniques\": 1,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-10-02T00:00:00Z\",\n     \"count\": 2,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {}\n },\n \"gamma-private\": {\n  \"private\": true,\n  \"fork\": false,\n  \"stars\": 0,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 8,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-10-06T00:00:00Z\",\n     \"count\": 7,\n     \"uniques\": 5\n    },\n    {\n     \"timestamp\": \"2026-10-07T00:00:00Z\",\n     \"count\": 1,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 2,\n   \"uniques\": 1,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-10-07T00:00:00Z\",\n     \"count\": 2,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {}\n },\n \"delta-empty\": {\n  \"private\": false,\n  \"fork\": false,\n  \"stars\": 1,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 0,\n   \"uniques\": 0,\n   \"views\": []\n  },\n  \"clones\": {\n   \"count\": 0,\n   \"uniques\": 0,\n   \"clones\": []\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {\n   \"v0.1.0\": {\n    \"delta.zip\": 0\n   }\n  }\n }\n}",
+     "data/snapshots/2026-10-08/packages.json": "{\n \"npm\": {\n  \"alpha-lib\": {\n   \"daily\": [\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-09-24\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-25\"\n    },\n    {\n     \"downloads\": 4,\n     \"day\": \"2026-09-26\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-09-27\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-28\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-29\"\n    },\n    {\n     \"downloads\": 3,\n     \"day\": \"2026-09-30\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-01\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-02\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-03\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-04\"\n    },\n    {\n     \"downloads\": 5,\n     \"day\": \"2026-10-05\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-06\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-07\"\n    }\n   ],\n   \"last_month\": 40\n  },\n  \"@octo-example/beta\": {\n   \"daily\": [\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-24\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-25\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-09-26\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-27\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-28\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-29\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-30\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-01\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-02\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-03\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-04\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-05\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-06\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-07\"\n    }\n   ],\n   \"last_month\": 3\n  },\n  \"gamma-cli\": {\n   \"daily\": [\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-09-24\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-25\"\n    },\n    {\n     \"downloads\": 4,\n     \"day\": \"2026-09-26\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-09-27\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-28\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-29\"\n    },\n    {\n     \"downloads\": 3,\n     \"day\": \"2026-09-30\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-01\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-02\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-03\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-04\"\n    },\n    {\n     \"downloads\": 5,\n     \"day\": \"2026-10-05\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-06\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-07\"\n    }\n   ],\n   \"last_month\": 41\n  }\n },\n \"nuget\": {\n  \"Example.Core\": {\n   \"total\": 251,\n   \"versions\": {\n    \"1.0.0\": 183\n   },\n   \"last_6_weeks\": 251,\n   \"last_6_weeks_versions\": {\n    \"1.0.0\": 199,\n    \"1.0.0-beta.1\": 52\n   },\n   \"last_6_weeks_clients\": {\n    \"NuGet Client\": 150,\n    \"(unknown)\": 49,\n    \"Go-http-client\": 52\n   }\n  },\n  \"Example.Tools\": {\n   \"total\": 3923,\n   \"versions\": {\n    \"2.0.0\": 3020,\n    \"1.0.0\": 903\n   },\n   \"last_6_weeks\": 42,\n   \"last_6_weeks_versions\": {\n    \"2.0.0\": 40,\n    \"1.0.0\": 2\n   },\n   \"last_6_weeks_clients\": {\n    \"NuGet Client\": 42\n   }\n  }\n }\n}",
+     "data/snapshots/2026-10-08/summary.md": "# Repo traffic for octo-example, 2026-10-08\n\n## Unique cloners, last 14 days\n\n| # | Repo | Unique cloners | Clones |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 8 |\n| 2 | beta-tool | 1 | 2 |\n| 3 | gamma-private | 1 | 2 |\n| 4 | delta-empty | 0 | 0 |\n\n## Unique visitors, last 14 days\n\n| # | Repo | Unique visitors | Views |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 24 |\n| 2 | gamma-private | 5 | 8 |\n| 3 | beta-tool | 5 | 5 |\n| 4 | delta-empty | 0 | 0 |\n\n## npm downloads\n\n| # | Package | Last 14 days | Last month |\n|---|---|---|---|\n| 1 | alpha-lib | 20 | 40 |\n| 2 | gamma-cli | 20 | 41 |\n| 3 | @octo-example/beta | 3 | 3 |\n\n## NuGet downloads\n\n| # | Package | Last 6 weeks | All time |\n|---|---|---|---|\n| 1 | Example.Core | 251 | 251 |\n| 2 | Example.Tools | 42 | 3,923 |\n\n## GitHub release asset downloads, all time\n\n| # | Repo | Downloads |\n|---|---|---|\n| 1 | alpha-lib | 9 |\n"
+    },
+    "gh_calls": [
+     [
+      "repo",
+      "list",
+      "octo-example",
+      "--limit",
+      "1000",
+      "--json",
+      "name,isPrivate,isFork,stargazerCount,forkCount"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/popular/paths"
+     ]
+    ],
+    "requests": [
+     {
+      "url": "registry.npmjs.org/-/v1/search?size=250&text=maintainer:npm-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/@octo-example/beta",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/@octo-example/beta",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/gamma-cli",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/gamma-cli",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "azuresearch-usnc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "azuresearch-ussc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "www.nuget.org/stats/reports/packages/Example.Core?groupby=Version",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "www.nuget.org/stats/reports/packages/Example.Tools?groupby=Version",
+      "user_agent": "repo-traffic"
+     }
+    ],
+    "sleeps": [
+     10.0,
+     20.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "stderr_last": "",
+    "stdout": "## Unique cloners, last 14 days\n\n| # | Repo | Unique cloners | Clones |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 8 |\n| 2 | beta-tool | 1 | 2 |\n| 3 | gamma-private | 1 | 2 |\n| 4 | delta-empty | 0 | 0 |\n\n## Unique visitors, last 14 days\n\n| # | Repo | Unique visitors | Views |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 24 |\n| 2 | gamma-private | 5 | 8 |\n| 3 | beta-tool | 5 | 5 |\n| 4 | delta-empty | 0 | 0 |\n\n## npm downloads\n\n| # | Package | Last 14 days | Last month |\n|---|---|---|---|\n| 1 | alpha-lib | 20 | 40 |\n| 2 | gamma-cli | 20 | 41 |\n| 3 | @octo-example/beta | 3 | 3 |\n\n## NuGet downloads\n\n| # | Package | Last 6 weeks | All time |\n|---|---|---|---|\n| 1 | Example.Core | 251 | 251 |\n| 2 | Example.Tools | 42 | 3,923 |\n\n## GitHub release asset downloads, all time\n\n| # | Repo | Downloads |\n|---|---|---|\n| 1 | alpha-lib | 9 |\n\n"
+   }
+  ],
+  "npm-empty-body": [
+   {
+    "exit": 1,
+    "files": {
+     "data/run.log": "2026-10-08T09:00:00 FAILED JSONDecodeError('Expecting value: line 1 column 1 (char 0)')\n",
+     "data/snapshots/2026-10-08/github.json": "{\n \"alpha-lib\": {\n  \"private\": false,\n  \"fork\": false,\n  \"stars\": 12,\n  \"forks\": 3,\n  \"views\": {\n   \"count\": 24,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-09-25T00:00:00Z\",\n     \"count\": 10,\n     \"uniques\": 4\n    },\n    {\n     \"timestamp\": \"2026-09-26T00:00:00Z\",\n     \"count\": 6,\n     \"uniques\": 3\n    },\n    {\n     \"timestamp\": \"2026-09-27T00:00:00Z\",\n     \"count\": 0,\n     \"uniques\": 0\n    },\n    {\n     \"timestamp\": \"2026-09-28T00:00:00Z\",\n     \"count\": 8,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 8,\n   \"uniques\": 5,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-09-26T00:00:00Z\",\n     \"count\": 3,\n     \"uniques\": 2\n    },\n    {\n     \"timestamp\": \"2026-09-27T00:00:00Z\",\n     \"count\": 5,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"referrers\": [\n   {\n    \"referrer\": \"github.com\",\n    \"count\": 10,\n    \"uniques\": 4\n   },\n   {\n    \"referrer\": \"news.example\",\n    \"count\": 3,\n    \"uniques\": 2\n   }\n  ],\n  \"paths\": [\n   {\n    \"path\": \"/octo-example/alpha-lib\",\n    \"title\": \"alpha-lib\",\n    \"count\": 20,\n    \"uniques\": 6\n   }\n  ],\n  \"release_downloads\": {\n   \"v1.0.0\": {\n    \"alpha-1.0.0.zip\": 7,\n    \"alpha-1.0.0.tar.gz\": 2\n   },\n   \"v0.9.0\": {}\n  }\n },\n \"beta-tool\": {\n  \"private\": false,\n  \"fork\": true,\n  \"stars\": 0,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 5,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-10-01T00:00:00Z\",\n     \"count\": 5,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 2,\n   \"uniques\": 1,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-10-02T00:00:00Z\",\n     \"count\": 2,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {}\n },\n \"gamma-private\": {\n  \"private\": true,\n  \"fork\": false,\n  \"stars\": 0,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 8,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-10-06T00:00:00Z\",\n     \"count\": 7,\n     \"uniques\": 5\n    },\n    {\n     \"timestamp\": \"2026-10-07T00:00:00Z\",\n     \"count\": 1,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 2,\n   \"uniques\": 1,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-10-07T00:00:00Z\",\n     \"count\": 2,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {}\n },\n \"delta-empty\": {\n  \"private\": false,\n  \"fork\": false,\n  \"stars\": 1,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 0,\n   \"uniques\": 0,\n   \"views\": []\n  },\n  \"clones\": {\n   \"count\": 0,\n   \"uniques\": 0,\n   \"clones\": []\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {\n   \"v0.1.0\": {\n    \"delta.zip\": 0\n   }\n  }\n }\n}"
+    },
+    "gh_calls": [
+     [
+      "repo",
+      "list",
+      "octo-example",
+      "--limit",
+      "1000",
+      "--json",
+      "name,isPrivate,isFork,stargazerCount,forkCount"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/popular/paths"
+     ]
+    ],
+    "requests": [
+     {
+      "url": "registry.npmjs.org/-/v1/search?size=250&text=maintainer:npm-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/@octo-example/beta",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/@octo-example/beta",
+      "user_agent": "repo-traffic"
+     }
+    ],
+    "sleeps": [
+     1.0
+    ],
+    "stderr_last": "json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+    "stdout": ""
+   }
+  ],
+  "npm-only-flag-over-config": [
+   {
+    "exit": 0,
+    "files": {
+     "data/daily.csv": "repo,date,views,views_uniques,clones,clones_uniques\r\nalpha-lib,2026-09-25,10,4,0,0\r\nalpha-lib,2026-09-26,6,3,3,2\r\nalpha-lib,2026-09-27,0,0,5,5\r\nalpha-lib,2026-09-28,8,5,0,0\r\nbeta-tool,2026-10-01,5,5,0,0\r\nbeta-tool,2026-10-02,0,0,2,1\r\ngamma-private,2026-10-06,7,5,0,0\r\ngamma-private,2026-10-07,1,1,2,1\r\n",
+     "data/downloads.csv": "snapshot,registry,package,last_14_days,last_month,last_6_weeks,total\r\n2026-10-08,npm,alpha-lib,20,40,,\r\n2026-10-08,npm,@octo-example/beta,3,3,,\r\n2026-10-08,npm,gamma-cli,20,41,,\r\n2026-10-08,github-release,alpha-lib,,,,9\r\n",
+     "data/run.log": "2026-10-08T09:00:00 ok 4 repos, 3 npm, 0 nuget\n",
+     "data/snapshots/2026-10-08/github.json": "{\n \"alpha-lib\": {\n  \"private\": false,\n  \"fork\": false,\n  \"stars\": 12,\n  \"forks\": 3,\n  \"views\": {\n   \"count\": 24,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-09-25T00:00:00Z\",\n     \"count\": 10,\n     \"uniques\": 4\n    },\n    {\n     \"timestamp\": \"2026-09-26T00:00:00Z\",\n     \"count\": 6,\n     \"uniques\": 3\n    },\n    {\n     \"timestamp\": \"2026-09-27T00:00:00Z\",\n     \"count\": 0,\n     \"uniques\": 0\n    },\n    {\n     \"timestamp\": \"2026-09-28T00:00:00Z\",\n     \"count\": 8,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 8,\n   \"uniques\": 5,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-09-26T00:00:00Z\",\n     \"count\": 3,\n     \"uniques\": 2\n    },\n    {\n     \"timestamp\": \"2026-09-27T00:00:00Z\",\n     \"count\": 5,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"referrers\": [\n   {\n    \"referrer\": \"github.com\",\n    \"count\": 10,\n    \"uniques\": 4\n   },\n   {\n    \"referrer\": \"news.example\",\n    \"count\": 3,\n    \"uniques\": 2\n   }\n  ],\n  \"paths\": [\n   {\n    \"path\": \"/octo-example/alpha-lib\",\n    \"title\": \"alpha-lib\",\n    \"count\": 20,\n    \"uniques\": 6\n   }\n  ],\n  \"release_downloads\": {\n   \"v1.0.0\": {\n    \"alpha-1.0.0.zip\": 7,\n    \"alpha-1.0.0.tar.gz\": 2\n   },\n   \"v0.9.0\": {}\n  }\n },\n \"beta-tool\": {\n  \"private\": false,\n  \"fork\": true,\n  \"stars\": 0,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 5,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-10-01T00:00:00Z\",\n     \"count\": 5,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 2,\n   \"uniques\": 1,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-10-02T00:00:00Z\",\n     \"count\": 2,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {}\n },\n \"gamma-private\": {\n  \"private\": true,\n  \"fork\": false,\n  \"stars\": 0,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 8,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-10-06T00:00:00Z\",\n     \"count\": 7,\n     \"uniques\": 5\n    },\n    {\n     \"timestamp\": \"2026-10-07T00:00:00Z\",\n     \"count\": 1,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 2,\n   \"uniques\": 1,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-10-07T00:00:00Z\",\n     \"count\": 2,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {}\n },\n \"delta-empty\": {\n  \"private\": false,\n  \"fork\": false,\n  \"stars\": 1,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 0,\n   \"uniques\": 0,\n   \"views\": []\n  },\n  \"clones\": {\n   \"count\": 0,\n   \"uniques\": 0,\n   \"clones\": []\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {\n   \"v0.1.0\": {\n    \"delta.zip\": 0\n   }\n  }\n }\n}",
+     "data/snapshots/2026-10-08/packages.json": "{\n \"npm\": {\n  \"alpha-lib\": {\n   \"daily\": [\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-09-24\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-25\"\n    },\n    {\n     \"downloads\": 4,\n     \"day\": \"2026-09-26\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-09-27\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-28\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-29\"\n    },\n    {\n     \"downloads\": 3,\n     \"day\": \"2026-09-30\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-01\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-02\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-03\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-04\"\n    },\n    {\n     \"downloads\": 5,\n     \"day\": \"2026-10-05\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-06\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-07\"\n    }\n   ],\n   \"last_month\": 40\n  },\n  \"@octo-example/beta\": {\n   \"daily\": [\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-24\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-25\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-09-26\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-27\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-28\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-29\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-30\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-01\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-02\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-03\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-04\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-05\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-06\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-07\"\n    }\n   ],\n   \"last_month\": 3\n  },\n  \"gamma-cli\": {\n   \"daily\": [\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-09-24\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-25\"\n    },\n    {\n     \"downloads\": 4,\n     \"day\": \"2026-09-26\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-09-27\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-28\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-29\"\n    },\n    {\n     \"downloads\": 3,\n     \"day\": \"2026-09-30\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-01\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-02\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-03\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-04\"\n    },\n    {\n     \"downloads\": 5,\n     \"day\": \"2026-10-05\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-06\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-07\"\n    }\n   ],\n   \"last_month\": 41\n  }\n },\n \"nuget\": {}\n}",
+     "data/snapshots/2026-10-08/summary.md": "# Repo traffic for octo-example, 2026-10-08\n\n## Unique cloners, last 14 days\n\n| # | Repo | Unique cloners | Clones |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 8 |\n| 2 | beta-tool | 1 | 2 |\n| 3 | gamma-private | 1 | 2 |\n| 4 | delta-empty | 0 | 0 |\n\n## Unique visitors, last 14 days\n\n| # | Repo | Unique visitors | Views |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 24 |\n| 2 | gamma-private | 5 | 8 |\n| 3 | beta-tool | 5 | 5 |\n| 4 | delta-empty | 0 | 0 |\n\n## npm downloads\n\n| # | Package | Last 14 days | Last month |\n|---|---|---|---|\n| 1 | alpha-lib | 20 | 40 |\n| 2 | gamma-cli | 20 | 41 |\n| 3 | @octo-example/beta | 3 | 3 |\n\n## GitHub release asset downloads, all time\n\n| # | Repo | Downloads |\n|---|---|---|\n| 1 | alpha-lib | 9 |\n"
+    },
+    "gh_calls": [
+     [
+      "repo",
+      "list",
+      "octo-example",
+      "--limit",
+      "1000",
+      "--json",
+      "name,isPrivate,isFork,stargazerCount,forkCount"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/popular/paths"
+     ]
+    ],
+    "requests": [
+     {
+      "url": "registry.npmjs.org/-/v1/search?size=250&text=maintainer:npm-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/@octo-example/beta",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/@octo-example/beta",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/gamma-cli",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/gamma-cli",
+      "user_agent": "repo-traffic"
+     }
+    ],
+    "sleeps": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "stderr_last": "",
+    "stdout": "## Unique cloners, last 14 days\n\n| # | Repo | Unique cloners | Clones |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 8 |\n| 2 | beta-tool | 1 | 2 |\n| 3 | gamma-private | 1 | 2 |\n| 4 | delta-empty | 0 | 0 |\n\n## Unique visitors, last 14 days\n\n| # | Repo | Unique visitors | Views |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 24 |\n| 2 | gamma-private | 5 | 8 |\n| 3 | beta-tool | 5 | 5 |\n| 4 | delta-empty | 0 | 0 |\n\n## npm downloads\n\n| # | Package | Last 14 days | Last month |\n|---|---|---|---|\n| 1 | alpha-lib | 20 | 40 |\n| 2 | gamma-cli | 20 | 41 |\n| 3 | @octo-example/beta | 3 | 3 |\n\n## GitHub release asset downloads, all time\n\n| # | Repo | Downloads |\n|---|---|---|\n| 1 | alpha-lib | 9 |\n\n"
+   }
+  ],
+  "npm-search-404": [
+   {
+    "exit": 1,
+    "files": {
+     "data/run.log": "2026-10-08T09:00:00 FAILED TypeError(\"'NoneType' object is not subscriptable\")\n",
+     "data/snapshots/2026-10-08/github.json": "{\n \"alpha-lib\": {\n  \"private\": false,\n  \"fork\": false,\n  \"stars\": 12,\n  \"forks\": 3,\n  \"views\": {\n   \"count\": 24,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-09-25T00:00:00Z\",\n     \"count\": 10,\n     \"uniques\": 4\n    },\n    {\n     \"timestamp\": \"2026-09-26T00:00:00Z\",\n     \"count\": 6,\n     \"uniques\": 3\n    },\n    {\n     \"timestamp\": \"2026-09-27T00:00:00Z\",\n     \"count\": 0,\n     \"uniques\": 0\n    },\n    {\n     \"timestamp\": \"2026-09-28T00:00:00Z\",\n     \"count\": 8,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 8,\n   \"uniques\": 5,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-09-26T00:00:00Z\",\n     \"count\": 3,\n     \"uniques\": 2\n    },\n    {\n     \"timestamp\": \"2026-09-27T00:00:00Z\",\n     \"count\": 5,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"referrers\": [\n   {\n    \"referrer\": \"github.com\",\n    \"count\": 10,\n    \"uniques\": 4\n   },\n   {\n    \"referrer\": \"news.example\",\n    \"count\": 3,\n    \"uniques\": 2\n   }\n  ],\n  \"paths\": [\n   {\n    \"path\": \"/octo-example/alpha-lib\",\n    \"title\": \"alpha-lib\",\n    \"count\": 20,\n    \"uniques\": 6\n   }\n  ],\n  \"release_downloads\": {\n   \"v1.0.0\": {\n    \"alpha-1.0.0.zip\": 7,\n    \"alpha-1.0.0.tar.gz\": 2\n   },\n   \"v0.9.0\": {}\n  }\n },\n \"beta-tool\": {\n  \"private\": false,\n  \"fork\": true,\n  \"stars\": 0,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 5,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-10-01T00:00:00Z\",\n     \"count\": 5,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 2,\n   \"uniques\": 1,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-10-02T00:00:00Z\",\n     \"count\": 2,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {}\n },\n \"gamma-private\": {\n  \"private\": true,\n  \"fork\": false,\n  \"stars\": 0,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 8,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-10-06T00:00:00Z\",\n     \"count\": 7,\n     \"uniques\": 5\n    },\n    {\n     \"timestamp\": \"2026-10-07T00:00:00Z\",\n     \"count\": 1,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 2,\n   \"uniques\": 1,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-10-07T00:00:00Z\",\n     \"count\": 2,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {}\n },\n \"delta-empty\": {\n  \"private\": false,\n  \"fork\": false,\n  \"stars\": 1,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 0,\n   \"uniques\": 0,\n   \"views\": []\n  },\n  \"clones\": {\n   \"count\": 0,\n   \"uniques\": 0,\n   \"clones\": []\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {\n   \"v0.1.0\": {\n    \"delta.zip\": 0\n   }\n  }\n }\n}"
+    },
+    "gh_calls": [
+     [
+      "repo",
+      "list",
+      "octo-example",
+      "--limit",
+      "1000",
+      "--json",
+      "name,isPrivate,isFork,stargazerCount,forkCount"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/popular/paths"
+     ]
+    ],
+    "requests": [
+     {
+      "url": "registry.npmjs.org/-/v1/search?size=250&text=maintainer:npm-example",
+      "user_agent": "repo-traffic"
+     }
+    ],
+    "sleeps": [],
+    "stderr_last": "TypeError: 'NoneType' object is not subscriptable",
+    "stdout": ""
+   }
+  ],
+  "nuget-replica-503": [
+   {
+    "exit": 1,
+    "files": {
+     "data/run.log": "2026-10-08T09:00:00 FAILED <HTTPError 503: 'Service Unavailable'>\n",
+     "data/snapshots/2026-10-08/github.json": "{\n \"alpha-lib\": {\n  \"private\": false,\n  \"fork\": false,\n  \"stars\": 12,\n  \"forks\": 3,\n  \"views\": {\n   \"count\": 24,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-09-25T00:00:00Z\",\n     \"count\": 10,\n     \"uniques\": 4\n    },\n    {\n     \"timestamp\": \"2026-09-26T00:00:00Z\",\n     \"count\": 6,\n     \"uniques\": 3\n    },\n    {\n     \"timestamp\": \"2026-09-27T00:00:00Z\",\n     \"count\": 0,\n     \"uniques\": 0\n    },\n    {\n     \"timestamp\": \"2026-09-28T00:00:00Z\",\n     \"count\": 8,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 8,\n   \"uniques\": 5,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-09-26T00:00:00Z\",\n     \"count\": 3,\n     \"uniques\": 2\n    },\n    {\n     \"timestamp\": \"2026-09-27T00:00:00Z\",\n     \"count\": 5,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"referrers\": [\n   {\n    \"referrer\": \"github.com\",\n    \"count\": 10,\n    \"uniques\": 4\n   },\n   {\n    \"referrer\": \"news.example\",\n    \"count\": 3,\n    \"uniques\": 2\n   }\n  ],\n  \"paths\": [\n   {\n    \"path\": \"/octo-example/alpha-lib\",\n    \"title\": \"alpha-lib\",\n    \"count\": 20,\n    \"uniques\": 6\n   }\n  ],\n  \"release_downloads\": {\n   \"v1.0.0\": {\n    \"alpha-1.0.0.zip\": 7,\n    \"alpha-1.0.0.tar.gz\": 2\n   },\n   \"v0.9.0\": {}\n  }\n },\n \"beta-tool\": {\n  \"private\": false,\n  \"fork\": true,\n  \"stars\": 0,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 5,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-10-01T00:00:00Z\",\n     \"count\": 5,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 2,\n   \"uniques\": 1,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-10-02T00:00:00Z\",\n     \"count\": 2,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {}\n },\n \"gamma-private\": {\n  \"private\": true,\n  \"fork\": false,\n  \"stars\": 0,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 8,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-10-06T00:00:00Z\",\n     \"count\": 7,\n     \"uniques\": 5\n    },\n    {\n     \"timestamp\": \"2026-10-07T00:00:00Z\",\n     \"count\": 1,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 2,\n   \"uniques\": 1,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-10-07T00:00:00Z\",\n     \"count\": 2,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {}\n },\n \"delta-empty\": {\n  \"private\": false,\n  \"fork\": false,\n  \"stars\": 1,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 0,\n   \"uniques\": 0,\n   \"views\": []\n  },\n  \"clones\": {\n   \"count\": 0,\n   \"uniques\": 0,\n   \"clones\": []\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {\n   \"v0.1.0\": {\n    \"delta.zip\": 0\n   }\n  }\n }\n}"
+    },
+    "gh_calls": [
+     [
+      "repo",
+      "list",
+      "octo-example",
+      "--limit",
+      "1000",
+      "--json",
+      "name,isPrivate,isFork,stargazerCount,forkCount"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/popular/paths"
+     ]
+    ],
+    "requests": [
+     {
+      "url": "registry.npmjs.org/-/v1/search?size=250&text=maintainer:npm-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/@octo-example/beta",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/@octo-example/beta",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/gamma-cli",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/gamma-cli",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "azuresearch-usnc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example",
+      "user_agent": "repo-traffic"
+     }
+    ],
+    "sleeps": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "stderr_last": "urllib.error.HTTPError: HTTP Error 503: Service Unavailable",
+    "stdout": ""
+   }
+  ],
+  "nuget-replica-unreachable": [
+   {
+    "exit": 1,
+    "files": {
+     "data/run.log": "2026-10-08T09:00:00 FAILED URLError(ConnectionRefusedError(10061, 'golden harness: host down'))\n",
+     "data/snapshots/2026-10-08/github.json": "{\n \"alpha-lib\": {\n  \"private\": false,\n  \"fork\": false,\n  \"stars\": 12,\n  \"forks\": 3,\n  \"views\": {\n   \"count\": 24,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-09-25T00:00:00Z\",\n     \"count\": 10,\n     \"uniques\": 4\n    },\n    {\n     \"timestamp\": \"2026-09-26T00:00:00Z\",\n     \"count\": 6,\n     \"uniques\": 3\n    },\n    {\n     \"timestamp\": \"2026-09-27T00:00:00Z\",\n     \"count\": 0,\n     \"uniques\": 0\n    },\n    {\n     \"timestamp\": \"2026-09-28T00:00:00Z\",\n     \"count\": 8,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 8,\n   \"uniques\": 5,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-09-26T00:00:00Z\",\n     \"count\": 3,\n     \"uniques\": 2\n    },\n    {\n     \"timestamp\": \"2026-09-27T00:00:00Z\",\n     \"count\": 5,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"referrers\": [\n   {\n    \"referrer\": \"github.com\",\n    \"count\": 10,\n    \"uniques\": 4\n   },\n   {\n    \"referrer\": \"news.example\",\n    \"count\": 3,\n    \"uniques\": 2\n   }\n  ],\n  \"paths\": [\n   {\n    \"path\": \"/octo-example/alpha-lib\",\n    \"title\": \"alpha-lib\",\n    \"count\": 20,\n    \"uniques\": 6\n   }\n  ],\n  \"release_downloads\": {\n   \"v1.0.0\": {\n    \"alpha-1.0.0.zip\": 7,\n    \"alpha-1.0.0.tar.gz\": 2\n   },\n   \"v0.9.0\": {}\n  }\n },\n \"beta-tool\": {\n  \"private\": false,\n  \"fork\": true,\n  \"stars\": 0,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 5,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-10-01T00:00:00Z\",\n     \"count\": 5,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 2,\n   \"uniques\": 1,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-10-02T00:00:00Z\",\n     \"count\": 2,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {}\n },\n \"gamma-private\": {\n  \"private\": true,\n  \"fork\": false,\n  \"stars\": 0,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 8,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-10-06T00:00:00Z\",\n     \"count\": 7,\n     \"uniques\": 5\n    },\n    {\n     \"timestamp\": \"2026-10-07T00:00:00Z\",\n     \"count\": 1,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 2,\n   \"uniques\": 1,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-10-07T00:00:00Z\",\n     \"count\": 2,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {}\n },\n \"delta-empty\": {\n  \"private\": false,\n  \"fork\": false,\n  \"stars\": 1,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 0,\n   \"uniques\": 0,\n   \"views\": []\n  },\n  \"clones\": {\n   \"count\": 0,\n   \"uniques\": 0,\n   \"clones\": []\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {\n   \"v0.1.0\": {\n    \"delta.zip\": 0\n   }\n  }\n }\n}"
+    },
+    "gh_calls": [
+     [
+      "repo",
+      "list",
+      "octo-example",
+      "--limit",
+      "1000",
+      "--json",
+      "name,isPrivate,isFork,stargazerCount,forkCount"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/popular/paths"
+     ]
+    ],
+    "requests": [
+     {
+      "url": "registry.npmjs.org/-/v1/search?size=250&text=maintainer:npm-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/@octo-example/beta",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/@octo-example/beta",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/gamma-cli",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/gamma-cli",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "azuresearch-usnc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example",
+      "user_agent": "repo-traffic"
+     }
+    ],
+    "sleeps": [
+     1.0,
+     1.0,
+     1.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    "stderr_last": "urllib.error.URLError: <urlopen error [Errno 10061] golden harness: host down>",
+    "stdout": ""
+   }
+  ],
+  "nuget-stats-404": [
+   {
+    "exit": 0,
+    "files": {
+     "data/daily.csv": "repo,date,views,views_uniques,clones,clones_uniques\r\nalpha-lib,2026-09-25,10,4,0,0\r\nalpha-lib,2026-09-26,6,3,3,2\r\nalpha-lib,2026-09-27,0,0,5,5\r\nalpha-lib,2026-09-28,8,5,0,0\r\nbeta-tool,2026-10-01,5,5,0,0\r\nbeta-tool,2026-10-02,0,0,2,1\r\ngamma-private,2026-10-06,7,5,0,0\r\ngamma-private,2026-10-07,1,1,2,1\r\n",
+     "data/downloads.csv": "snapshot,registry,package,last_14_days,last_month,last_6_weeks,total\r\n2026-10-08,npm,alpha-lib,20,40,,\r\n2026-10-08,npm,@octo-example/beta,3,3,,\r\n2026-10-08,npm,gamma-cli,20,41,,\r\n2026-10-08,nuget,Example.Core,,,,7\r\n2026-10-08,github-release,alpha-lib,,,,9\r\n",
+     "data/run.log": "2026-10-08T09:00:00 ok 4 repos, 3 npm, 1 nuget\n",
+     "data/snapshots/2026-10-08/github.json": "{\n \"alpha-lib\": {\n  \"private\": false,\n  \"fork\": false,\n  \"stars\": 12,\n  \"forks\": 3,\n  \"views\": {\n   \"count\": 24,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-09-25T00:00:00Z\",\n     \"count\": 10,\n     \"uniques\": 4\n    },\n    {\n     \"timestamp\": \"2026-09-26T00:00:00Z\",\n     \"count\": 6,\n     \"uniques\": 3\n    },\n    {\n     \"timestamp\": \"2026-09-27T00:00:00Z\",\n     \"count\": 0,\n     \"uniques\": 0\n    },\n    {\n     \"timestamp\": \"2026-09-28T00:00:00Z\",\n     \"count\": 8,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 8,\n   \"uniques\": 5,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-09-26T00:00:00Z\",\n     \"count\": 3,\n     \"uniques\": 2\n    },\n    {\n     \"timestamp\": \"2026-09-27T00:00:00Z\",\n     \"count\": 5,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"referrers\": [\n   {\n    \"referrer\": \"github.com\",\n    \"count\": 10,\n    \"uniques\": 4\n   },\n   {\n    \"referrer\": \"news.example\",\n    \"count\": 3,\n    \"uniques\": 2\n   }\n  ],\n  \"paths\": [\n   {\n    \"path\": \"/octo-example/alpha-lib\",\n    \"title\": \"alpha-lib\",\n    \"count\": 20,\n    \"uniques\": 6\n   }\n  ],\n  \"release_downloads\": {\n   \"v1.0.0\": {\n    \"alpha-1.0.0.zip\": 7,\n    \"alpha-1.0.0.tar.gz\": 2\n   },\n   \"v0.9.0\": {}\n  }\n },\n \"beta-tool\": {\n  \"private\": false,\n  \"fork\": true,\n  \"stars\": 0,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 5,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-10-01T00:00:00Z\",\n     \"count\": 5,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 2,\n   \"uniques\": 1,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-10-02T00:00:00Z\",\n     \"count\": 2,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {}\n },\n \"gamma-private\": {\n  \"private\": true,\n  \"fork\": false,\n  \"stars\": 0,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 8,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-10-06T00:00:00Z\",\n     \"count\": 7,\n     \"uniques\": 5\n    },\n    {\n     \"timestamp\": \"2026-10-07T00:00:00Z\",\n     \"count\": 1,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 2,\n   \"uniques\": 1,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-10-07T00:00:00Z\",\n     \"count\": 2,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {}\n },\n \"delta-empty\": {\n  \"private\": false,\n  \"fork\": false,\n  \"stars\": 1,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 0,\n   \"uniques\": 0,\n   \"views\": []\n  },\n  \"clones\": {\n   \"count\": 0,\n   \"uniques\": 0,\n   \"clones\": []\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {\n   \"v0.1.0\": {\n    \"delta.zip\": 0\n   }\n  }\n }\n}",
+     "data/snapshots/2026-10-08/packages.json": "{\n \"npm\": {\n  \"alpha-lib\": {\n   \"daily\": [\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-09-24\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-25\"\n    },\n    {\n     \"downloads\": 4,\n     \"day\": \"2026-09-26\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-09-27\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-28\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-29\"\n    },\n    {\n     \"downloads\": 3,\n     \"day\": \"2026-09-30\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-01\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-02\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-03\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-04\"\n    },\n    {\n     \"downloads\": 5,\n     \"day\": \"2026-10-05\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-06\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-07\"\n    }\n   ],\n   \"last_month\": 40\n  },\n  \"@octo-example/beta\": {\n   \"daily\": [\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-24\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-25\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-09-26\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-27\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-28\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-29\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-30\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-01\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-02\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-03\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-04\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-05\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-06\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-07\"\n    }\n   ],\n   \"last_month\": 3\n  },\n  \"gamma-cli\": {\n   \"daily\": [\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-09-24\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-25\"\n    },\n    {\n     \"downloads\": 4,\n     \"day\": \"2026-09-26\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-09-27\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-28\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-29\"\n    },\n    {\n     \"downloads\": 3,\n     \"day\": \"2026-09-30\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-01\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-02\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-03\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-04\"\n    },\n    {\n     \"downloads\": 5,\n     \"day\": \"2026-10-05\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-06\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-07\"\n    }\n   ],\n   \"last_month\": 41\n  }\n },\n \"nuget\": {\n  \"Example.Core\": {\n   \"total\": 7,\n   \"versions\": {\n    \"1.0.0\": 7\n   },\n   \"last_6_weeks\": null,\n   \"last_6_weeks_versions\": {},\n   \"last_6_weeks_clients\": {}\n  }\n }\n}",
+     "data/snapshots/2026-10-08/summary.md": "# Repo traffic for octo-example, 2026-10-08\n\n## Unique cloners, last 14 days\n\n| # | Repo | Unique cloners | Clones |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 8 |\n| 2 | beta-tool | 1 | 2 |\n| 3 | gamma-private | 1 | 2 |\n| 4 | delta-empty | 0 | 0 |\n\n## Unique visitors, last 14 days\n\n| # | Repo | Unique visitors | Views |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 24 |\n| 2 | gamma-private | 5 | 8 |\n| 3 | beta-tool | 5 | 5 |\n| 4 | delta-empty | 0 | 0 |\n\n## npm downloads\n\n| # | Package | Last 14 days | Last month |\n|---|---|---|---|\n| 1 | alpha-lib | 20 | 40 |\n| 2 | gamma-cli | 20 | 41 |\n| 3 | @octo-example/beta | 3 | 3 |\n\n## NuGet downloads\n\n| # | Package | Last 6 weeks | All time |\n|---|---|---|---|\n| 1 | Example.Core | 0 | 7 |\n\n## GitHub release asset downloads, all time\n\n| # | Repo | Downloads |\n|---|---|---|\n| 1 | alpha-lib | 9 |\n"
+    },
+    "gh_calls": [
+     [
+      "repo",
+      "list",
+      "octo-example",
+      "--limit",
+      "1000",
+      "--json",
+      "name,isPrivate,isFork,stargazerCount,forkCount"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/popular/paths"
+     ]
+    ],
+    "requests": [
+     {
+      "url": "registry.npmjs.org/-/v1/search?size=250&text=maintainer:npm-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/@octo-example/beta",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/@octo-example/beta",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/gamma-cli",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/gamma-cli",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "azuresearch-usnc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "azuresearch-ussc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "www.nuget.org/stats/reports/packages/Example.Core?groupby=Version",
+      "user_agent": "repo-traffic"
+     }
+    ],
+    "sleeps": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "stderr_last": "",
+    "stdout": "## Unique cloners, last 14 days\n\n| # | Repo | Unique cloners | Clones |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 8 |\n| 2 | beta-tool | 1 | 2 |\n| 3 | gamma-private | 1 | 2 |\n| 4 | delta-empty | 0 | 0 |\n\n## Unique visitors, last 14 days\n\n| # | Repo | Unique visitors | Views |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 24 |\n| 2 | gamma-private | 5 | 8 |\n| 3 | beta-tool | 5 | 5 |\n| 4 | delta-empty | 0 | 0 |\n\n## npm downloads\n\n| # | Package | Last 14 days | Last month |\n|---|---|---|---|\n| 1 | alpha-lib | 20 | 40 |\n| 2 | gamma-cli | 20 | 41 |\n| 3 | @octo-example/beta | 3 | 3 |\n\n## NuGet downloads\n\n| # | Package | Last 6 weeks | All time |\n|---|---|---|---|\n| 1 | Example.Core | 0 | 7 |\n\n## GitHub release asset downloads, all time\n\n| # | Repo | Downloads |\n|---|---|---|\n| 1 | alpha-lib | 9 |\n\n"
+   }
+  ],
+  "owner-from-gh-login": [
+   {
+    "exit": 0,
+    "files": {
+     "data/daily.csv": "repo,date,views,views_uniques,clones,clones_uniques\r\nalpha-lib,2026-09-25,10,4,0,0\r\nalpha-lib,2026-09-26,6,3,3,2\r\nalpha-lib,2026-09-27,0,0,5,5\r\nalpha-lib,2026-09-28,8,5,0,0\r\nbeta-tool,2026-10-01,5,5,0,0\r\nbeta-tool,2026-10-02,0,0,2,1\r\ngamma-private,2026-10-06,7,5,0,0\r\ngamma-private,2026-10-07,1,1,2,1\r\n",
+     "data/downloads.csv": "snapshot,registry,package,last_14_days,last_month,last_6_weeks,total\r\n2026-10-08,github-release,alpha-lib,,,,9\r\n",
+     "data/run.log": "2026-10-08T09:00:00 ok 4 repos, 0 npm, 0 nuget\n",
+     "data/snapshots/2026-10-08/github.json": "{\n \"alpha-lib\": {\n  \"private\": false,\n  \"fork\": false,\n  \"stars\": 12,\n  \"forks\": 3,\n  \"views\": {\n   \"count\": 24,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-09-25T00:00:00Z\",\n     \"count\": 10,\n     \"uniques\": 4\n    },\n    {\n     \"timestamp\": \"2026-09-26T00:00:00Z\",\n     \"count\": 6,\n     \"uniques\": 3\n    },\n    {\n     \"timestamp\": \"2026-09-27T00:00:00Z\",\n     \"count\": 0,\n     \"uniques\": 0\n    },\n    {\n     \"timestamp\": \"2026-09-28T00:00:00Z\",\n     \"count\": 8,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 8,\n   \"uniques\": 5,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-09-26T00:00:00Z\",\n     \"count\": 3,\n     \"uniques\": 2\n    },\n    {\n     \"timestamp\": \"2026-09-27T00:00:00Z\",\n     \"count\": 5,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"referrers\": [\n   {\n    \"referrer\": \"github.com\",\n    \"count\": 10,\n    \"uniques\": 4\n   },\n   {\n    \"referrer\": \"news.example\",\n    \"count\": 3,\n    \"uniques\": 2\n   }\n  ],\n  \"paths\": [\n   {\n    \"path\": \"/octo-example/alpha-lib\",\n    \"title\": \"alpha-lib\",\n    \"count\": 20,\n    \"uniques\": 6\n   }\n  ],\n  \"release_downloads\": {\n   \"v1.0.0\": {\n    \"alpha-1.0.0.zip\": 7,\n    \"alpha-1.0.0.tar.gz\": 2\n   },\n   \"v0.9.0\": {}\n  }\n },\n \"beta-tool\": {\n  \"private\": false,\n  \"fork\": true,\n  \"stars\": 0,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 5,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-10-01T00:00:00Z\",\n     \"count\": 5,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 2,\n   \"uniques\": 1,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-10-02T00:00:00Z\",\n     \"count\": 2,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {}\n },\n \"gamma-private\": {\n  \"private\": true,\n  \"fork\": false,\n  \"stars\": 0,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 8,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-10-06T00:00:00Z\",\n     \"count\": 7,\n     \"uniques\": 5\n    },\n    {\n     \"timestamp\": \"2026-10-07T00:00:00Z\",\n     \"count\": 1,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 2,\n   \"uniques\": 1,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-10-07T00:00:00Z\",\n     \"count\": 2,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {}\n },\n \"delta-empty\": {\n  \"private\": false,\n  \"fork\": false,\n  \"stars\": 1,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 0,\n   \"uniques\": 0,\n   \"views\": []\n  },\n  \"clones\": {\n   \"count\": 0,\n   \"uniques\": 0,\n   \"clones\": []\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {\n   \"v0.1.0\": {\n    \"delta.zip\": 0\n   }\n  }\n }\n}",
+     "data/snapshots/2026-10-08/packages.json": "{\n \"npm\": {},\n \"nuget\": {}\n}",
+     "data/snapshots/2026-10-08/summary.md": "# Repo traffic for octo-example, 2026-10-08\n\n## Unique cloners, last 14 days\n\n| # | Repo | Unique cloners | Clones |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 8 |\n| 2 | beta-tool | 1 | 2 |\n| 3 | gamma-private | 1 | 2 |\n| 4 | delta-empty | 0 | 0 |\n\n## Unique visitors, last 14 days\n\n| # | Repo | Unique visitors | Views |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 24 |\n| 2 | gamma-private | 5 | 8 |\n| 3 | beta-tool | 5 | 5 |\n| 4 | delta-empty | 0 | 0 |\n\n## GitHub release asset downloads, all time\n\n| # | Repo | Downloads |\n|---|---|---|\n| 1 | alpha-lib | 9 |\n"
+    },
+    "gh_calls": [
+     [
+      "api",
+      "user",
+      "-q",
+      ".login"
+     ],
+     [
+      "repo",
+      "list",
+      "octo-example",
+      "--limit",
+      "1000",
+      "--json",
+      "name,isPrivate,isFork,stargazerCount,forkCount"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/popular/paths"
+     ]
+    ],
+    "requests": [],
+    "sleeps": [],
+    "stderr_last": "",
+    "stdout": "## Unique cloners, last 14 days\n\n| # | Repo | Unique cloners | Clones |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 8 |\n| 2 | beta-tool | 1 | 2 |\n| 3 | gamma-private | 1 | 2 |\n| 4 | delta-empty | 0 | 0 |\n\n## Unique visitors, last 14 days\n\n| # | Repo | Unique visitors | Views |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 24 |\n| 2 | gamma-private | 5 | 8 |\n| 3 | beta-tool | 5 | 5 |\n| 4 | delta-empty | 0 | 0 |\n\n## GitHub release asset downloads, all time\n\n| # | Repo | Downloads |\n|---|---|---|\n| 1 | alpha-lib | 9 |\n\n"
+   }
+  ],
+  "second-run-merges-daily": [
+   {
+    "exit": 0,
+    "files": {
+     "data/daily.csv": "repo,date,views,views_uniques,clones,clones_uniques\r\nalpha-lib,2026-09-25,10,4,0,0\r\nalpha-lib,2026-09-26,6,3,3,2\r\nalpha-lib,2026-09-27,0,0,5,5\r\nalpha-lib,2026-09-28,8,5,0,0\r\nbeta-tool,2026-10-01,5,5,0,0\r\nbeta-tool,2026-10-02,0,0,2,1\r\ngamma-private,2026-10-06,7,5,0,0\r\ngamma-private,2026-10-07,1,1,2,1\r\n",
+     "data/downloads.csv": "snapshot,registry,package,last_14_days,last_month,last_6_weeks,total\r\n2026-10-08,npm,alpha-lib,20,40,,\r\n2026-10-08,npm,@octo-example/beta,3,3,,\r\n2026-10-08,npm,gamma-cli,20,41,,\r\n2026-10-08,nuget,Example.Core,,,251,251\r\n2026-10-08,nuget,Example.Tools,,,42,3923\r\n2026-10-08,github-release,alpha-lib,,,,9\r\n",
+     "data/run.log": "2026-10-08T09:00:00 ok 4 repos, 3 npm, 2 nuget\n",
+     "data/snapshots/2026-10-08/github.json": "{\n \"alpha-lib\": {\n  \"private\": false,\n  \"fork\": false,\n  \"stars\": 12,\n  \"forks\": 3,\n  \"views\": {\n   \"count\": 24,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-09-25T00:00:00Z\",\n     \"count\": 10,\n     \"uniques\": 4\n    },\n    {\n     \"timestamp\": \"2026-09-26T00:00:00Z\",\n     \"count\": 6,\n     \"uniques\": 3\n    },\n    {\n     \"timestamp\": \"2026-09-27T00:00:00Z\",\n     \"count\": 0,\n     \"uniques\": 0\n    },\n    {\n     \"timestamp\": \"2026-09-28T00:00:00Z\",\n     \"count\": 8,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 8,\n   \"uniques\": 5,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-09-26T00:00:00Z\",\n     \"count\": 3,\n     \"uniques\": 2\n    },\n    {\n     \"timestamp\": \"2026-09-27T00:00:00Z\",\n     \"count\": 5,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"referrers\": [\n   {\n    \"referrer\": \"github.com\",\n    \"count\": 10,\n    \"uniques\": 4\n   },\n   {\n    \"referrer\": \"news.example\",\n    \"count\": 3,\n    \"uniques\": 2\n   }\n  ],\n  \"paths\": [\n   {\n    \"path\": \"/octo-example/alpha-lib\",\n    \"title\": \"alpha-lib\",\n    \"count\": 20,\n    \"uniques\": 6\n   }\n  ],\n  \"release_downloads\": {\n   \"v1.0.0\": {\n    \"alpha-1.0.0.zip\": 7,\n    \"alpha-1.0.0.tar.gz\": 2\n   },\n   \"v0.9.0\": {}\n  }\n },\n \"beta-tool\": {\n  \"private\": false,\n  \"fork\": true,\n  \"stars\": 0,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 5,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-10-01T00:00:00Z\",\n     \"count\": 5,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 2,\n   \"uniques\": 1,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-10-02T00:00:00Z\",\n     \"count\": 2,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {}\n },\n \"gamma-private\": {\n  \"private\": true,\n  \"fork\": false,\n  \"stars\": 0,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 8,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-10-06T00:00:00Z\",\n     \"count\": 7,\n     \"uniques\": 5\n    },\n    {\n     \"timestamp\": \"2026-10-07T00:00:00Z\",\n     \"count\": 1,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 2,\n   \"uniques\": 1,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-10-07T00:00:00Z\",\n     \"count\": 2,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {}\n },\n \"delta-empty\": {\n  \"private\": false,\n  \"fork\": false,\n  \"stars\": 1,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 0,\n   \"uniques\": 0,\n   \"views\": []\n  },\n  \"clones\": {\n   \"count\": 0,\n   \"uniques\": 0,\n   \"clones\": []\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {\n   \"v0.1.0\": {\n    \"delta.zip\": 0\n   }\n  }\n }\n}",
+     "data/snapshots/2026-10-08/packages.json": "{\n \"npm\": {\n  \"alpha-lib\": {\n   \"daily\": [\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-09-24\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-25\"\n    },\n    {\n     \"downloads\": 4,\n     \"day\": \"2026-09-26\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-09-27\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-28\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-29\"\n    },\n    {\n     \"downloads\": 3,\n     \"day\": \"2026-09-30\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-01\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-02\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-03\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-04\"\n    },\n    {\n     \"downloads\": 5,\n     \"day\": \"2026-10-05\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-06\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-07\"\n    }\n   ],\n   \"last_month\": 40\n  },\n  \"@octo-example/beta\": {\n   \"daily\": [\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-24\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-25\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-09-26\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-27\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-28\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-29\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-30\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-01\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-02\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-03\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-04\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-05\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-06\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-07\"\n    }\n   ],\n   \"last_month\": 3\n  },\n  \"gamma-cli\": {\n   \"daily\": [\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-09-24\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-25\"\n    },\n    {\n     \"downloads\": 4,\n     \"day\": \"2026-09-26\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-09-27\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-28\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-29\"\n    },\n    {\n     \"downloads\": 3,\n     \"day\": \"2026-09-30\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-01\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-02\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-03\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-04\"\n    },\n    {\n     \"downloads\": 5,\n     \"day\": \"2026-10-05\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-06\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-07\"\n    }\n   ],\n   \"last_month\": 41\n  }\n },\n \"nuget\": {\n  \"Example.Core\": {\n   \"total\": 251,\n   \"versions\": {\n    \"1.0.0\": 183\n   },\n   \"last_6_weeks\": 251,\n   \"last_6_weeks_versions\": {\n    \"1.0.0\": 199,\n    \"1.0.0-beta.1\": 52\n   },\n   \"last_6_weeks_clients\": {\n    \"NuGet Client\": 150,\n    \"(unknown)\": 49,\n    \"Go-http-client\": 52\n   }\n  },\n  \"Example.Tools\": {\n   \"total\": 3923,\n   \"versions\": {\n    \"2.0.0\": 3020,\n    \"1.0.0\": 903\n   },\n   \"last_6_weeks\": 42,\n   \"last_6_weeks_versions\": {\n    \"2.0.0\": 40,\n    \"1.0.0\": 2\n   },\n   \"last_6_weeks_clients\": {\n    \"NuGet Client\": 42\n   }\n  }\n }\n}",
+     "data/snapshots/2026-10-08/summary.md": "# Repo traffic for octo-example, 2026-10-08\n\n## Unique cloners, last 14 days\n\n| # | Repo | Unique cloners | Clones |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 8 |\n| 2 | beta-tool | 1 | 2 |\n| 3 | gamma-private | 1 | 2 |\n| 4 | delta-empty | 0 | 0 |\n\n## Unique visitors, last 14 days\n\n| # | Repo | Unique visitors | Views |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 24 |\n| 2 | gamma-private | 5 | 8 |\n| 3 | beta-tool | 5 | 5 |\n| 4 | delta-empty | 0 | 0 |\n\n## npm downloads\n\n| # | Package | Last 14 days | Last month |\n|---|---|---|---|\n| 1 | alpha-lib | 20 | 40 |\n| 2 | gamma-cli | 20 | 41 |\n| 3 | @octo-example/beta | 3 | 3 |\n\n## NuGet downloads\n\n| # | Package | Last 6 weeks | All time |\n|---|---|---|---|\n| 1 | Example.Core | 251 | 251 |\n| 2 | Example.Tools | 42 | 3,923 |\n\n## GitHub release asset downloads, all time\n\n| # | Repo | Downloads |\n|---|---|---|\n| 1 | alpha-lib | 9 |\n"
+    },
+    "gh_calls": [
+     [
+      "repo",
+      "list",
+      "octo-example",
+      "--limit",
+      "1000",
+      "--json",
+      "name,isPrivate,isFork,stargazerCount,forkCount"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/popular/paths"
+     ]
+    ],
+    "requests": [
+     {
+      "url": "registry.npmjs.org/-/v1/search?size=250&text=maintainer:npm-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/@octo-example/beta",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/@octo-example/beta",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/gamma-cli",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/gamma-cli",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "azuresearch-usnc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "azuresearch-ussc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "www.nuget.org/stats/reports/packages/Example.Core?groupby=Version",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "www.nuget.org/stats/reports/packages/Example.Tools?groupby=Version",
+      "user_agent": "repo-traffic"
+     }
+    ],
+    "sleeps": [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "stderr_last": "",
+    "stdout": "## Unique cloners, last 14 days\n\n| # | Repo | Unique cloners | Clones |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 8 |\n| 2 | beta-tool | 1 | 2 |\n| 3 | gamma-private | 1 | 2 |\n| 4 | delta-empty | 0 | 0 |\n\n## Unique visitors, last 14 days\n\n| # | Repo | Unique visitors | Views |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 24 |\n| 2 | gamma-private | 5 | 8 |\n| 3 | beta-tool | 5 | 5 |\n| 4 | delta-empty | 0 | 0 |\n\n## npm downloads\n\n| # | Package | Last 14 days | Last month |\n|---|---|---|---|\n| 1 | alpha-lib | 20 | 40 |\n| 2 | gamma-cli | 20 | 41 |\n| 3 | @octo-example/beta | 3 | 3 |\n\n## NuGet downloads\n\n| # | Package | Last 6 weeks | All time |\n|---|---|---|---|\n| 1 | Example.Core | 251 | 251 |\n| 2 | Example.Tools | 42 | 3,923 |\n\n## GitHub release asset downloads, all time\n\n| # | Repo | Downloads |\n|---|---|---|\n| 1 | alpha-lib | 9 |\n\n"
+   },
+   {
+    "exit": 0,
+    "files": {
+     "data/daily.csv": "repo,date,views,views_uniques,clones,clones_uniques\r\nalpha-lib,2026-09-25,10,4,0,0\r\nalpha-lib,2026-09-26,6,3,3,2\r\nalpha-lib,2026-09-27,0,0,5,5\r\nalpha-lib,2026-09-28,8,5,0,0\r\nalpha-lib,2026-10-15,0,0,1,1\r\nbeta-tool,2026-10-01,5,5,0,0\r\nbeta-tool,2026-10-02,0,0,2,1\r\ngamma-private,2026-10-06,7,5,0,0\r\ngamma-private,2026-10-07,4,3,2,1\r\ngamma-private,2026-10-08,2,2,0,0\r\ngamma-private,2026-10-09,0,0,0,0\r\ngamma-private,2026-10-10,9,6,0,0\r\n",
+     "data/downloads.csv": "snapshot,registry,package,last_14_days,last_month,last_6_weeks,total\r\n2026-10-08,npm,alpha-lib,20,40,,\r\n2026-10-08,npm,@octo-example/beta,3,3,,\r\n2026-10-08,npm,gamma-cli,20,41,,\r\n2026-10-08,nuget,Example.Core,,,251,251\r\n2026-10-08,nuget,Example.Tools,,,42,3923\r\n2026-10-08,github-release,alpha-lib,,,,9\r\n2026-10-21,npm,alpha-lib,28,50,,\r\n2026-10-21,npm,gamma-cli,0,12,,\r\n2026-10-21,nuget,Example.Core,,,251,251\r\n2026-10-21,nuget,Example.Tools,,,42,3923\r\n2026-10-21,github-release,alpha-lib,,,,9\r\n",
+     "data/run.log": "2026-10-08T09:00:00 ok 4 repos, 3 npm, 2 nuget\n2026-10-21T09:00:00 ok 4 repos, 2 npm, 2 nuget\n",
+     "data/snapshots/2026-10-08/github.json": "{\n \"alpha-lib\": {\n  \"private\": false,\n  \"fork\": false,\n  \"stars\": 12,\n  \"forks\": 3,\n  \"views\": {\n   \"count\": 24,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-09-25T00:00:00Z\",\n     \"count\": 10,\n     \"uniques\": 4\n    },\n    {\n     \"timestamp\": \"2026-09-26T00:00:00Z\",\n     \"count\": 6,\n     \"uniques\": 3\n    },\n    {\n     \"timestamp\": \"2026-09-27T00:00:00Z\",\n     \"count\": 0,\n     \"uniques\": 0\n    },\n    {\n     \"timestamp\": \"2026-09-28T00:00:00Z\",\n     \"count\": 8,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 8,\n   \"uniques\": 5,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-09-26T00:00:00Z\",\n     \"count\": 3,\n     \"uniques\": 2\n    },\n    {\n     \"timestamp\": \"2026-09-27T00:00:00Z\",\n     \"count\": 5,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"referrers\": [\n   {\n    \"referrer\": \"github.com\",\n    \"count\": 10,\n    \"uniques\": 4\n   },\n   {\n    \"referrer\": \"news.example\",\n    \"count\": 3,\n    \"uniques\": 2\n   }\n  ],\n  \"paths\": [\n   {\n    \"path\": \"/octo-example/alpha-lib\",\n    \"title\": \"alpha-lib\",\n    \"count\": 20,\n    \"uniques\": 6\n   }\n  ],\n  \"release_downloads\": {\n   \"v1.0.0\": {\n    \"alpha-1.0.0.zip\": 7,\n    \"alpha-1.0.0.tar.gz\": 2\n   },\n   \"v0.9.0\": {}\n  }\n },\n \"beta-tool\": {\n  \"private\": false,\n  \"fork\": true,\n  \"stars\": 0,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 5,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-10-01T00:00:00Z\",\n     \"count\": 5,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 2,\n   \"uniques\": 1,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-10-02T00:00:00Z\",\n     \"count\": 2,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {}\n },\n \"gamma-private\": {\n  \"private\": true,\n  \"fork\": false,\n  \"stars\": 0,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 8,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-10-06T00:00:00Z\",\n     \"count\": 7,\n     \"uniques\": 5\n    },\n    {\n     \"timestamp\": \"2026-10-07T00:00:00Z\",\n     \"count\": 1,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 2,\n   \"uniques\": 1,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-10-07T00:00:00Z\",\n     \"count\": 2,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {}\n },\n \"delta-empty\": {\n  \"private\": false,\n  \"fork\": false,\n  \"stars\": 1,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 0,\n   \"uniques\": 0,\n   \"views\": []\n  },\n  \"clones\": {\n   \"count\": 0,\n   \"uniques\": 0,\n   \"clones\": []\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {\n   \"v0.1.0\": {\n    \"delta.zip\": 0\n   }\n  }\n }\n}",
+     "data/snapshots/2026-10-08/packages.json": "{\n \"npm\": {\n  \"alpha-lib\": {\n   \"daily\": [\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-09-24\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-25\"\n    },\n    {\n     \"downloads\": 4,\n     \"day\": \"2026-09-26\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-09-27\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-28\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-29\"\n    },\n    {\n     \"downloads\": 3,\n     \"day\": \"2026-09-30\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-01\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-02\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-03\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-04\"\n    },\n    {\n     \"downloads\": 5,\n     \"day\": \"2026-10-05\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-06\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-07\"\n    }\n   ],\n   \"last_month\": 40\n  },\n  \"@octo-example/beta\": {\n   \"daily\": [\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-24\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-25\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-09-26\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-27\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-28\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-29\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-30\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-01\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-02\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-03\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-04\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-05\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-06\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-07\"\n    }\n   ],\n   \"last_month\": 3\n  },\n  \"gamma-cli\": {\n   \"daily\": [\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-09-24\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-25\"\n    },\n    {\n     \"downloads\": 4,\n     \"day\": \"2026-09-26\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-09-27\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-28\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-09-29\"\n    },\n    {\n     \"downloads\": 3,\n     \"day\": \"2026-09-30\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-01\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-02\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-03\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-04\"\n    },\n    {\n     \"downloads\": 5,\n     \"day\": \"2026-10-05\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-06\"\n    },\n    {\n     \"downloads\": 1,\n     \"day\": \"2026-10-07\"\n    }\n   ],\n   \"last_month\": 41\n  }\n },\n \"nuget\": {\n  \"Example.Core\": {\n   \"total\": 251,\n   \"versions\": {\n    \"1.0.0\": 183\n   },\n   \"last_6_weeks\": 251,\n   \"last_6_weeks_versions\": {\n    \"1.0.0\": 199,\n    \"1.0.0-beta.1\": 52\n   },\n   \"last_6_weeks_clients\": {\n    \"NuGet Client\": 150,\n    \"(unknown)\": 49,\n    \"Go-http-client\": 52\n   }\n  },\n  \"Example.Tools\": {\n   \"total\": 3923,\n   \"versions\": {\n    \"2.0.0\": 3020,\n    \"1.0.0\": 903\n   },\n   \"last_6_weeks\": 42,\n   \"last_6_weeks_versions\": {\n    \"2.0.0\": 40,\n    \"1.0.0\": 2\n   },\n   \"last_6_weeks_clients\": {\n    \"NuGet Client\": 42\n   }\n  }\n }\n}",
+     "data/snapshots/2026-10-08/summary.md": "# Repo traffic for octo-example, 2026-10-08\n\n## Unique cloners, last 14 days\n\n| # | Repo | Unique cloners | Clones |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 8 |\n| 2 | beta-tool | 1 | 2 |\n| 3 | gamma-private | 1 | 2 |\n| 4 | delta-empty | 0 | 0 |\n\n## Unique visitors, last 14 days\n\n| # | Repo | Unique visitors | Views |\n|---|---|---|---|\n| 1 | alpha-lib | 5 | 24 |\n| 2 | gamma-private | 5 | 8 |\n| 3 | beta-tool | 5 | 5 |\n| 4 | delta-empty | 0 | 0 |\n\n## npm downloads\n\n| # | Package | Last 14 days | Last month |\n|---|---|---|---|\n| 1 | alpha-lib | 20 | 40 |\n| 2 | gamma-cli | 20 | 41 |\n| 3 | @octo-example/beta | 3 | 3 |\n\n## NuGet downloads\n\n| # | Package | Last 6 weeks | All time |\n|---|---|---|---|\n| 1 | Example.Core | 251 | 251 |\n| 2 | Example.Tools | 42 | 3,923 |\n\n## GitHub release asset downloads, all time\n\n| # | Repo | Downloads |\n|---|---|---|\n| 1 | alpha-lib | 9 |\n",
+     "data/snapshots/2026-10-21/github.json": "{\n \"alpha-lib\": {\n  \"private\": false,\n  \"fork\": false,\n  \"stars\": 12,\n  \"forks\": 3,\n  \"views\": {\n   \"count\": 24,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-09-25T00:00:00Z\",\n     \"count\": 10,\n     \"uniques\": 4\n    },\n    {\n     \"timestamp\": \"2026-09-26T00:00:00Z\",\n     \"count\": 6,\n     \"uniques\": 3\n    },\n    {\n     \"timestamp\": \"2026-09-27T00:00:00Z\",\n     \"count\": 0,\n     \"uniques\": 0\n    },\n    {\n     \"timestamp\": \"2026-09-28T00:00:00Z\",\n     \"count\": 8,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 1,\n   \"uniques\": 1,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-10-15T00:00:00Z\",\n     \"count\": 1,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"referrers\": [\n   {\n    \"referrer\": \"github.com\",\n    \"count\": 10,\n    \"uniques\": 4\n   },\n   {\n    \"referrer\": \"news.example\",\n    \"count\": 3,\n    \"uniques\": 2\n   }\n  ],\n  \"paths\": [\n   {\n    \"path\": \"/octo-example/alpha-lib\",\n    \"title\": \"alpha-lib\",\n    \"count\": 20,\n    \"uniques\": 6\n   }\n  ],\n  \"release_downloads\": {\n   \"v1.0.0\": {\n    \"alpha-1.0.0.zip\": 7,\n    \"alpha-1.0.0.tar.gz\": 2\n   },\n   \"v0.9.0\": {}\n  }\n },\n \"beta-tool\": {\n  \"private\": false,\n  \"fork\": true,\n  \"stars\": 0,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 5,\n   \"uniques\": 5,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-10-01T00:00:00Z\",\n     \"count\": 5,\n     \"uniques\": 5\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 2,\n   \"uniques\": 1,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-10-02T00:00:00Z\",\n     \"count\": 2,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {}\n },\n \"gamma-private\": {\n  \"private\": true,\n  \"fork\": false,\n  \"stars\": 0,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 15,\n   \"uniques\": 6,\n   \"views\": [\n    {\n     \"timestamp\": \"2026-10-07T00:00:00Z\",\n     \"count\": 4,\n     \"uniques\": 3\n    },\n    {\n     \"timestamp\": \"2026-10-08T00:00:00Z\",\n     \"count\": 2,\n     \"uniques\": 2\n    },\n    {\n     \"timestamp\": \"2026-10-09T00:00:00Z\",\n     \"count\": 0,\n     \"uniques\": 0\n    },\n    {\n     \"timestamp\": \"2026-10-10T00:00:00Z\",\n     \"count\": 9,\n     \"uniques\": 6\n    }\n   ]\n  },\n  \"clones\": {\n   \"count\": 2,\n   \"uniques\": 1,\n   \"clones\": [\n    {\n     \"timestamp\": \"2026-10-07T00:00:00Z\",\n     \"count\": 2,\n     \"uniques\": 1\n    }\n   ]\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {}\n },\n \"delta-empty\": {\n  \"private\": false,\n  \"fork\": false,\n  \"stars\": 1,\n  \"forks\": 0,\n  \"views\": {\n   \"count\": 0,\n   \"uniques\": 0,\n   \"views\": []\n  },\n  \"clones\": {\n   \"count\": 0,\n   \"uniques\": 0,\n   \"clones\": []\n  },\n  \"referrers\": [],\n  \"paths\": [],\n  \"release_downloads\": {\n   \"v0.1.0\": {\n    \"delta.zip\": 0\n   }\n  }\n }\n}",
+     "data/snapshots/2026-10-21/packages.json": "{\n \"npm\": {\n  \"alpha-lib\": {\n   \"daily\": [\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-07\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-08\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-09\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-10\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-11\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-12\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-13\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-14\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-15\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-16\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-17\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-18\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-19\"\n    },\n    {\n     \"downloads\": 2,\n     \"day\": \"2026-10-20\"\n    }\n   ],\n   \"last_month\": 50\n  },\n  \"gamma-cli\": {\n   \"daily\": [\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-07\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-08\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-09\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-10\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-11\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-12\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-13\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-14\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-15\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-16\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-17\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-18\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-19\"\n    },\n    {\n     \"downloads\": 0,\n     \"day\": \"2026-10-20\"\n    }\n   ],\n   \"last_month\": 12\n  }\n },\n \"nuget\": {\n  \"Example.Core\": {\n   \"total\": 251,\n   \"versions\": {\n    \"1.0.0\": 183\n   },\n   \"last_6_weeks\": 251,\n   \"last_6_weeks_versions\": {\n    \"1.0.0\": 199,\n    \"1.0.0-beta.1\": 52\n   },\n   \"last_6_weeks_clients\": {\n    \"NuGet Client\": 150,\n    \"(unknown)\": 49,\n    \"Go-http-client\": 52\n   }\n  },\n  \"Example.Tools\": {\n   \"total\": 3923,\n   \"versions\": {\n    \"2.0.0\": 3020,\n    \"1.0.0\": 903\n   },\n   \"last_6_weeks\": 42,\n   \"last_6_weeks_versions\": {\n    \"2.0.0\": 40,\n    \"1.0.0\": 2\n   },\n   \"last_6_weeks_clients\": {\n    \"NuGet Client\": 42\n   }\n  }\n }\n}",
+     "data/snapshots/2026-10-21/summary.md": "# Repo traffic for octo-example, 2026-10-21\n\n## Unique cloners, last 14 days\n\n| # | Repo | Unique cloners | Clones |\n|---|---|---|---|\n| 1 | beta-tool | 1 | 2 |\n| 2 | gamma-private | 1 | 2 |\n| 3 | alpha-lib | 1 | 1 |\n| 4 | delta-empty | 0 | 0 |\n\n## Unique visitors, last 14 days\n\n| # | Repo | Unique visitors | Views |\n|---|---|---|---|\n| 1 | gamma-private | 6 | 15 |\n| 2 | alpha-lib | 5 | 24 |\n| 3 | beta-tool | 5 | 5 |\n| 4 | delta-empty | 0 | 0 |\n\n## npm downloads\n\n| # | Package | Last 14 days | Last month |\n|---|---|---|---|\n| 1 | alpha-lib | 28 | 50 |\n| 2 | gamma-cli | 0 | 12 |\n\n## NuGet downloads\n\n| # | Package | Last 6 weeks | All time |\n|---|---|---|---|\n| 1 | Example.Core | 251 | 251 |\n| 2 | Example.Tools | 42 | 3,923 |\n\n## GitHub release asset downloads, all time\n\n| # | Repo | Downloads |\n|---|---|---|\n| 1 | alpha-lib | 9 |\n"
+    },
+    "gh_calls": [
+     [
+      "repo",
+      "list",
+      "octo-example",
+      "--limit",
+      "1000",
+      "--json",
+      "name,isPrivate,isFork,stargazerCount,forkCount"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/alpha-lib/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/beta-tool/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/gamma-private/traffic/popular/paths"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/releases?per_page=100"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/views?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/clones?per=day"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/popular/referrers"
+     ],
+     [
+      "api",
+      "repos/octo-example/delta-empty/traffic/popular/paths"
+     ]
+    ],
+    "requests": [
+     {
+      "url": "registry.npmjs.org/-/v1/search?size=250&text=maintainer:npm-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-10-07:2026-10-20/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-10-07:2026-10-20/gamma-cli",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/gamma-cli",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "azuresearch-usnc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "azuresearch-ussc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "www.nuget.org/stats/reports/packages/Example.Core?groupby=Version",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "www.nuget.org/stats/reports/packages/Example.Tools?groupby=Version",
+      "user_agent": "repo-traffic"
+     }
+    ],
+    "sleeps": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "stderr_last": "",
+    "stdout": "## Unique cloners, last 14 days\n\n| # | Repo | Unique cloners | Clones |\n|---|---|---|---|\n| 1 | beta-tool | 1 | 2 |\n| 2 | gamma-private | 1 | 2 |\n| 3 | alpha-lib | 1 | 1 |\n| 4 | delta-empty | 0 | 0 |\n\n## Unique visitors, last 14 days\n\n| # | Repo | Unique visitors | Views |\n|---|---|---|---|\n| 1 | gamma-private | 6 | 15 |\n| 2 | alpha-lib | 5 | 24 |\n| 3 | beta-tool | 5 | 5 |\n| 4 | delta-empty | 0 | 0 |\n\n## npm downloads\n\n| # | Package | Last 14 days | Last month |\n|---|---|---|---|\n| 1 | alpha-lib | 28 | 50 |\n| 2 | gamma-cli | 0 | 12 |\n\n## NuGet downloads\n\n| # | Package | Last 6 weeks | All time |\n|---|---|---|---|\n| 1 | Example.Core | 251 | 251 |\n| 2 | Example.Tools | 42 | 3,923 |\n\n## GitHub release asset downloads, all time\n\n| # | Repo | Downloads |\n|---|---|---|\n| 1 | alpha-lib | 9 |\n\n"
+   }
+  ],
+  "top-without-value": [
+   {
+    "exit": 1,
+    "files": {
+     "data/run.log": "2026-10-08T09:00:00 FAILED IndexError('list index out of range')\n"
+    },
+    "gh_calls": [],
+    "requests": [],
+    "sleeps": [],
+    "stderr_last": "IndexError: list index out of range",
+    "stdout": ""
+   }
+  ]
+ },
+ "original": {
+  "blob": "ddb17b4414cad8ed1c7e98ea7869e63e30ee8675",
+  "commit": "9b6e754"
+ }
+}
