@@ -22,3 +22,6 @@
 - Golden recording: tests/golden/ (frozen original, blob ddb17b44 checked by capture.py; 18 cases with a fake gh, a local HTTP server, a fixed clock, recorded sleeps and a 127.0.0.1-only socket guard). `python tests/golden/capture.py` on Windows (3.14.6) and in WSL (3.14.4): "18 cases, recorded twice, identical". `capture.py --check` passes on 3.9.25 and 3.12.14. Windows and Linux differ only in line endings.
 - everlast registered (mode repo, sync push); AGENTS.md got the everlast block; .github/copilot-instructions.md added.
 ## [2026-10-08] index | rebuilt (1 entries)
+## [2026-10-08] index | rebuilt (2 entries)
+
+## [2026-10-08] update | Phase 1: plan with decisions D1-D18, exceptions E1-E5; stopped for the ruling
