@@ -1,0 +1,214 @@
+# A tag v<version> on a master commit (after ci is green there) builds the wheel and sdist once, attests them, then
+# waits at the `pypi` environment for the maintainer's approval (Review deployments on the run). Only then is it
+# uploaded to PyPI through Trusted Publishing (no token is stored anywhere: PyPI's publisher names this file, release.yml,
+# and the environment `pypi`; renaming either breaks publishing), the GitHub Release is created with the same files and
+# SHA256SUMS, and fresh runners install the published version from PyPI and check it. Versions follow PEP 440: a tag
+# v1.0.0b1 is a prerelease (pip skips it unless asked), v1.0.0 a release.
+name: release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    name: build and check the release
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      checks: read
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      prerelease: ${{ steps.version.outputs.prerelease }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.14'
+      - name: The tag must equal the script's version
+        id: version
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          version=$(sed -n 's/^__version__ = "\(.*\)"/\1/p' repo_traffic.py)
+          if [ "$TAG" != "v$version" ]; then
+            echo "::error::tag $TAG and __version__ $version must agree"
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          if [[ "$version" =~ (a|b|rc|dev)[0-9]+$ ]]; then echo "prerelease=true"; else echo "prerelease=false"; fi >> "$GITHUB_OUTPUT"
+      - name: The tagged commit is on master
+        run: |
+          git fetch --no-tags origin master
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" FETCH_HEAD; then
+            echo "::error::$GITHUB_SHA is not on master; tag only commits on master, after ci is green"
+            exit 1
+          fi
+      - name: Release notes from the changelog
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          PRERELEASE: ${{ steps.version.outputs.prerelease }}
+        run: |
+          notes=$(awk -v heading="## [$VERSION]" '
+            /^## / { if (found) exit; found = (index($0, heading) == 1); next }
+            found { print }
+          ' CHANGELOG.md)
+          if [ -z "$notes" ]; then
+            echo "::error::CHANGELOG.md has no section for $VERSION"
+            exit 1
+          fi
+          if [ "$PRERELEASE" = false ] && ! grep -Eq "^## \[${VERSION//./\\.}\] - [0-9]{4}-[0-9]{2}-[0-9]{2}" CHANGELOG.md; then
+            echo "::error::the CHANGELOG.md heading for $VERSION has no date"
+            exit 1
+          fi
+          printf '%s\n' "$notes" > release-notes.md
+      - name: ci passed on the tagged commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          passed=$(gh api "repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/check-runs?check_name=ci" --jq '[.check_runs[] | select(.conclusion == "success")] | length')
+          if [ "$passed" = 0 ]; then
+            echo "::error::no successful ci check on $GITHUB_SHA; wait for ci on master, then tag"
+            exit 1
+          fi
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python -m pytest
+      - run: python -m build
+      - run: python -m twine check --strict dist/*
+      - run: python scripts/check_size.py
+      - name: Checksums
+        run: (cd dist && sha256sum -- * > ../SHA256SUMS) && cat SHA256SUMS
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: dist
+          path: dist/
+          if-no-files-found: error
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: notes
+          path: |
+            release-notes.md
+            SHA256SUMS
+          if-no-files-found: error
+
+  attest:
+    name: attest the files
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: dist
+          path: dist
+      - uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with:
+          subject-path: dist/*
+
+  pypi:
+    name: upload to PyPI (after approval)
+    needs: [build, attest]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    # The human gate: the run waits here until the maintainer approves the `pypi` environment. The only job PyPI's
+    # Trusted Publisher accepts; it checks nothing out and runs no project code.
+    environment:
+      name: pypi
+      url: https://pypi.org/project/repo-traffic/${{ needs.build.outputs.version }}/
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: dist
+          path: dist
+      - uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14.2
+
+  github-release:
+    name: GitHub Release
+    needs: [build, pypi]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: dist
+          path: dist
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: notes
+      - name: GitHub Release with the changelog section, the files and their checksums
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+          PRERELEASE: ${{ needs.build.outputs.prerelease }}
+        run: |
+          flags=()
+          if [ "$PRERELEASE" = true ]; then flags+=(--prerelease); fi
+          gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --verify-tag --title "$TAG" \
+            --notes-file release-notes.md "${flags[@]}" dist/* SHA256SUMS
+
+  verify:
+    name: verify the published version (${{ matrix.os }})
+    needs: [build, github-release]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.14'
+      - name: Release assets match their checksums and attestations
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/assets"
+          gh release download "$TAG" --repo "$GITHUB_REPOSITORY" --dir "$RUNNER_TEMP/assets"
+          cd "$RUNNER_TEMP/assets"
+          if command -v sha256sum > /dev/null; then sha256sum -c SHA256SUMS; else shasum -a 256 -c SHA256SUMS; fi
+          for f in *.whl *.tar.gz; do gh attestation verify "$f" --repo "$GITHUB_REPOSITORY"; done
+      - name: Install from PyPI in a fresh environment and run the golden test against it
+        env:
+          VERSION: ${{ needs.build.outputs.version }}
+        run: |
+          python -m venv "$RUNNER_TEMP/venv"
+          bin="$RUNNER_TEMP/venv/bin"
+          if [ "$RUNNER_OS" = Windows ]; then bin="$RUNNER_TEMP/venv/Scripts"; fi
+          for i in 1 2 3 4 5 6 7 8 9 10; do
+            if "$bin/python" -m pip install --no-cache-dir "repo-traffic==$VERSION"; then break; fi
+            if [ "$i" = 10 ]; then echo "::error::repo-traffic $VERSION never appeared on PyPI"; exit 1; fi
+            sleep 30
+          done
+          "$bin/python" -m pip install -r requirements-dev.txt
+          test "$("$bin/repo-traffic" --version)" = "repo-traffic $VERSION"
+          installed=$(cd "$RUNNER_TEMP" && "$bin/python" -c "import repo_traffic; print(repo_traffic.__file__)")
+          REPO_TRAFFIC_SCRIPT="$installed" "$bin/python" -m pytest tests/test_golden.py

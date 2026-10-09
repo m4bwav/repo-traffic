@@ -1,0 +1,2 @@
+tests/golden/original/** -text
+tests/golden/recording-*.json -text

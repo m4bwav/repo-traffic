@@ -1,0 +1,22 @@
+# Weekly update pull requests for the development tools and the pinned actions. Merge when ci is green.
+# repo-traffic has no runtime dependencies; requirements-dev.txt is development only.
+# The seven-day cooldown keeps brand-new releases out until they have had time to be pulled if bad.
+version: 2
+updates:
+  - package-ecosystem: pip
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    cooldown:
+      default-days: 7
+    groups:
+      dev-tools:
+        patterns: ["*"]
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    cooldown:
+      default-days: 7

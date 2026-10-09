@@ -1,0 +1,1002 @@
+{
+ "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+ "title": "Daily views, saved across three runs",
+ "data": {
+  "values": [
+   {
+    "repo": "alpha-lib",
+    "date": "2026-08-29",
+    "views": 29.0,
+    "views_uniques": "11",
+    "clones": "8",
+    "clones_uniques": "3"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-08-30",
+    "views": 37.0,
+    "views_uniques": "14",
+    "clones": "5",
+    "clones_uniques": "2"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-08-31",
+    "views": 85.0,
+    "views_uniques": "34",
+    "clones": "17",
+    "clones_uniques": "6"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-09-01",
+    "views": 55.0,
+    "views_uniques": "22",
+    "clones": "20",
+    "clones_uniques": "8"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-09-02",
+    "views": 67.0,
+    "views_uniques": "26",
+    "clones": "15",
+    "clones_uniques": "6"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-09-03",
+    "views": 66.0,
+    "views_uniques": "26",
+    "clones": "11",
+    "clones_uniques": "4"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-09-04",
+    "views": 59.0,
+    "views_uniques": "23",
+    "clones": "16",
+    "clones_uniques": "6"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-09-05",
+    "views": 36.0,
+    "views_uniques": "14",
+    "clones": "6",
+    "clones_uniques": "2"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-09-06",
+    "views": 47.0,
+    "views_uniques": "18",
+    "clones": "9",
+    "clones_uniques": "3"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-09-07",
+    "views": 63.0,
+    "views_uniques": "25",
+    "clones": "22",
+    "clones_uniques": "8"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-09-08",
+    "views": 18.0,
+    "views_uniques": "7",
+    "clones": "14",
+    "clones_uniques": "5"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-09-09",
+    "views": 100.0,
+    "views_uniques": "40",
+    "clones": "18",
+    "clones_uniques": "7"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-09-10",
+    "views": 90.0,
+    "views_uniques": "36",
+    "clones": "17",
+    "clones_uniques": "6"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-09-11",
+    "views": 65.0,
+    "views_uniques": "26",
+    "clones": "17",
+    "clones_uniques": "6"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-09-12",
+    "views": 43.0,
+    "views_uniques": "17",
+    "clones": "7",
+    "clones_uniques": "2"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-09-13",
+    "views": 63.0,
+    "views_uniques": "25",
+    "clones": "4",
+    "clones_uniques": "1"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-09-14",
+    "views": 58.0,
+    "views_uniques": "23",
+    "clones": "18",
+    "clones_uniques": "7"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-09-15",
+    "views": 91.0,
+    "views_uniques": "36",
+    "clones": "14",
+    "clones_uniques": "5"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-09-16",
+    "views": 74.0,
+    "views_uniques": "29",
+    "clones": "4",
+    "clones_uniques": "1"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-09-17",
+    "views": 85.0,
+    "views_uniques": "34",
+    "clones": "13",
+    "clones_uniques": "5"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-09-18",
+    "views": 90.0,
+    "views_uniques": "36",
+    "clones": "27",
+    "clones_uniques": "10"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-09-19",
+    "views": 39.0,
+    "views_uniques": "15",
+    "clones": "3",
+    "clones_uniques": "1"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-09-20",
+    "views": 34.0,
+    "views_uniques": "13",
+    "clones": "10",
+    "clones_uniques": "4"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-09-21",
+    "views": 77.0,
+    "views_uniques": "30",
+    "clones": "14",
+    "clones_uniques": "5"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-09-22",
+    "views": 77.0,
+    "views_uniques": "30",
+    "clones": "25",
+    "clones_uniques": "10"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-09-23",
+    "views": 85.0,
+    "views_uniques": "34",
+    "clones": "18",
+    "clones_uniques": "7"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-09-24",
+    "views": 52.0,
+    "views_uniques": "20",
+    "clones": "19",
+    "clones_uniques": "7"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-09-25",
+    "views": 40.0,
+    "views_uniques": "16",
+    "clones": "20",
+    "clones_uniques": "8"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-09-26",
+    "views": 40.0,
+    "views_uniques": "16",
+    "clones": "7",
+    "clones_uniques": "2"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-09-27",
+    "views": 41.0,
+    "views_uniques": "16",
+    "clones": "12",
+    "clones_uniques": "4"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-09-28",
+    "views": 67.0,
+    "views_uniques": "26",
+    "clones": "9",
+    "clones_uniques": "3"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-09-29",
+    "views": 70.0,
+    "views_uniques": "28",
+    "clones": "16",
+    "clones_uniques": "6"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-09-30",
+    "views": 77.0,
+    "views_uniques": "30",
+    "clones": "7",
+    "clones_uniques": "2"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-10-01",
+    "views": 86.0,
+    "views_uniques": "34",
+    "clones": "11",
+    "clones_uniques": "4"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-10-02",
+    "views": 85.0,
+    "views_uniques": "34",
+    "clones": "7",
+    "clones_uniques": "2"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-10-03",
+    "views": 35.0,
+    "views_uniques": "14",
+    "clones": "10",
+    "clones_uniques": "4"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-10-04",
+    "views": 41.0,
+    "views_uniques": "16",
+    "clones": "12",
+    "clones_uniques": "4"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-10-05",
+    "views": 85.0,
+    "views_uniques": "34",
+    "clones": "19",
+    "clones_uniques": "7"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-10-06",
+    "views": 107.0,
+    "views_uniques": "42",
+    "clones": "16",
+    "clones_uniques": "6"
+   },
+   {
+    "repo": "alpha-lib",
+    "date": "2026-10-07",
+    "views": 91.0,
+    "views_uniques": "36",
+    "clones": "25",
+    "clones_uniques": "10"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-08-29",
+    "views": 11.0,
+    "views_uniques": "4",
+    "clones": "2",
+    "clones_uniques": "0"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-08-30",
+    "views": 13.0,
+    "views_uniques": "5",
+    "clones": "3",
+    "clones_uniques": "1"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-08-31",
+    "views": 27.0,
+    "views_uniques": "10",
+    "clones": "2",
+    "clones_uniques": "0"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-09-01",
+    "views": 24.0,
+    "views_uniques": "9",
+    "clones": "10",
+    "clones_uniques": "4"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-09-02",
+    "views": 30.0,
+    "views_uniques": "12",
+    "clones": "4",
+    "clones_uniques": "1"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-09-03",
+    "views": 29.0,
+    "views_uniques": "11",
+    "clones": "6",
+    "clones_uniques": "2"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-09-04",
+    "views": 30.0,
+    "views_uniques": "12",
+    "clones": "5",
+    "clones_uniques": "2"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-09-05",
+    "views": 14.0,
+    "views_uniques": "5",
+    "clones": "3",
+    "clones_uniques": "1"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-09-06",
+    "views": 8.0,
+    "views_uniques": "3",
+    "clones": "2",
+    "clones_uniques": "0"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-09-07",
+    "views": 43.0,
+    "views_uniques": "17",
+    "clones": "8",
+    "clones_uniques": "3"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-09-08",
+    "views": 39.0,
+    "views_uniques": "15",
+    "clones": "7",
+    "clones_uniques": "2"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-09-09",
+    "views": 31.0,
+    "views_uniques": "12",
+    "clones": "2",
+    "clones_uniques": "0"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-09-10",
+    "views": 19.0,
+    "views_uniques": "7",
+    "clones": "8",
+    "clones_uniques": "3"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-09-11",
+    "views": 46.0,
+    "views_uniques": "18",
+    "clones": "3",
+    "clones_uniques": "1"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-09-12",
+    "views": 12.0,
+    "views_uniques": "4",
+    "clones": "2",
+    "clones_uniques": "0"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-09-13",
+    "views": 22.0,
+    "views_uniques": "8",
+    "clones": "2",
+    "clones_uniques": "0"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-09-14",
+    "views": 32.0,
+    "views_uniques": "12",
+    "clones": "9",
+    "clones_uniques": "3"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-09-15",
+    "views": 36.0,
+    "views_uniques": "14",
+    "clones": "8",
+    "clones_uniques": "3"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-09-16",
+    "views": 27.0,
+    "views_uniques": "10",
+    "clones": "7",
+    "clones_uniques": "2"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-09-17",
+    "views": 49.0,
+    "views_uniques": "19",
+    "clones": "6",
+    "clones_uniques": "2"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-09-18",
+    "views": 43.0,
+    "views_uniques": "17",
+    "clones": "5",
+    "clones_uniques": "2"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-09-19",
+    "views": 18.0,
+    "views_uniques": "7",
+    "clones": "1",
+    "clones_uniques": "0"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-09-20",
+    "views": 12.0,
+    "views_uniques": "4",
+    "clones": "2",
+    "clones_uniques": "0"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-09-21",
+    "views": 24.0,
+    "views_uniques": "9",
+    "clones": "4",
+    "clones_uniques": "1"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-09-22",
+    "views": 32.0,
+    "views_uniques": "12",
+    "clones": "3",
+    "clones_uniques": "1"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-09-23",
+    "views": 51.0,
+    "views_uniques": "20",
+    "clones": "5",
+    "clones_uniques": "2"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-09-24",
+    "views": 27.0,
+    "views_uniques": "10",
+    "clones": "3",
+    "clones_uniques": "1"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-09-25",
+    "views": 33.0,
+    "views_uniques": "13",
+    "clones": "6",
+    "clones_uniques": "2"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-09-26",
+    "views": 20.0,
+    "views_uniques": "8",
+    "clones": "2",
+    "clones_uniques": "0"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-09-27",
+    "views": 29.0,
+    "views_uniques": "11",
+    "clones": "4",
+    "clones_uniques": "1"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-09-28",
+    "views": 40.0,
+    "views_uniques": "16",
+    "clones": "9",
+    "clones_uniques": "3"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-09-29",
+    "views": 26.0,
+    "views_uniques": "10",
+    "clones": "4",
+    "clones_uniques": "1"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-09-30",
+    "views": 41.0,
+    "views_uniques": "16",
+    "clones": "8",
+    "clones_uniques": "3"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-10-01",
+    "views": 32.0,
+    "views_uniques": "12",
+    "clones": "5",
+    "clones_uniques": "2"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-10-02",
+    "views": 36.0,
+    "views_uniques": "14",
+    "clones": "8",
+    "clones_uniques": "3"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-10-03",
+    "views": 29.0,
+    "views_uniques": "11",
+    "clones": "4",
+    "clones_uniques": "1"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-10-04",
+    "views": 22.0,
+    "views_uniques": "8",
+    "clones": "5",
+    "clones_uniques": "2"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-10-05",
+    "views": 44.0,
+    "views_uniques": "17",
+    "clones": "7",
+    "clones_uniques": "2"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-10-06",
+    "views": 38.0,
+    "views_uniques": "15",
+    "clones": "7",
+    "clones_uniques": "2"
+   },
+   {
+    "repo": "beta-tool",
+    "date": "2026-10-07",
+    "views": 62.0,
+    "views_uniques": "24",
+    "clones": "5",
+    "clones_uniques": "2"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-08-29",
+    "views": 8.0,
+    "views_uniques": "3",
+    "clones": "1",
+    "clones_uniques": "0"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-08-30",
+    "views": 5.0,
+    "views_uniques": "2",
+    "clones": "1",
+    "clones_uniques": "0"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-08-31",
+    "views": 13.0,
+    "views_uniques": "5",
+    "clones": "1",
+    "clones_uniques": "0"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-09-01",
+    "views": 10.0,
+    "views_uniques": "4",
+    "clones": "2",
+    "clones_uniques": "0"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-09-02",
+    "views": 18.0,
+    "views_uniques": "7",
+    "clones": "4",
+    "clones_uniques": "1"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-09-03",
+    "views": 13.0,
+    "views_uniques": "5",
+    "clones": "4",
+    "clones_uniques": "1"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-09-04",
+    "views": 13.0,
+    "views_uniques": "5",
+    "clones": "3",
+    "clones_uniques": "1"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-09-05",
+    "views": 6.0,
+    "views_uniques": "2",
+    "clones": "0",
+    "clones_uniques": "0"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-09-06",
+    "views": 8.0,
+    "views_uniques": "3",
+    "clones": "0",
+    "clones_uniques": "0"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-09-07",
+    "views": 11.0,
+    "views_uniques": "4",
+    "clones": "2",
+    "clones_uniques": "0"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-09-08",
+    "views": 16.0,
+    "views_uniques": "6",
+    "clones": "3",
+    "clones_uniques": "1"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-09-09",
+    "views": 13.0,
+    "views_uniques": "5",
+    "clones": "2",
+    "clones_uniques": "0"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-09-10",
+    "views": 17.0,
+    "views_uniques": "6",
+    "clones": "3",
+    "clones_uniques": "1"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-09-11",
+    "views": 14.0,
+    "views_uniques": "5",
+    "clones": "4",
+    "clones_uniques": "1"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-09-12",
+    "views": 8.0,
+    "views_uniques": "3",
+    "clones": "2",
+    "clones_uniques": "0"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-09-13",
+    "views": 10.0,
+    "views_uniques": "4",
+    "clones": "0",
+    "clones_uniques": "0"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-09-14",
+    "views": 17.0,
+    "views_uniques": "6",
+    "clones": "2",
+    "clones_uniques": "0"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-09-15",
+    "views": 13.0,
+    "views_uniques": "5",
+    "clones": "3",
+    "clones_uniques": "1"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-09-16",
+    "views": 16.0,
+    "views_uniques": "6",
+    "clones": "2",
+    "clones_uniques": "0"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-09-17",
+    "views": 13.0,
+    "views_uniques": "5",
+    "clones": "6",
+    "clones_uniques": "2"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-09-18",
+    "views": 16.0,
+    "views_uniques": "6",
+    "clones": "2",
+    "clones_uniques": "0"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-09-19",
+    "views": 3.0,
+    "views_uniques": "1",
+    "clones": "1",
+    "clones_uniques": "0"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-09-20",
+    "views": 9.0,
+    "views_uniques": "3",
+    "clones": "1",
+    "clones_uniques": "0"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-09-21",
+    "views": 12.0,
+    "views_uniques": "4",
+    "clones": "3",
+    "clones_uniques": "1"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-09-22",
+    "views": 15.0,
+    "views_uniques": "6",
+    "clones": "4",
+    "clones_uniques": "1"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-09-23",
+    "views": 16.0,
+    "views_uniques": "6",
+    "clones": "4",
+    "clones_uniques": "1"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-09-24",
+    "views": 19.0,
+    "views_uniques": "7",
+    "clones": "5",
+    "clones_uniques": "2"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-09-25",
+    "views": 18.0,
+    "views_uniques": "7",
+    "clones": "3",
+    "clones_uniques": "1"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-09-26",
+    "views": 4.0,
+    "views_uniques": "1",
+    "clones": "1",
+    "clones_uniques": "0"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-09-27",
+    "views": 5.0,
+    "views_uniques": "2",
+    "clones": "1",
+    "clones_uniques": "0"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-09-28",
+    "views": 22.0,
+    "views_uniques": "8",
+    "clones": "2",
+    "clones_uniques": "0"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-09-29",
+    "views": 18.0,
+    "views_uniques": "7",
+    "clones": "3",
+    "clones_uniques": "1"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-09-30",
+    "views": 20.0,
+    "views_uniques": "8",
+    "clones": "1",
+    "clones_uniques": "0"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-10-01",
+    "views": 14.0,
+    "views_uniques": "5",
+    "clones": "3",
+    "clones_uniques": "1"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-10-02",
+    "views": 18.0,
+    "views_uniques": "7",
+    "clones": "5",
+    "clones_uniques": "2"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-10-03",
+    "views": 8.0,
+    "views_uniques": "3",
+    "clones": "1",
+    "clones_uniques": "0"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-10-04",
+    "views": 9.0,
+    "views_uniques": "3",
+    "clones": "1",
+    "clones_uniques": "0"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-10-05",
+    "views": 18.0,
+    "views_uniques": "7",
+    "clones": "4",
+    "clones_uniques": "1"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-10-06",
+    "views": 26.0,
+    "views_uniques": "10",
+    "clones": "0",
+    "clones_uniques": "0"
+   },
+   {
+    "repo": "gamma-cli",
+    "date": "2026-10-07",
+    "views": 18.0,
+    "views_uniques": "7",
+    "clones": "0",
+    "clones_uniques": "0"
+   }
+  ]
+ },
+ "mark": {
+  "type": "line",
+  "point": false
+ },
+ "width": 600,
+ "height": 320,
+ "encoding": {
+  "x": {
+   "field": "date",
+   "type": "temporal",
+   "scale": {
+    "type": "utc"
+   },
+   "axis": {
+    "format": "%b %d",
+    "labelAngle": 0,
+    "tickCount": 8
+   },
+   "title": null
+  },
+  "y": {
+   "field": "views",
+   "type": "quantitative",
+   "scale": {
+    "zero": false
+   },
+   "title": "views per day"
+  },
+  "color": {
+   "field": "repo",
+   "type": "nominal"
+  }
+ },
+ "background": "white"
+}
