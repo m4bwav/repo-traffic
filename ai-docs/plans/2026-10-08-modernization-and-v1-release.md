@@ -15,7 +15,7 @@ The first package-modernize run on a Python command-line tool, and the first com
 
 ## Status
 
-Active. Phase 1 (this plan) written 2026-10-08; waiting for the maintainer's ruling on the decisions table. Silence means the recommendations stand.
+Active. Phase 2 (rewrite) from 2026-10-08. Ruling on 2026-10-08, quoted: "I'll try to setup pypi account, do everything else that you can": D3 yes (PyPI; the maintainer sets up the account and the pending publisher), every other recommendation stands, so D10's repos.csv and PyPI downloads are in (E6).
 
 ## Goal
 
@@ -91,7 +91,7 @@ pyproject.toml with PEP 621 metadata, hatchling (at least 1.26) as the backend, 
 - [x] Golden capture of 9b6e754: tests/golden/, 18 cases, Windows and Linux, deterministic, replays on 3.9 and 3.12 (commit 896876d)
 - [x] everlast (mode repo, sync push); AGENTS.md block; Copilot pointer
 ### Phase 1: plan
-- [ ] This plan. **Stop**: the maintainer rules on D1 to D18 and E1 to E5
+- [x] This plan. Ruled 2026-10-08 (Status). **Stop**: the maintainer rules on D1 to D18 and E1 to E5
 ### Phase 2: rewrite on branch v1
 - [ ] Golden test first, green against the rewrite with the exceptions file; canary red, reverted, green; recording untouched since 896876d
 - [ ] Unit tests, coverage, ruff, size gate; pyproject; workflows and Dependabot from the templates; lint-workflows clean

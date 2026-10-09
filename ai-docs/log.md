@@ -25,3 +25,7 @@
 ## [2026-10-08] index | rebuilt (2 entries)
 
 ## [2026-10-08] update | Phase 1: plan with decisions D1-D18, exceptions E1-E5; stopped for the ruling
+
+## [2026-10-08] update | Ruling: D3 yes, the rest as recommended
+
+- Quote: "I'll try to setup pypi account, do everything else that you can". PyPI account and pending publisher are the maintainer's (unconfirmed until the 1.0.0b1 publish job runs).

@@ -1,0 +1,527 @@
+{
+ "downloads-csv-old-header": {
+  "0": {
+   "change": [
+    "E5",
+    "E6"
+   ],
+   "fields": {
+    "files:data/downloads.csv": "snapshot,registry,package,last_14_days,last_month,last_6_weeks,total\r\n2026-10-01,npm,alpha-lib,9,30,,\r\n2026-10-08,npm,alpha-lib,20,40,,\r\n2026-10-08,npm,@octo-example/beta,3,3,,\r\n2026-10-08,npm,gamma-cli,20,41,,\r\n2026-10-08,nuget,Example.Core,,,251,251\r\n2026-10-08,nuget,Example.Tools,,,42,3923\r\n2026-10-08,github-release,alpha-lib,,,,9\r\n",
+    "files:data/downloads.csv.bak": "snapshot,registry,package,last_14_days,last_month,total\r\n2026-10-01,npm,alpha-lib,9,30,\r\n",
+    "files:data/repos.csv": "snapshot,repo,private,fork,stars,forks,release_downloads\r\n2026-10-08,alpha-lib,false,false,12,3,9\r\n2026-10-08,beta-tool,false,true,0,0,0\r\n2026-10-08,gamma-private,true,false,0,0,0\r\n2026-10-08,delta-empty,false,false,1,0,0\r\n"
+   }
+  }
+ },
+ "empty-account": {
+  "0": {
+   "change": [
+    "E6"
+   ],
+   "fields": {
+    "files:data/repos.csv": "snapshot,repo,private,fork,stars,forks,release_downloads\r\n"
+   }
+  }
+ },
+ "flags-no-config": {
+  "0": {
+   "change": [
+    "E6"
+   ],
+   "fields": {
+    "files:out/traffic/repos.csv": "snapshot,repo,private,fork,stars,forks,release_downloads\r\n2026-10-08,alpha-lib,false,false,12,3,9\r\n2026-10-08,beta-tool,false,true,0,0,0\r\n2026-10-08,gamma-private,true,false,0,0,0\r\n2026-10-08,delta-empty,false,false,1,0,0\r\n"
+   }
+  }
+ },
+ "full": {
+  "0": {
+   "change": [
+    "E6"
+   ],
+   "fields": {
+    "files:data/repos.csv": "snapshot,repo,private,fork,stars,forks,release_downloads\r\n2026-10-08,alpha-lib,false,false,12,3,9\r\n2026-10-08,beta-tool,false,true,0,0,0\r\n2026-10-08,gamma-private,true,false,0,0,0\r\n2026-10-08,delta-empty,false,false,1,0,0\r\n"
+   }
+  }
+ },
+ "gh-login-fails-logs-to-default-data": {
+  "0": {
+   "change": [
+    "E4"
+   ],
+   "fields": {
+    "files:data/run.log": null,
+    "files:elsewhere/run.log": "2026-10-08T09:00:00 FAILED CalledProcessError(1, ['gh', 'api', 'user', '-q', '.login'])\r\n"
+   }
+  }
+ },
+ "help-flag-runs-a-snapshot": {
+  "0": {
+   "change": [
+    "E1"
+   ],
+   "fields": {
+    "files:data/daily.csv": null,
+    "files:data/downloads.csv": null,
+    "files:data/run.log": null,
+    "files:data/snapshots/2026-10-08/github.json": null,
+    "files:data/snapshots/2026-10-08/packages.json": null,
+    "files:data/snapshots/2026-10-08/summary.md": null,
+    "gh_calls": [],
+    "requests": [],
+    "sleeps": [],
+    "stdout": "usage: repo-traffic [-h] [--owner OWNER] [--npm-user NPM_USER]\r\n                    [--nuget-owner NUGET_OWNER]\r\n                    [--pypi-packages PYPI_PACKAGES] [--data DATA] [--top TOP]\r\n                    [--config CONFIG] [--version]\r\n\r\nSave GitHub traffic and npm, NuGet and PyPI download counts before GitHub's 14\r\ndays run out.\r\n\r\noptions:\r\n  -h, --help            show this help message and exit\r\n  --owner OWNER         GitHub owner whose repos to read (default: the gh\r\n                        login)\r\n  --npm-user NPM_USER   npm username whose packages to count (default: npm\r\n                        skipped)\r\n  --nuget-owner NUGET_OWNER\r\n                        nuget.org owner whose packages to count (default:\r\n                        NuGet skipped)\r\n  --pypi-packages PYPI_PACKAGES\r\n                        comma-separated PyPI project names to count (default:\r\n                        PyPI skipped)\r\n  --data DATA           data folder, relative to the settings folder (default:\r\n                        data)\r\n  --top TOP             rows per summary table (default: 10)\r\n  --config CONFIG       settings file (default: repo_traffic.json in the\r\n                        settings folder)\r\n  --version             show program's version number and exit\r\n"
+   }
+  }
+ },
+ "no-push-access": {
+  "0": {
+   "change": [
+    "E3",
+    "E6",
+    "E7"
+   ],
+   "fields": {
+    "files:data/repos.csv": "snapshot,repo,private,fork,stars,forks,release_downloads\r\n2026-10-08,alpha-lib,false,false,12,3,9\r\n2026-10-08,beta-tool,false,true,0,0,0\r\n2026-10-08,gamma-private,true,false,0,0,0\r\n2026-10-08,delta-empty,false,false,1,0,0\r\n",
+    "files:data/run.log": "2026-10-08T09:00:00 ok 4 repos, 3 npm, 2 nuget; no traffic access: gamma-private\r\n",
+    "files:data/snapshots/2026-10-08/github.json": "{\r\n \"alpha-lib\": {\r\n  \"private\": false,\r\n  \"fork\": false,\r\n  \"stars\": 12,\r\n  \"forks\": 3,\r\n  \"views\": {\r\n   \"count\": 24,\r\n   \"uniques\": 5,\r\n   \"views\": [\r\n    {\r\n     \"timestamp\": \"2026-09-25T00:00:00Z\",\r\n     \"count\": 10,\r\n     \"uniques\": 4\r\n    },\r\n    {\r\n     \"timestamp\": \"2026-09-26T00:00:00Z\",\r\n     \"count\": 6,\r\n     \"uniques\": 3\r\n    },\r\n    {\r\n     \"timestamp\": \"2026-09-27T00:00:00Z\",\r\n     \"count\": 0,\r\n     \"uniques\": 0\r\n    },\r\n    {\r\n     \"timestamp\": \"2026-09-28T00:00:00Z\",\r\n     \"count\": 8,\r\n     \"uniques\": 5\r\n    }\r\n   ]\r\n  },\r\n  \"clones\": {\r\n   \"count\": 8,\r\n   \"uniques\": 5,\r\n   \"clones\": [\r\n    {\r\n     \"timestamp\": \"2026-09-26T00:00:00Z\",\r\n     \"count\": 3,\r\n     \"uniques\": 2\r\n    },\r\n    {\r\n     \"timestamp\": \"2026-09-27T00:00:00Z\",\r\n     \"count\": 5,\r\n     \"uniques\": 5\r\n    }\r\n   ]\r\n  },\r\n  \"referrers\": [\r\n   {\r\n    \"referrer\": \"github.com\",\r\n    \"count\": 10,\r\n    \"uniques\": 4\r\n   },\r\n   {\r\n    \"referrer\": \"news.example\",\r\n    \"count\": 3,\r\n    \"uniques\": 2\r\n   }\r\n  ],\r\n  \"paths\": [\r\n   {\r\n    \"path\": \"/octo-example/alpha-lib\",\r\n    \"title\": \"alpha-lib\",\r\n    \"count\": 20,\r\n    \"uniques\": 6\r\n   }\r\n  ],\r\n  \"release_downloads\": {\r\n   \"v1.0.0\": {\r\n    \"alpha-1.0.0.zip\": 7,\r\n    \"alpha-1.0.0.tar.gz\": 2\r\n   },\r\n   \"v0.9.0\": {}\r\n  }\r\n },\r\n \"beta-tool\": {\r\n  \"private\": false,\r\n  \"fork\": true,\r\n  \"stars\": 0,\r\n  \"forks\": 0,\r\n  \"views\": {\r\n   \"count\": 5,\r\n   \"uniques\": 5,\r\n   \"views\": [\r\n    {\r\n     \"timestamp\": \"2026-10-01T00:00:00Z\",\r\n     \"count\": 5,\r\n     \"uniques\": 5\r\n    }\r\n   ]\r\n  },\r\n  \"clones\": {\r\n   \"count\": 2,\r\n   \"uniques\": 1,\r\n   \"clones\": [\r\n    {\r\n     \"timestamp\": \"2026-10-02T00:00:00Z\",\r\n     \"count\": 2,\r\n     \"uniques\": 1\r\n    }\r\n   ]\r\n  },\r\n  \"referrers\": [],\r\n  \"paths\": [],\r\n  \"release_downloads\": {}\r\n },\r\n \"gamma-private\": {\r\n  \"private\": true,\r\n  \"fork\": false,\r\n  \"stars\": 0,\r\n  \"forks\": 0,\r\n  \"views\": null,\r\n  \"clones\": null,\r\n  \"referrers\": null,\r\n  \"paths\": null,\r\n  \"release_downloads\": {},\r\n  \"traffic_error\": \"gh: Must have push access to repository (HTTP 403)\"\r\n },\r\n \"delta-empty\": {\r\n  \"private\": false,\r\n  \"fork\": false,\r\n  \"stars\": 1,\r\n  \"forks\": 0,\r\n  \"views\": {\r\n   \"count\": 0,\r\n   \"uniques\": 0,\r\n   \"views\": []\r\n  },\r\n  \"clones\": {\r\n   \"count\": 0,\r\n   \"uniques\": 0,\r\n   \"clones\": []\r\n  },\r\n  \"referrers\": [],\r\n  \"paths\": [],\r\n  \"release_downloads\": {\r\n   \"v0.1.0\": {\r\n    \"delta.zip\": 0\r\n   }\r\n  }\r\n }\r\n}",
+    "files:data/snapshots/2026-10-08/summary.md": "# Repo traffic for octo-example, 2026-10-08\r\n\r\n## Unique cloners, last 14 days\r\n\r\n| # | Repo | Unique cloners | Clones |\r\n|---|---|---|---|\r\n| 1 | alpha-lib | 5 | 8 |\r\n| 2 | beta-tool | 1 | 2 |\r\n| 3 | delta-empty | 0 | 0 |\r\n| 4 | gamma-private | 0 | 0 |\r\n\r\n## Unique visitors, last 14 days\r\n\r\n| # | Repo | Unique visitors | Views |\r\n|---|---|---|---|\r\n| 1 | alpha-lib | 5 | 24 |\r\n| 2 | beta-tool | 5 | 5 |\r\n| 3 | delta-empty | 0 | 0 |\r\n| 4 | gamma-private | 0 | 0 |\r\n\r\n## npm downloads\r\n\r\n| # | Package | Last 14 days | Last month |\r\n|---|---|---|---|\r\n| 1 | alpha-lib | 20 | 40 |\r\n| 2 | gamma-cli | 20 | 41 |\r\n| 3 | @octo-example/beta | 3 | 3 |\r\n\r\n## NuGet downloads\r\n\r\n| # | Package | Last 6 weeks | All time |\r\n|---|---|---|---|\r\n| 1 | Example.Core | 251 | 251 |\r\n| 2 | Example.Tools | 42 | 3,923 |\r\n\r\n## GitHub release asset downloads, all time\r\n\r\n| # | Repo | Downloads |\r\n|---|---|---|\r\n| 1 | alpha-lib | 9 |\r\n\r\n## No traffic access\r\n\r\nGitHub refused traffic for this repo (it needs push access): gamma-private\r\n",
+    "stdout": "## Unique cloners, last 14 days\r\n\r\n| # | Repo | Unique cloners | Clones |\r\n|---|---|---|---|\r\n| 1 | alpha-lib | 5 | 8 |\r\n| 2 | beta-tool | 1 | 2 |\r\n| 3 | delta-empty | 0 | 0 |\r\n| 4 | gamma-private | 0 | 0 |\r\n\r\n## Unique visitors, last 14 days\r\n\r\n| # | Repo | Unique visitors | Views |\r\n|---|---|---|---|\r\n| 1 | alpha-lib | 5 | 24 |\r\n| 2 | beta-tool | 5 | 5 |\r\n| 3 | delta-empty | 0 | 0 |\r\n| 4 | gamma-private | 0 | 0 |\r\n\r\n## npm downloads\r\n\r\n| # | Package | Last 14 days | Last month |\r\n|---|---|---|---|\r\n| 1 | alpha-lib | 20 | 40 |\r\n| 2 | gamma-cli | 20 | 41 |\r\n| 3 | @octo-example/beta | 3 | 3 |\r\n\r\n## NuGet downloads\r\n\r\n| # | Package | Last 6 weeks | All time |\r\n|---|---|---|---|\r\n| 1 | Example.Core | 251 | 251 |\r\n| 2 | Example.Tools | 42 | 3,923 |\r\n\r\n## GitHub release asset downloads, all time\r\n\r\n| # | Repo | Downloads |\r\n|---|---|---|\r\n| 1 | alpha-lib | 9 |\r\n\r\n## No traffic access\r\n\r\nGitHub refused traffic for this repo (it needs push access): gamma-private\r\n\r\n"
+   }
+  }
+ },
+ "npm-429-every-time": {
+  "0": {
+   "change": [
+    "E2",
+    "E6"
+   ],
+   "fields": {
+    "files:data/daily.csv": "repo,date,views,views_uniques,clones,clones_uniques\r\nalpha-lib,2026-09-25,10,4,0,0\r\nalpha-lib,2026-09-26,6,3,3,2\r\nalpha-lib,2026-09-27,0,0,5,5\r\nalpha-lib,2026-09-28,8,5,0,0\r\nbeta-tool,2026-10-01,5,5,0,0\r\nbeta-tool,2026-10-02,0,0,2,1\r\ngamma-private,2026-10-06,7,5,0,0\r\ngamma-private,2026-10-07,1,1,2,1\r\n",
+    "files:data/downloads.csv": "snapshot,registry,package,last_14_days,last_month,last_6_weeks,total\r\n2026-10-08,npm,@octo-example/beta,3,3,,\r\n2026-10-08,npm,gamma-cli,20,41,,\r\n2026-10-08,nuget,Example.Core,,,251,251\r\n2026-10-08,nuget,Example.Tools,,,42,3923\r\n2026-10-08,github-release,alpha-lib,,,,9\r\n",
+    "files:data/repos.csv": "snapshot,repo,private,fork,stars,forks,release_downloads\r\n2026-10-08,alpha-lib,false,false,12,3,9\r\n2026-10-08,beta-tool,false,true,0,0,0\r\n2026-10-08,gamma-private,true,false,0,0,0\r\n2026-10-08,delta-empty,false,false,1,0,0\r\n",
+    "files:data/run.log": "2026-10-08T09:00:00 partial 4 repos, 2 npm, 2 nuget; failed: npm alpha-lib (HTTP 429)\r\n",
+    "files:data/snapshots/2026-10-08/packages.json": "{\r\n \"npm\": {\r\n  \"@octo-example/beta\": {\r\n   \"daily\": [\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-24\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-25\"\r\n    },\r\n    {\r\n     \"downloads\": 1,\r\n     \"day\": \"2026-09-26\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-27\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-28\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-29\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-30\"\r\n    },\r\n    {\r\n     \"downloads\": 2,\r\n     \"day\": \"2026-10-01\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-10-02\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-10-03\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-10-04\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-10-05\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-10-06\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-10-07\"\r\n    }\r\n   ],\r\n   \"last_month\": 3\r\n  },\r\n  \"gamma-cli\": {\r\n   \"daily\": [\r\n    {\r\n     \"downloads\": 1,\r\n     \"day\": \"2026-09-24\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-25\"\r\n    },\r\n    {\r\n     \"downloads\": 4,\r\n     \"day\": \"2026-09-26\"\r\n    },\r\n    {\r\n     \"downloads\": 2,\r\n     \"day\": \"2026-09-27\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-28\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-29\"\r\n    },\r\n    {\r\n     \"downloads\": 3,\r\n     \"day\": \"2026-09-30\"\r\n    },\r\n    {\r\n     \"downloads\": 1,\r\n     \"day\": \"2026-10-01\"\r\n    },\r\n    {\r\n     \"downloads\": 1,\r\n     \"day\": \"2026-10-02\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-10-03\"\r\n    },\r\n    {\r\n     \"downloads\": 2,\r\n     \"day\": \"2026-10-04\"\r\n    },\r\n    {\r\n     \"downloads\": 5,\r\n     \"day\": \"2026-10-05\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-10-06\"\r\n    },\r\n    {\r\n     \"downloads\": 1,\r\n     \"day\": \"2026-10-07\"\r\n    }\r\n   ],\r\n   \"last_month\": 41\r\n  }\r\n },\r\n \"nuget\": {\r\n  \"Example.Core\": {\r\n   \"total\": 251,\r\n   \"versions\": {\r\n    \"1.0.0\": 183\r\n   },\r\n   \"last_6_weeks\": 251,\r\n   \"last_6_weeks_versions\": {\r\n    \"1.0.0\": 199,\r\n    \"1.0.0-beta.1\": 52\r\n   },\r\n   \"last_6_weeks_clients\": {\r\n    \"NuGet Client\": 150,\r\n    \"(unknown)\": 49,\r\n    \"Go-http-client\": 52\r\n   }\r\n  },\r\n  \"Example.Tools\": {\r\n   \"total\": 3923,\r\n   \"versions\": {\r\n    \"2.0.0\": 3020,\r\n    \"1.0.0\": 903\r\n   },\r\n   \"last_6_weeks\": 42,\r\n   \"last_6_weeks_versions\": {\r\n    \"2.0.0\": 40,\r\n    \"1.0.0\": 2\r\n   },\r\n   \"last_6_weeks_clients\": {\r\n    \"NuGet Client\": 42\r\n   }\r\n  }\r\n }\r\n}",
+    "files:data/snapshots/2026-10-08/summary.md": "# Repo traffic for octo-example, 2026-10-08\r\n\r\n## Unique cloners, last 14 days\r\n\r\n| # | Repo | Unique cloners | Clones |\r\n|---|---|---|---|\r\n| 1 | alpha-lib | 5 | 8 |\r\n| 2 | beta-tool | 1 | 2 |\r\n| 3 | gamma-private | 1 | 2 |\r\n| 4 | delta-empty | 0 | 0 |\r\n\r\n## Unique visitors, last 14 days\r\n\r\n| # | Repo | Unique visitors | Views |\r\n|---|---|---|---|\r\n| 1 | alpha-lib | 5 | 24 |\r\n| 2 | gamma-private | 5 | 8 |\r\n| 3 | beta-tool | 5 | 5 |\r\n| 4 | delta-empty | 0 | 0 |\r\n\r\n## npm downloads\r\n\r\n| # | Package | Last 14 days | Last month |\r\n|---|---|---|---|\r\n| 1 | gamma-cli | 20 | 41 |\r\n| 2 | @octo-example/beta | 3 | 3 |\r\n\r\n## NuGet downloads\r\n\r\n| # | Package | Last 6 weeks | All time |\r\n|---|---|---|---|\r\n| 1 | Example.Core | 251 | 251 |\r\n| 2 | Example.Tools | 42 | 3,923 |\r\n\r\n## GitHub release asset downloads, all time\r\n\r\n| # | Repo | Downloads |\r\n|---|---|---|\r\n| 1 | alpha-lib | 9 |\r\n\r\n## Not counted this run\r\n\r\n- npm alpha-lib (HTTP 429)\r\n",
+    "requests": [
+     {
+      "url": "registry.npmjs.org/-/v1/search?size=250&text=maintainer:npm-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/@octo-example/beta",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/@octo-example/beta",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/gamma-cli",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/gamma-cli",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "azuresearch-usnc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "azuresearch-ussc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "www.nuget.org/stats/reports/packages/Example.Core?groupby=Version",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "www.nuget.org/stats/reports/packages/Example.Tools?groupby=Version",
+      "user_agent": "repo-traffic"
+     }
+    ],
+    "sleeps": [
+     10.0,
+     20.0,
+     30.0,
+     40.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "stderr_last": "repo-traffic: some sources failed, see run.log: npm alpha-lib (HTTP 429)",
+    "stdout": "## Unique cloners, last 14 days\r\n\r\n| # | Repo | Unique cloners | Clones |\r\n|---|---|---|---|\r\n| 1 | alpha-lib | 5 | 8 |\r\n| 2 | beta-tool | 1 | 2 |\r\n| 3 | gamma-private | 1 | 2 |\r\n| 4 | delta-empty | 0 | 0 |\r\n\r\n## Unique visitors, last 14 days\r\n\r\n| # | Repo | Unique visitors | Views |\r\n|---|---|---|---|\r\n| 1 | alpha-lib | 5 | 24 |\r\n| 2 | gamma-private | 5 | 8 |\r\n| 3 | beta-tool | 5 | 5 |\r\n| 4 | delta-empty | 0 | 0 |\r\n\r\n## npm downloads\r\n\r\n| # | Package | Last 14 days | Last month |\r\n|---|---|---|---|\r\n| 1 | gamma-cli | 20 | 41 |\r\n| 2 | @octo-example/beta | 3 | 3 |\r\n\r\n## NuGet downloads\r\n\r\n| # | Package | Last 6 weeks | All time |\r\n|---|---|---|---|\r\n| 1 | Example.Core | 251 | 251 |\r\n| 2 | Example.Tools | 42 | 3,923 |\r\n\r\n## GitHub release asset downloads, all time\r\n\r\n| # | Repo | Downloads |\r\n|---|---|---|\r\n| 1 | alpha-lib | 9 |\r\n\r\n## Not counted this run\r\n\r\n- npm alpha-lib (HTTP 429)\r\n\r\n"
+   }
+  }
+ },
+ "npm-429-then-ok": {
+  "0": {
+   "change": [
+    "E6"
+   ],
+   "fields": {
+    "files:data/repos.csv": "snapshot,repo,private,fork,stars,forks,release_downloads\r\n2026-10-08,alpha-lib,false,false,12,3,9\r\n2026-10-08,beta-tool,false,true,0,0,0\r\n2026-10-08,gamma-private,true,false,0,0,0\r\n2026-10-08,delta-empty,false,false,1,0,0\r\n"
+   }
+  }
+ },
+ "npm-empty-body": {
+  "0": {
+   "change": [
+    "E2",
+    "E6"
+   ],
+   "fields": {
+    "files:data/daily.csv": "repo,date,views,views_uniques,clones,clones_uniques\r\nalpha-lib,2026-09-25,10,4,0,0\r\nalpha-lib,2026-09-26,6,3,3,2\r\nalpha-lib,2026-09-27,0,0,5,5\r\nalpha-lib,2026-09-28,8,5,0,0\r\nbeta-tool,2026-10-01,5,5,0,0\r\nbeta-tool,2026-10-02,0,0,2,1\r\ngamma-private,2026-10-06,7,5,0,0\r\ngamma-private,2026-10-07,1,1,2,1\r\n",
+    "files:data/downloads.csv": "snapshot,registry,package,last_14_days,last_month,last_6_weeks,total\r\n2026-10-08,npm,alpha-lib,20,40,,\r\n2026-10-08,npm,gamma-cli,20,41,,\r\n2026-10-08,nuget,Example.Core,,,251,251\r\n2026-10-08,nuget,Example.Tools,,,42,3923\r\n2026-10-08,github-release,alpha-lib,,,,9\r\n",
+    "files:data/repos.csv": "snapshot,repo,private,fork,stars,forks,release_downloads\r\n2026-10-08,alpha-lib,false,false,12,3,9\r\n2026-10-08,beta-tool,false,true,0,0,0\r\n2026-10-08,gamma-private,true,false,0,0,0\r\n2026-10-08,delta-empty,false,false,1,0,0\r\n",
+    "files:data/run.log": "2026-10-08T09:00:00 partial 4 repos, 2 npm, 2 nuget; failed: npm @octo-example/beta (bad response: Expecting value: line 1 column 1 (char 0))\r\n",
+    "files:data/snapshots/2026-10-08/packages.json": "{\r\n \"npm\": {\r\n  \"alpha-lib\": {\r\n   \"daily\": [\r\n    {\r\n     \"downloads\": 1,\r\n     \"day\": \"2026-09-24\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-25\"\r\n    },\r\n    {\r\n     \"downloads\": 4,\r\n     \"day\": \"2026-09-26\"\r\n    },\r\n    {\r\n     \"downloads\": 2,\r\n     \"day\": \"2026-09-27\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-28\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-29\"\r\n    },\r\n    {\r\n     \"downloads\": 3,\r\n     \"day\": \"2026-09-30\"\r\n    },\r\n    {\r\n     \"downloads\": 1,\r\n     \"day\": \"2026-10-01\"\r\n    },\r\n    {\r\n     \"downloads\": 1,\r\n     \"day\": \"2026-10-02\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-10-03\"\r\n    },\r\n    {\r\n     \"downloads\": 2,\r\n     \"day\": \"2026-10-04\"\r\n    },\r\n    {\r\n     \"downloads\": 5,\r\n     \"day\": \"2026-10-05\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-10-06\"\r\n    },\r\n    {\r\n     \"downloads\": 1,\r\n     \"day\": \"2026-10-07\"\r\n    }\r\n   ],\r\n   \"last_month\": 40\r\n  },\r\n  \"gamma-cli\": {\r\n   \"daily\": [\r\n    {\r\n     \"downloads\": 1,\r\n     \"day\": \"2026-09-24\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-25\"\r\n    },\r\n    {\r\n     \"downloads\": 4,\r\n     \"day\": \"2026-09-26\"\r\n    },\r\n    {\r\n     \"downloads\": 2,\r\n     \"day\": \"2026-09-27\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-28\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-29\"\r\n    },\r\n    {\r\n     \"downloads\": 3,\r\n     \"day\": \"2026-09-30\"\r\n    },\r\n    {\r\n     \"downloads\": 1,\r\n     \"day\": \"2026-10-01\"\r\n    },\r\n    {\r\n     \"downloads\": 1,\r\n     \"day\": \"2026-10-02\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-10-03\"\r\n    },\r\n    {\r\n     \"downloads\": 2,\r\n     \"day\": \"2026-10-04\"\r\n    },\r\n    {\r\n     \"downloads\": 5,\r\n     \"day\": \"2026-10-05\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-10-06\"\r\n    },\r\n    {\r\n     \"downloads\": 1,\r\n     \"day\": \"2026-10-07\"\r\n    }\r\n   ],\r\n   \"last_month\": 41\r\n  }\r\n },\r\n \"nuget\": {\r\n  \"Example.Core\": {\r\n   \"total\": 251,\r\n   \"versions\": {\r\n    \"1.0.0\": 183\r\n   },\r\n   \"last_6_weeks\": 251,\r\n   \"last_6_weeks_versions\": {\r\n    \"1.0.0\": 199,\r\n    \"1.0.0-beta.1\": 52\r\n   },\r\n   \"last_6_weeks_clients\": {\r\n    \"NuGet Client\": 150,\r\n    \"(unknown)\": 49,\r\n    \"Go-http-client\": 52\r\n   }\r\n  },\r\n  \"Example.Tools\": {\r\n   \"total\": 3923,\r\n   \"versions\": {\r\n    \"2.0.0\": 3020,\r\n    \"1.0.0\": 903\r\n   },\r\n   \"last_6_weeks\": 42,\r\n   \"last_6_weeks_versions\": {\r\n    \"2.0.0\": 40,\r\n    \"1.0.0\": 2\r\n   },\r\n   \"last_6_weeks_clients\": {\r\n    \"NuGet Client\": 42\r\n   }\r\n  }\r\n }\r\n}",
+    "files:data/snapshots/2026-10-08/summary.md": "# Repo traffic for octo-example, 2026-10-08\r\n\r\n## Unique cloners, last 14 days\r\n\r\n| # | Repo | Unique cloners | Clones |\r\n|---|---|---|---|\r\n| 1 | alpha-lib | 5 | 8 |\r\n| 2 | beta-tool | 1 | 2 |\r\n| 3 | gamma-private | 1 | 2 |\r\n| 4 | delta-empty | 0 | 0 |\r\n\r\n## Unique visitors, last 14 days\r\n\r\n| # | Repo | Unique visitors | Views |\r\n|---|---|---|---|\r\n| 1 | alpha-lib | 5 | 24 |\r\n| 2 | gamma-private | 5 | 8 |\r\n| 3 | beta-tool | 5 | 5 |\r\n| 4 | delta-empty | 0 | 0 |\r\n\r\n## npm downloads\r\n\r\n| # | Package | Last 14 days | Last month |\r\n|---|---|---|---|\r\n| 1 | alpha-lib | 20 | 40 |\r\n| 2 | gamma-cli | 20 | 41 |\r\n\r\n## NuGet downloads\r\n\r\n| # | Package | Last 6 weeks | All time |\r\n|---|---|---|---|\r\n| 1 | Example.Core | 251 | 251 |\r\n| 2 | Example.Tools | 42 | 3,923 |\r\n\r\n## GitHub release asset downloads, all time\r\n\r\n| # | Repo | Downloads |\r\n|---|---|---|\r\n| 1 | alpha-lib | 9 |\r\n\r\n## Not counted this run\r\n\r\n- npm @octo-example/beta (bad response: Expecting value: line 1 column 1 (char 0))\r\n",
+    "requests": [
+     {
+      "url": "registry.npmjs.org/-/v1/search?size=250&text=maintainer:npm-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/@octo-example/beta",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/@octo-example/beta",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/@octo-example/beta",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/@octo-example/beta",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/@octo-example/beta",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/@octo-example/beta",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/gamma-cli",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/gamma-cli",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "azuresearch-usnc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "azuresearch-ussc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "www.nuget.org/stats/reports/packages/Example.Core?groupby=Version",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "www.nuget.org/stats/reports/packages/Example.Tools?groupby=Version",
+      "user_agent": "repo-traffic"
+     }
+    ],
+    "sleeps": [
+     1.0,
+     10.0,
+     20.0,
+     30.0,
+     40.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "stderr_last": "repo-traffic: some sources failed, see run.log: npm @octo-example/beta (bad response: Expecting value: line 1 column 1 (char 0))",
+    "stdout": "## Unique cloners, last 14 days\r\n\r\n| # | Repo | Unique cloners | Clones |\r\n|---|---|---|---|\r\n| 1 | alpha-lib | 5 | 8 |\r\n| 2 | beta-tool | 1 | 2 |\r\n| 3 | gamma-private | 1 | 2 |\r\n| 4 | delta-empty | 0 | 0 |\r\n\r\n## Unique visitors, last 14 days\r\n\r\n| # | Repo | Unique visitors | Views |\r\n|---|---|---|---|\r\n| 1 | alpha-lib | 5 | 24 |\r\n| 2 | gamma-private | 5 | 8 |\r\n| 3 | beta-tool | 5 | 5 |\r\n| 4 | delta-empty | 0 | 0 |\r\n\r\n## npm downloads\r\n\r\n| # | Package | Last 14 days | Last month |\r\n|---|---|---|---|\r\n| 1 | alpha-lib | 20 | 40 |\r\n| 2 | gamma-cli | 20 | 41 |\r\n\r\n## NuGet downloads\r\n\r\n| # | Package | Last 6 weeks | All time |\r\n|---|---|---|---|\r\n| 1 | Example.Core | 251 | 251 |\r\n| 2 | Example.Tools | 42 | 3,923 |\r\n\r\n## GitHub release asset downloads, all time\r\n\r\n| # | Repo | Downloads |\r\n|---|---|---|\r\n| 1 | alpha-lib | 9 |\r\n\r\n## Not counted this run\r\n\r\n- npm @octo-example/beta (bad response: Expecting value: line 1 column 1 (char 0))\r\n\r\n"
+   }
+  }
+ },
+ "npm-only-flag-over-config": {
+  "0": {
+   "change": [
+    "E6"
+   ],
+   "fields": {
+    "files:data/repos.csv": "snapshot,repo,private,fork,stars,forks,release_downloads\r\n2026-10-08,alpha-lib,false,false,12,3,9\r\n2026-10-08,beta-tool,false,true,0,0,0\r\n2026-10-08,gamma-private,true,false,0,0,0\r\n2026-10-08,delta-empty,false,false,1,0,0\r\n"
+   }
+  }
+ },
+ "npm-search-404": {
+  "0": {
+   "change": [
+    "E2",
+    "E6"
+   ],
+   "fields": {
+    "files:data/daily.csv": "repo,date,views,views_uniques,clones,clones_uniques\r\nalpha-lib,2026-09-25,10,4,0,0\r\nalpha-lib,2026-09-26,6,3,3,2\r\nalpha-lib,2026-09-27,0,0,5,5\r\nalpha-lib,2026-09-28,8,5,0,0\r\nbeta-tool,2026-10-01,5,5,0,0\r\nbeta-tool,2026-10-02,0,0,2,1\r\ngamma-private,2026-10-06,7,5,0,0\r\ngamma-private,2026-10-07,1,1,2,1\r\n",
+    "files:data/downloads.csv": "snapshot,registry,package,last_14_days,last_month,last_6_weeks,total\r\n2026-10-08,nuget,Example.Core,,,251,251\r\n2026-10-08,nuget,Example.Tools,,,42,3923\r\n2026-10-08,github-release,alpha-lib,,,,9\r\n",
+    "files:data/repos.csv": "snapshot,repo,private,fork,stars,forks,release_downloads\r\n2026-10-08,alpha-lib,false,false,12,3,9\r\n2026-10-08,beta-tool,false,true,0,0,0\r\n2026-10-08,gamma-private,true,false,0,0,0\r\n2026-10-08,delta-empty,false,false,1,0,0\r\n",
+    "files:data/run.log": "2026-10-08T09:00:00 partial 4 repos, 0 npm, 2 nuget; failed: npm search (HTTP 404)\r\n",
+    "files:data/snapshots/2026-10-08/packages.json": "{\r\n \"npm\": {},\r\n \"nuget\": {\r\n  \"Example.Core\": {\r\n   \"total\": 251,\r\n   \"versions\": {\r\n    \"1.0.0\": 183\r\n   },\r\n   \"last_6_weeks\": 251,\r\n   \"last_6_weeks_versions\": {\r\n    \"1.0.0\": 199,\r\n    \"1.0.0-beta.1\": 52\r\n   },\r\n   \"last_6_weeks_clients\": {\r\n    \"NuGet Client\": 150,\r\n    \"(unknown)\": 49,\r\n    \"Go-http-client\": 52\r\n   }\r\n  },\r\n  \"Example.Tools\": {\r\n   \"total\": 3923,\r\n   \"versions\": {\r\n    \"2.0.0\": 3020,\r\n    \"1.0.0\": 903\r\n   },\r\n   \"last_6_weeks\": 42,\r\n   \"last_6_weeks_versions\": {\r\n    \"2.0.0\": 40,\r\n    \"1.0.0\": 2\r\n   },\r\n   \"last_6_weeks_clients\": {\r\n    \"NuGet Client\": 42\r\n   }\r\n  }\r\n }\r\n}",
+    "files:data/snapshots/2026-10-08/summary.md": "# Repo traffic for octo-example, 2026-10-08\r\n\r\n## Unique cloners, last 14 days\r\n\r\n| # | Repo | Unique cloners | Clones |\r\n|---|---|---|---|\r\n| 1 | alpha-lib | 5 | 8 |\r\n| 2 | beta-tool | 1 | 2 |\r\n| 3 | gamma-private | 1 | 2 |\r\n| 4 | delta-empty | 0 | 0 |\r\n\r\n## Unique visitors, last 14 days\r\n\r\n| # | Repo | Unique visitors | Views |\r\n|---|---|---|---|\r\n| 1 | alpha-lib | 5 | 24 |\r\n| 2 | gamma-private | 5 | 8 |\r\n| 3 | beta-tool | 5 | 5 |\r\n| 4 | delta-empty | 0 | 0 |\r\n\r\n## NuGet downloads\r\n\r\n| # | Package | Last 6 weeks | All time |\r\n|---|---|---|---|\r\n| 1 | Example.Core | 251 | 251 |\r\n| 2 | Example.Tools | 42 | 3,923 |\r\n\r\n## GitHub release asset downloads, all time\r\n\r\n| # | Repo | Downloads |\r\n|---|---|---|\r\n| 1 | alpha-lib | 9 |\r\n\r\n## Not counted this run\r\n\r\n- npm search (HTTP 404)\r\n",
+    "requests": [
+     {
+      "url": "registry.npmjs.org/-/v1/search?size=250&text=maintainer:npm-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "azuresearch-usnc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "azuresearch-ussc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "www.nuget.org/stats/reports/packages/Example.Core?groupby=Version",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "www.nuget.org/stats/reports/packages/Example.Tools?groupby=Version",
+      "user_agent": "repo-traffic"
+     }
+    ],
+    "sleeps": [
+     1.0,
+     1.0
+    ],
+    "stderr_last": "repo-traffic: some sources failed, see run.log: npm search (HTTP 404)",
+    "stdout": "## Unique cloners, last 14 days\r\n\r\n| # | Repo | Unique cloners | Clones |\r\n|---|---|---|---|\r\n| 1 | alpha-lib | 5 | 8 |\r\n| 2 | beta-tool | 1 | 2 |\r\n| 3 | gamma-private | 1 | 2 |\r\n| 4 | delta-empty | 0 | 0 |\r\n\r\n## Unique visitors, last 14 days\r\n\r\n| # | Repo | Unique visitors | Views |\r\n|---|---|---|---|\r\n| 1 | alpha-lib | 5 | 24 |\r\n| 2 | gamma-private | 5 | 8 |\r\n| 3 | beta-tool | 5 | 5 |\r\n| 4 | delta-empty | 0 | 0 |\r\n\r\n## NuGet downloads\r\n\r\n| # | Package | Last 6 weeks | All time |\r\n|---|---|---|---|\r\n| 1 | Example.Core | 251 | 251 |\r\n| 2 | Example.Tools | 42 | 3,923 |\r\n\r\n## GitHub release asset downloads, all time\r\n\r\n| # | Repo | Downloads |\r\n|---|---|---|\r\n| 1 | alpha-lib | 9 |\r\n\r\n## Not counted this run\r\n\r\n- npm search (HTTP 404)\r\n\r\n"
+   }
+  }
+ },
+ "nuget-replica-503": {
+  "0": {
+   "change": [
+    "E2",
+    "E6"
+   ],
+   "fields": {
+    "exit": 0,
+    "files:data/daily.csv": "repo,date,views,views_uniques,clones,clones_uniques\r\nalpha-lib,2026-09-25,10,4,0,0\r\nalpha-lib,2026-09-26,6,3,3,2\r\nalpha-lib,2026-09-27,0,0,5,5\r\nalpha-lib,2026-09-28,8,5,0,0\r\nbeta-tool,2026-10-01,5,5,0,0\r\nbeta-tool,2026-10-02,0,0,2,1\r\ngamma-private,2026-10-06,7,5,0,0\r\ngamma-private,2026-10-07,1,1,2,1\r\n",
+    "files:data/downloads.csv": "snapshot,registry,package,last_14_days,last_month,last_6_weeks,total\r\n2026-10-08,npm,alpha-lib,20,40,,\r\n2026-10-08,npm,@octo-example/beta,3,3,,\r\n2026-10-08,npm,gamma-cli,20,41,,\r\n2026-10-08,nuget,Example.Core,,,251,251\r\n2026-10-08,nuget,Example.Tools,,,42,3923\r\n2026-10-08,github-release,alpha-lib,,,,9\r\n",
+    "files:data/repos.csv": "snapshot,repo,private,fork,stars,forks,release_downloads\r\n2026-10-08,alpha-lib,false,false,12,3,9\r\n2026-10-08,beta-tool,false,true,0,0,0\r\n2026-10-08,gamma-private,true,false,0,0,0\r\n2026-10-08,delta-empty,false,false,1,0,0\r\n",
+    "files:data/run.log": "2026-10-08T09:00:00 ok 4 repos, 3 npm, 2 nuget; nuget replica down: azuresearch-usnc (HTTP 503)\r\n",
+    "files:data/snapshots/2026-10-08/packages.json": "{\r\n \"npm\": {\r\n  \"alpha-lib\": {\r\n   \"daily\": [\r\n    {\r\n     \"downloads\": 1,\r\n     \"day\": \"2026-09-24\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-25\"\r\n    },\r\n    {\r\n     \"downloads\": 4,\r\n     \"day\": \"2026-09-26\"\r\n    },\r\n    {\r\n     \"downloads\": 2,\r\n     \"day\": \"2026-09-27\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-28\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-29\"\r\n    },\r\n    {\r\n     \"downloads\": 3,\r\n     \"day\": \"2026-09-30\"\r\n    },\r\n    {\r\n     \"downloads\": 1,\r\n     \"day\": \"2026-10-01\"\r\n    },\r\n    {\r\n     \"downloads\": 1,\r\n     \"day\": \"2026-10-02\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-10-03\"\r\n    },\r\n    {\r\n     \"downloads\": 2,\r\n     \"day\": \"2026-10-04\"\r\n    },\r\n    {\r\n     \"downloads\": 5,\r\n     \"day\": \"2026-10-05\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-10-06\"\r\n    },\r\n    {\r\n     \"downloads\": 1,\r\n     \"day\": \"2026-10-07\"\r\n    }\r\n   ],\r\n   \"last_month\": 40\r\n  },\r\n  \"@octo-example/beta\": {\r\n   \"daily\": [\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-24\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-25\"\r\n    },\r\n    {\r\n     \"downloads\": 1,\r\n     \"day\": \"2026-09-26\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-27\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-28\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-29\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-30\"\r\n    },\r\n    {\r\n     \"downloads\": 2,\r\n     \"day\": \"2026-10-01\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-10-02\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-10-03\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-10-04\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-10-05\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-10-06\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-10-07\"\r\n    }\r\n   ],\r\n   \"last_month\": 3\r\n  },\r\n  \"gamma-cli\": {\r\n   \"daily\": [\r\n    {\r\n     \"downloads\": 1,\r\n     \"day\": \"2026-09-24\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-25\"\r\n    },\r\n    {\r\n     \"downloads\": 4,\r\n     \"day\": \"2026-09-26\"\r\n    },\r\n    {\r\n     \"downloads\": 2,\r\n     \"day\": \"2026-09-27\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-28\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-29\"\r\n    },\r\n    {\r\n     \"downloads\": 3,\r\n     \"day\": \"2026-09-30\"\r\n    },\r\n    {\r\n     \"downloads\": 1,\r\n     \"day\": \"2026-10-01\"\r\n    },\r\n    {\r\n     \"downloads\": 1,\r\n     \"day\": \"2026-10-02\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-10-03\"\r\n    },\r\n    {\r\n     \"downloads\": 2,\r\n     \"day\": \"2026-10-04\"\r\n    },\r\n    {\r\n     \"downloads\": 5,\r\n     \"day\": \"2026-10-05\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-10-06\"\r\n    },\r\n    {\r\n     \"downloads\": 1,\r\n     \"day\": \"2026-10-07\"\r\n    }\r\n   ],\r\n   \"last_month\": 41\r\n  }\r\n },\r\n \"nuget\": {\r\n  \"Example.Core\": {\r\n   \"total\": 251,\r\n   \"versions\": {\r\n    \"1.0.0\": 183\r\n   },\r\n   \"last_6_weeks\": 251,\r\n   \"last_6_weeks_versions\": {\r\n    \"1.0.0\": 199,\r\n    \"1.0.0-beta.1\": 52\r\n   },\r\n   \"last_6_weeks_clients\": {\r\n    \"NuGet Client\": 150,\r\n    \"(unknown)\": 49,\r\n    \"Go-http-client\": 52\r\n   }\r\n  },\r\n  \"Example.Tools\": {\r\n   \"total\": 3923,\r\n   \"versions\": {\r\n    \"2.0.0\": 3020,\r\n    \"1.0.0\": 903\r\n   },\r\n   \"last_6_weeks\": 42,\r\n   \"last_6_weeks_versions\": {\r\n    \"2.0.0\": 40,\r\n    \"1.0.0\": 2\r\n   },\r\n   \"last_6_weeks_clients\": {\r\n    \"NuGet Client\": 42\r\n   }\r\n  }\r\n }\r\n}",
+    "files:data/snapshots/2026-10-08/summary.md": "# Repo traffic for octo-example, 2026-10-08\r\n\r\n## Unique cloners, last 14 days\r\n\r\n| # | Repo | Unique cloners | Clones |\r\n|---|---|---|---|\r\n| 1 | alpha-lib | 5 | 8 |\r\n| 2 | beta-tool | 1 | 2 |\r\n| 3 | gamma-private | 1 | 2 |\r\n| 4 | delta-empty | 0 | 0 |\r\n\r\n## Unique visitors, last 14 days\r\n\r\n| # | Repo | Unique visitors | Views |\r\n|---|---|---|---|\r\n| 1 | alpha-lib | 5 | 24 |\r\n| 2 | gamma-private | 5 | 8 |\r\n| 3 | beta-tool | 5 | 5 |\r\n| 4 | delta-empty | 0 | 0 |\r\n\r\n## npm downloads\r\n\r\n| # | Package | Last 14 days | Last month |\r\n|---|---|---|---|\r\n| 1 | alpha-lib | 20 | 40 |\r\n| 2 | gamma-cli | 20 | 41 |\r\n| 3 | @octo-example/beta | 3 | 3 |\r\n\r\n## NuGet downloads\r\n\r\n| # | Package | Last 6 weeks | All time |\r\n|---|---|---|---|\r\n| 1 | Example.Core | 251 | 251 |\r\n| 2 | Example.Tools | 42 | 3,923 |\r\n\r\n## GitHub release asset downloads, all time\r\n\r\n| # | Repo | Downloads |\r\n|---|---|---|\r\n| 1 | alpha-lib | 9 |\r\n",
+    "requests": [
+     {
+      "url": "registry.npmjs.org/-/v1/search?size=250&text=maintainer:npm-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/@octo-example/beta",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/@octo-example/beta",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/gamma-cli",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/gamma-cli",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "azuresearch-usnc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "azuresearch-ussc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "www.nuget.org/stats/reports/packages/Example.Core?groupby=Version",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "www.nuget.org/stats/reports/packages/Example.Tools?groupby=Version",
+      "user_agent": "repo-traffic"
+     }
+    ],
+    "sleeps": [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "stderr_last": "",
+    "stdout": "## Unique cloners, last 14 days\r\n\r\n| # | Repo | Unique cloners | Clones |\r\n|---|---|---|---|\r\n| 1 | alpha-lib | 5 | 8 |\r\n| 2 | beta-tool | 1 | 2 |\r\n| 3 | gamma-private | 1 | 2 |\r\n| 4 | delta-empty | 0 | 0 |\r\n\r\n## Unique visitors, last 14 days\r\n\r\n| # | Repo | Unique visitors | Views |\r\n|---|---|---|---|\r\n| 1 | alpha-lib | 5 | 24 |\r\n| 2 | gamma-private | 5 | 8 |\r\n| 3 | beta-tool | 5 | 5 |\r\n| 4 | delta-empty | 0 | 0 |\r\n\r\n## npm downloads\r\n\r\n| # | Package | Last 14 days | Last month |\r\n|---|---|---|---|\r\n| 1 | alpha-lib | 20 | 40 |\r\n| 2 | gamma-cli | 20 | 41 |\r\n| 3 | @octo-example/beta | 3 | 3 |\r\n\r\n## NuGet downloads\r\n\r\n| # | Package | Last 6 weeks | All time |\r\n|---|---|---|---|\r\n| 1 | Example.Core | 251 | 251 |\r\n| 2 | Example.Tools | 42 | 3,923 |\r\n\r\n## GitHub release asset downloads, all time\r\n\r\n| # | Repo | Downloads |\r\n|---|---|---|\r\n| 1 | alpha-lib | 9 |\r\n\r\n"
+   }
+  }
+ },
+ "nuget-replica-unreachable": {
+  "0": {
+   "change": [
+    "E2",
+    "E6"
+   ],
+   "fields": {
+    "exit": 0,
+    "files:data/daily.csv": "repo,date,views,views_uniques,clones,clones_uniques\r\nalpha-lib,2026-09-25,10,4,0,0\r\nalpha-lib,2026-09-26,6,3,3,2\r\nalpha-lib,2026-09-27,0,0,5,5\r\nalpha-lib,2026-09-28,8,5,0,0\r\nbeta-tool,2026-10-01,5,5,0,0\r\nbeta-tool,2026-10-02,0,0,2,1\r\ngamma-private,2026-10-06,7,5,0,0\r\ngamma-private,2026-10-07,1,1,2,1\r\n",
+    "files:data/downloads.csv": "snapshot,registry,package,last_14_days,last_month,last_6_weeks,total\r\n2026-10-08,npm,alpha-lib,20,40,,\r\n2026-10-08,npm,@octo-example/beta,3,3,,\r\n2026-10-08,npm,gamma-cli,20,41,,\r\n2026-10-08,nuget,Example.Core,,,251,251\r\n2026-10-08,nuget,Example.Tools,,,42,3894\r\n2026-10-08,github-release,alpha-lib,,,,9\r\n",
+    "files:data/repos.csv": "snapshot,repo,private,fork,stars,forks,release_downloads\r\n2026-10-08,alpha-lib,false,false,12,3,9\r\n2026-10-08,beta-tool,false,true,0,0,0\r\n2026-10-08,gamma-private,true,false,0,0,0\r\n2026-10-08,delta-empty,false,false,1,0,0\r\n",
+    "files:data/run.log": "2026-10-08T09:00:00 ok 4 repos, 3 npm, 2 nuget; nuget replica down: azuresearch-ussc (unreachable: [Errno 10061] golden harness: host down)\r\n",
+    "files:data/snapshots/2026-10-08/packages.json": "{\r\n \"npm\": {\r\n  \"alpha-lib\": {\r\n   \"daily\": [\r\n    {\r\n     \"downloads\": 1,\r\n     \"day\": \"2026-09-24\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-25\"\r\n    },\r\n    {\r\n     \"downloads\": 4,\r\n     \"day\": \"2026-09-26\"\r\n    },\r\n    {\r\n     \"downloads\": 2,\r\n     \"day\": \"2026-09-27\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-28\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-29\"\r\n    },\r\n    {\r\n     \"downloads\": 3,\r\n     \"day\": \"2026-09-30\"\r\n    },\r\n    {\r\n     \"downloads\": 1,\r\n     \"day\": \"2026-10-01\"\r\n    },\r\n    {\r\n     \"downloads\": 1,\r\n     \"day\": \"2026-10-02\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-10-03\"\r\n    },\r\n    {\r\n     \"downloads\": 2,\r\n     \"day\": \"2026-10-04\"\r\n    },\r\n    {\r\n     \"downloads\": 5,\r\n     \"day\": \"2026-10-05\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-10-06\"\r\n    },\r\n    {\r\n     \"downloads\": 1,\r\n     \"day\": \"2026-10-07\"\r\n    }\r\n   ],\r\n   \"last_month\": 40\r\n  },\r\n  \"@octo-example/beta\": {\r\n   \"daily\": [\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-24\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-25\"\r\n    },\r\n    {\r\n     \"downloads\": 1,\r\n     \"day\": \"2026-09-26\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-27\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-28\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-29\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-30\"\r\n    },\r\n    {\r\n     \"downloads\": 2,\r\n     \"day\": \"2026-10-01\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-10-02\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-10-03\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-10-04\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-10-05\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-10-06\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-10-07\"\r\n    }\r\n   ],\r\n   \"last_month\": 3\r\n  },\r\n  \"gamma-cli\": {\r\n   \"daily\": [\r\n    {\r\n     \"downloads\": 1,\r\n     \"day\": \"2026-09-24\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-25\"\r\n    },\r\n    {\r\n     \"downloads\": 4,\r\n     \"day\": \"2026-09-26\"\r\n    },\r\n    {\r\n     \"downloads\": 2,\r\n     \"day\": \"2026-09-27\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-28\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-09-29\"\r\n    },\r\n    {\r\n     \"downloads\": 3,\r\n     \"day\": \"2026-09-30\"\r\n    },\r\n    {\r\n     \"downloads\": 1,\r\n     \"day\": \"2026-10-01\"\r\n    },\r\n    {\r\n     \"downloads\": 1,\r\n     \"day\": \"2026-10-02\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-10-03\"\r\n    },\r\n    {\r\n     \"downloads\": 2,\r\n     \"day\": \"2026-10-04\"\r\n    },\r\n    {\r\n     \"downloads\": 5,\r\n     \"day\": \"2026-10-05\"\r\n    },\r\n    {\r\n     \"downloads\": 0,\r\n     \"day\": \"2026-10-06\"\r\n    },\r\n    {\r\n     \"downloads\": 1,\r\n     \"day\": \"2026-10-07\"\r\n    }\r\n   ],\r\n   \"last_month\": 41\r\n  }\r\n },\r\n \"nuget\": {\r\n  \"Example.Core\": {\r\n   \"total\": 251,\r\n   \"versions\": {\r\n    \"1.0.0\": 0\r\n   },\r\n   \"last_6_weeks\": 251,\r\n   \"last_6_weeks_versions\": {\r\n    \"1.0.0\": 199,\r\n    \"1.0.0-beta.1\": 52\r\n   },\r\n   \"last_6_weeks_clients\": {\r\n    \"NuGet Client\": 150,\r\n    \"(unknown)\": 49,\r\n    \"Go-http-client\": 52\r\n   }\r\n  },\r\n  \"Example.Tools\": {\r\n   \"total\": 3894,\r\n   \"versions\": {\r\n    \"2.0.0\": 3000,\r\n    \"1.0.0\": 894\r\n   },\r\n   \"last_6_weeks\": 42,\r\n   \"last_6_weeks_versions\": {\r\n    \"2.0.0\": 40,\r\n    \"1.0.0\": 2\r\n   },\r\n   \"last_6_weeks_clients\": {\r\n    \"NuGet Client\": 42\r\n   }\r\n  }\r\n }\r\n}",
+    "files:data/snapshots/2026-10-08/summary.md": "# Repo traffic for octo-example, 2026-10-08\r\n\r\n## Unique cloners, last 14 days\r\n\r\n| # | Repo | Unique cloners | Clones |\r\n|---|---|---|---|\r\n| 1 | alpha-lib | 5 | 8 |\r\n| 2 | beta-tool | 1 | 2 |\r\n| 3 | gamma-private | 1 | 2 |\r\n| 4 | delta-empty | 0 | 0 |\r\n\r\n## Unique visitors, last 14 days\r\n\r\n| # | Repo | Unique visitors | Views |\r\n|---|---|---|---|\r\n| 1 | alpha-lib | 5 | 24 |\r\n| 2 | gamma-private | 5 | 8 |\r\n| 3 | beta-tool | 5 | 5 |\r\n| 4 | delta-empty | 0 | 0 |\r\n\r\n## npm downloads\r\n\r\n| # | Package | Last 14 days | Last month |\r\n|---|---|---|---|\r\n| 1 | alpha-lib | 20 | 40 |\r\n| 2 | gamma-cli | 20 | 41 |\r\n| 3 | @octo-example/beta | 3 | 3 |\r\n\r\n## NuGet downloads\r\n\r\n| # | Package | Last 6 weeks | All time |\r\n|---|---|---|---|\r\n| 1 | Example.Core | 251 | 251 |\r\n| 2 | Example.Tools | 42 | 3,894 |\r\n\r\n## GitHub release asset downloads, all time\r\n\r\n| # | Repo | Downloads |\r\n|---|---|---|\r\n| 1 | alpha-lib | 9 |\r\n",
+    "requests": [
+     {
+      "url": "registry.npmjs.org/-/v1/search?size=250&text=maintainer:npm-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/alpha-lib",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/@octo-example/beta",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/@octo-example/beta",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/range/2026-09-24:2026-10-07/gamma-cli",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "api.npmjs.org/downloads/point/last-month/gamma-cli",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "azuresearch-usnc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "www.nuget.org/stats/reports/packages/Example.Core?groupby=Version",
+      "user_agent": "repo-traffic"
+     },
+     {
+      "url": "www.nuget.org/stats/reports/packages/Example.Tools?groupby=Version",
+      "user_agent": "repo-traffic"
+     }
+    ],
+    "sleeps": [
+     1.0,
+     1.0,
+     1.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     1.0,
+     1.0
+    ],
+    "stderr_last": "",
+    "stdout": "## Unique cloners, last 14 days\r\n\r\n| # | Repo | Unique cloners | Clones |\r\n|---|---|---|---|\r\n| 1 | alpha-lib | 5 | 8 |\r\n| 2 | beta-tool | 1 | 2 |\r\n| 3 | gamma-private | 1 | 2 |\r\n| 4 | delta-empty | 0 | 0 |\r\n\r\n## Unique visitors, last 14 days\r\n\r\n| # | Repo | Unique visitors | Views |\r\n|---|---|---|---|\r\n| 1 | alpha-lib | 5 | 24 |\r\n| 2 | gamma-private | 5 | 8 |\r\n| 3 | beta-tool | 5 | 5 |\r\n| 4 | delta-empty | 0 | 0 |\r\n\r\n## npm downloads\r\n\r\n| # | Package | Last 14 days | Last month |\r\n|---|---|---|---|\r\n| 1 | alpha-lib | 20 | 40 |\r\n| 2 | gamma-cli | 20 | 41 |\r\n| 3 | @octo-example/beta | 3 | 3 |\r\n\r\n## NuGet downloads\r\n\r\n| # | Package | Last 6 weeks | All time |\r\n|---|---|---|---|\r\n| 1 | Example.Core | 251 | 251 |\r\n| 2 | Example.Tools | 42 | 3,894 |\r\n\r\n## GitHub release asset downloads, all time\r\n\r\n| # | Repo | Downloads |\r\n|---|---|---|\r\n| 1 | alpha-lib | 9 |\r\n\r\n"
+   }
+  }
+ },
+ "nuget-stats-404": {
+  "0": {
+   "change": [
+    "E6"
+   ],
+   "fields": {
+    "files:data/repos.csv": "snapshot,repo,private,fork,stars,forks,release_downloads\r\n2026-10-08,alpha-lib,false,false,12,3,9\r\n2026-10-08,beta-tool,false,true,0,0,0\r\n2026-10-08,gamma-private,true,false,0,0,0\r\n2026-10-08,delta-empty,false,false,1,0,0\r\n"
+   }
+  }
+ },
+ "owner-from-gh-login": {
+  "0": {
+   "change": [
+    "E6"
+   ],
+   "fields": {
+    "files:data/repos.csv": "snapshot,repo,private,fork,stars,forks,release_downloads\r\n2026-10-08,alpha-lib,false,false,12,3,9\r\n2026-10-08,beta-tool,false,true,0,0,0\r\n2026-10-08,gamma-private,true,false,0,0,0\r\n2026-10-08,delta-empty,false,false,1,0,0\r\n"
+   }
+  }
+ },
+ "second-run-merges-daily": {
+  "0": {
+   "change": [
+    "E6"
+   ],
+   "fields": {
+    "files:data/repos.csv": "snapshot,repo,private,fork,stars,forks,release_downloads\r\n2026-10-08,alpha-lib,false,false,12,3,9\r\n2026-10-08,beta-tool,false,true,0,0,0\r\n2026-10-08,gamma-private,true,false,0,0,0\r\n2026-10-08,delta-empty,false,false,1,0,0\r\n"
+   }
+  },
+  "1": {
+   "change": [
+    "E6"
+   ],
+   "fields": {
+    "files:data/repos.csv": "snapshot,repo,private,fork,stars,forks,release_downloads\r\n2026-10-08,alpha-lib,false,false,12,3,9\r\n2026-10-08,beta-tool,false,true,0,0,0\r\n2026-10-08,gamma-private,true,false,0,0,0\r\n2026-10-08,delta-empty,false,false,1,0,0\r\n2026-10-21,alpha-lib,false,false,12,3,9\r\n2026-10-21,beta-tool,false,true,0,0,0\r\n2026-10-21,gamma-private,true,false,0,0,0\r\n2026-10-21,delta-empty,false,false,1,0,0\r\n"
+   }
+  }
+ },
+ "top-without-value": {
+  "0": {
+   "change": [
+    "E1"
+   ],
+   "fields": {
+    "exit": 2,
+    "files:data/run.log": null,
+    "stderr_last": "repo-traffic: error: argument --top: expected one argument"
+   }
+  }
+ }
+}
