@@ -38,3 +38,12 @@
 - Canary: `+ 1` planted in release_total, golden test 14 failed / 7 passed; `git checkout -- repo_traffic.py`, 21 passed. `git diff --exit-code 896876d` on the recording files: empty.
 - Unit tests: 47, branch coverage 99 percent. Size: 543 lines, wheel 11.7 KB, 0 dependencies (green). lint-workflows.sh: WORKFLOWS CLEAN.
 - Fresh clone of v1: CI commands on Python 3.9.25 (failed once: argparse on 3.9 titles help "optional arguments:"; fixed with a named "options" group) and 3.14.6: 68 passed, ruff clean, build and twine PASSED.
+
+## [2026-10-08] update | Phases 3 and 4: review, settings, images
+
+- Pull request m4bwav/repo-traffic#1. CI run 37876544059 on 99a1d3c: all 15 jobs green (10 test rows, lint, 3 installed-wheel rows, ci).
+- Independent review (package-modernize prompts/review-subagent.md, read only, about 7 minutes): 12 findings, two bugs (the E5 migration lost the values of 0.1.0's seven-column rows; the gap warning ignored partial runs that saved GitHub). All fixed with tests in 2368555 (59 unit tests); summary posted on the pull request.
+- Settings: topics, homepage (PyPI page), delete branch on merge, Dependabot alerts and security updates on; environment `pypi` with m4bwav as required reviewer and a `v*` tag rule; rulesets 24764956 (master: no deletion, no force push, required check ci, admin bypass) and 24764961 (tags only by admins). Tag v0.1.0 on 9b6e754 (tag only).
+- Images: docs/images/banner.jpg (ComfyUI 0.38.2 on the Mac, Z-Image Turbo, 1536x512, seed 33 of 11/22/33/44, 38 KB) and daily-views.png (chartwright, Vega-Lite line chart of sample-daily.csv, which make_sample_data.py builds by running repo-traffic through the golden harness on invented data; quantized to 44.5 KB). check-readme-images.mjs: every image works (raw URLs pinned to v1.0.0b1, live once the tag exists).
+- PyPI: the maintainer's account has no 2FA yet, so the Publishing page redirects to the two-factor setup; the pending publisher waits for it. The release (Phases 5 and 6) waits for both.
+- Skill lessons: m4bwav/package-modernize#39 (templates/pypi, references/pypi.md "First run", L-160 to L-166), assigned for review.
