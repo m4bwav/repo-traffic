@@ -10,8 +10,8 @@ This is a one-person project with no bug bounty and no response deadline. I'll r
 
 ## Supported versions
 
-Only the latest commit on the default branch gets fixes.
+Only the latest release (on PyPI and GitHub Releases) gets fixes.
 
 ## Scope
 
-The script runs on your machine with your `gh` login and writes traffic data, including data for private repos, to a local folder. In scope: anything that makes it send data anywhere except the GitHub, npm and NuGet APIs, write outside its data folder, or put private data in a tracked file. Out of scope: bugs in the GitHub CLI or the registries' APIs; report those to their makers.
+The script runs on your machine with your `gh` login and writes traffic data, including data for private repos, to a local folder. In scope: anything that makes it send data anywhere except the GitHub, npm, NuGet and pypistats.org APIs, write outside its data folder, or put private data in a tracked file. Releases are built by `.github/workflows/release.yml`, attested, and uploaded to PyPI through Trusted Publishing after a manual approval; `gh attestation verify FILE --repo m4bwav/repo-traffic` checks a downloaded file. Out of scope: bugs in the GitHub CLI or the registries' APIs; report those to their makers.
