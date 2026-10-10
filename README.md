@@ -97,6 +97,10 @@ The [wiki](https://github.com/m4bwav/repo-traffic/wiki) has a launchd agent for 
 
 It sends nothing anywhere except requests to the GitHub, npm, NuGet and pypistats.org APIs, it has no telemetry, and it writes only inside its data folder.
 
+## Package page
+
+- PyPI: [repo-traffic](https://pypi.org/project/repo-traffic/)
+
 ## License
 
 MIT
