@@ -4,6 +4,14 @@ All notable changes are listed here; the format follows [Keep a Changelog](https
 
 Compatibility promise: every file 0.1.0 writes keeps its name, columns and format, so an existing `data/` folder carries on. The golden test in `tests/golden/` replays 18 recorded runs of 0.1.0 on Windows, macOS and Linux and holds this version to them byte for byte, except the changes listed under each version (E1 to E7 in the plan). An existing `downloads.csv` with the six-column header of the first test runs is migrated once to the current header, keeping `downloads.csv.bak`.
 
+## [Unreleased]
+
+### Added
+- `codex_plugins` config key: listing ids or URLs in OpenAI's plugin directory (shared by ChatGPT and Codex). Each run reads the public listing page and records whether it is live, the name and the version in a `codex` section of `packages.json` and a new `codex.csv`, and counts them in `run.log` ("2 of 3 codex listed"). OpenAI publishes no install counts, so there are none to record. A listing that can't be read is a failure (a partial run); with the key unset nothing changes. Config only, no flag, so `--help` stays as it was.
+
+### Changed
+- A 403 that Cloudflare marks as a challenge (`cf-mitigated`) is retried like a 429; other 403s are not.
+
 ## [1.0.0b1]
 
 ### Added
