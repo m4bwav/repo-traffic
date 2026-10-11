@@ -47,3 +47,8 @@
 - Images: docs/images/banner.jpg (ComfyUI 0.38.2 on the Mac, Z-Image Turbo, 1536x512, seed 33 of 11/22/33/44, 38 KB) and daily-views.png (chartwright, Vega-Lite line chart of sample-daily.csv, which make_sample_data.py builds by running repo-traffic through the golden harness on invented data; quantized to 44.5 KB). check-readme-images.mjs: every image works (raw URLs pinned to v1.0.0b1, live once the tag exists).
 - PyPI: the maintainer's account has no 2FA yet, so the Publishing page redirects to the two-factor setup; the pending publisher waits for it. The release (Phases 5 and 6) waits for both.
 - Skill lessons: m4bwav/package-modernize#39 (templates/pypi, references/pypi.md "First run", L-160 to L-166), assigned for review.
+
+## [2026-10-11] update | codex_plugins: OpenAI plugin directory listings
+
+- Research ([notes/2026-10-11-codex-plugin-directory.md](notes/2026-10-11-codex-plugin-directory.md)): the directory ChatGPT and Codex share has public listing pages (`chatgpt.com/plugins/<id>`) but no API, install counts or ratings. Built `codex_plugins` (config only, so the golden `--help` text is unchanged): listed yes/no, name and version per run in `codex.csv` and `packages.json`. chatgpt.com's Cloudflare check refuses urllib's default TLS context (post-handshake auth), so those requests use their own context, and a `cf-mitigated` 403 is retried. The script is exactly at the 600-line green limit (module docstring shortened to make room). 86 tests pass, coverage 99 percent, size green, on branch codex-directory.
+## [2026-10-11] index | rebuilt (3 entries)

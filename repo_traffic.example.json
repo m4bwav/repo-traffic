@@ -3,6 +3,7 @@
   "npm_user": "your-npm-username",
   "nuget_owner": "your-nuget-username",
   "pypi_packages": ["your-pypi-project"],
+  "codex_plugins": ["https://chatgpt.com/plugins/your-listing-id"],
   "data": "data",
   "top": 10
 }
