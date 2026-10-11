@@ -14,6 +14,7 @@ GitHub shows traffic (views, clones, referrers) for the last 14 days and then de
 - npm downloads (daily for the last 14 days, and last month) for packages you maintain
 - NuGet downloads for packages you own: all time per version, and the last 6 weeks per version and per client (so you can see how much is build servers, crawlers or browsers)
 - PyPI downloads (daily for the last 14 days, and last month) for projects you name
+- OpenUPM downloads (daily for the last 14 days, and last month) for Unity packages you name
 
 Run it at least every 13 days. Over time you build up a history GitHub doesn't keep. One Python file, standard library only; it reads GitHub through the [GitHub CLI](https://cli.github.com/).
 
@@ -30,10 +31,10 @@ Or run it from a clone without installing anything: `python repo_traffic.py`. On
 ## Use
 
 ```sh
-repo-traffic --owner your-login --npm-user your-npm-name --nuget-owner your-nuget-name --pypi-packages your-project
+repo-traffic --owner your-login --npm-user your-npm-name --nuget-owner your-nuget-name --pypi-packages your-project --openupm-packages com.you.package
 ```
 
-Every flag is optional. With no `--owner` it uses the logged-in `gh` account, and it skips npm, NuGet or PyPI when you don't name an account or project. To avoid typing the flags, copy [repo_traffic.example.json](repo_traffic.example.json) to `repo_traffic.json` and fill it in.
+Every flag is optional. With no `--owner` it uses the logged-in `gh` account, and it skips npm, NuGet, PyPI or OpenUPM when you don't name an account or project. To avoid typing the flags, copy [repo_traffic.example.json](repo_traffic.example.json) to `repo_traffic.json` and fill it in.
 
 | Flag | Config key | Default |
 |---|---|---|
@@ -41,6 +42,7 @@ Every flag is optional. With no `--owner` it uses the logged-in `gh` account, an
 | `--npm-user` | `npm_user` | none (npm skipped) |
 | `--nuget-owner` | `nuget_owner` | none (NuGet skipped) |
 | `--pypi-packages a,b` | `pypi_packages` (a list) | none (PyPI skipped) |
+| `--openupm-packages a,b` | `openupm_packages` (a list) | none (OpenUPM skipped) |
 | `--data` | `data` | `data` |
 | `--top` | `top` | 10 |
 | `--config` | | `repo_traffic.json` |
@@ -57,7 +59,7 @@ data/
   run.log            one line per run: ok, partial (a source failed) or FAILED
   snapshots/2026-10-08/
     github.json      everything the GitHub API returned
-    packages.json    everything npm, NuGet and PyPI returned
+    packages.json    everything npm, NuGet, PyPI and OpenUPM returned
     summary.md       the top-N tables as markdown
 ```
 
@@ -91,11 +93,12 @@ The [wiki](https://github.com/m4bwav/repo-traffic/wiki) has a launchd agent for 
 - NuGet's search API runs on two replicas that lag behind nuget.org and disagree; one reported 0 for a package nuget.org showed 251 for. repo-traffic takes the highest of both replicas and the 6-week stats report (the JSON behind the package page's Full stats link). That report is undocumented and could change; when it fails, the 6-week figure is left empty.
 - The npm stats API rate-limits bursts. repo-traffic waits a second between packages and backs off on HTTP 429 and on empty answers.
 - PyPI has no API that lists a user's projects, so you name them. The counts come from pypistats.org, without mirrors.
+- OpenUPM has no API that lists a publisher's packages either, so you name them too. Its registry answers npm's download routes; days with no downloads are left out of the daily list.
 - GitHub Pages traffic isn't available through any API, so it isn't counted.
 
 ## What it does not do
 
-It sends nothing anywhere except requests to the GitHub, npm, NuGet and pypistats.org APIs, it has no telemetry, and it writes only inside its data folder.
+It sends nothing anywhere except requests to the GitHub, npm, NuGet, pypistats.org and OpenUPM APIs, it has no telemetry, and it writes only inside its data folder.
 
 ## Package page
 

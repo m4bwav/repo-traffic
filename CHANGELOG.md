@@ -4,6 +4,11 @@ All notable changes are listed here; the format follows [Keep a Changelog](https
 
 Compatibility promise: every file 0.1.0 writes keeps its name, columns and format, so an existing `data/` folder carries on. The golden test in `tests/golden/` replays 18 recorded runs of 0.1.0 on Windows, macOS and Linux and holds this version to them byte for byte, except the changes listed under each version (E1 to E7 in the plan). An existing `downloads.csv` with the six-column header of the first test runs is migrated once to the current header, keeping `downloads.csv.bak`.
 
+## [Unreleased]
+
+### Added
+- OpenUPM downloads for the Unity packages named in `--openupm-packages` or the `openupm_packages` config key: the last 14 days and last month from package.openupm.com, an `openupm` section in `packages.json`, rows in `downloads.csv` (registry `openupm`) and a summary table. A package OpenUPM does not know is a failure for that package only.
+
 ## [1.0.0b1]
 
 ### Added
