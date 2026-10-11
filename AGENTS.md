@@ -1,6 +1,6 @@
 # repo-traffic
 
-One script, `repo_traffic.py` (Python 3.9+, standard library plus the `gh` CLI), that saves GitHub traffic and npm, NuGet and PyPI download counts before GitHub's 14-day window drops them. It is published on PyPI as `repo-traffic` (a single module with a `repo-traffic` console command). `install-task.ps1` schedules it on Windows. The README covers usage; the wiki covers every file and column.
+One script, `repo_traffic.py` (Python 3.9+, standard library plus the `gh` CLI), that saves GitHub traffic and npm, NuGet, PyPI and OpenUPM download counts before GitHub's 14-day window drops them. It is published on PyPI as `repo-traffic` (a single module with a `repo-traffic` console command). `install-task.ps1` schedules it on Windows. The README covers usage; the wiki covers every file and column.
 
 Layout:
 - `repo_traffic.py`: the whole tool. `pyproject.toml`: packaging (hatchling, version read from `__version__`), ruff, pytest and coverage settings.
@@ -20,7 +20,7 @@ Rules:
 - `data/` and `repo_traffic.json` are gitignored and must stay that way. They hold private repo traffic and account names. Never commit them or paste their contents into issues, pull requests, CI logs, the wiki or images; fixtures use invented names only.
 - Keep the script stdlib-only and a single file, inside the size budget (green up to 600 lines, red over 800; wheel green up to 25 KB).
 - Never edit `tests/golden/` except the two exceptions files, and those only for a change the maintainer ruled on (write them with `REPO_TRAFFIC_WRITE_EXCEPTIONS=1 python -m pytest tests/test_golden.py`, review, and keep Windows and posix in step). When the golden test fails, fix `repo_traffic.py`.
-- No test reaches the real GitHub, npm, NuGet or pypistats APIs.
+- No test reaches the real GitHub, npm, NuGet, pypistats or OpenUPM APIs.
 - File formats only grow: new CSV columns go at the end, with the old header added to the migration list.
 - Releases: bump `__version__` and the CHANGELOG in a pull request, wait for `ci` on master, tag `v<version>`; the maintainer approves the `pypi` environment. Nothing is published from a developer machine.
 - Record what changed and why in `ai-docs/log.md`; `ai-docs/HANDOFF.md` is the starting point for the next session.

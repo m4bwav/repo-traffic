@@ -393,6 +393,26 @@ def test_pypi_snapshot_404_and_error(web, sleeps):
     assert sleeps == [1, 1]
 
 
+def test_openupm_snapshot_range_and_month(web, sleeps):
+    base = "https://package.openupm.com/downloads/"
+    web[base + "range/2026-09-24:2026-10-07/com.a.b"] = [
+        {"downloads": [{"day": "2026-09-30", "downloads": 4}], "start": "2026-09-30", "end": "2026-09-30"}
+    ]
+    web[base + "point/last-month/com.a.b"] = [{"downloads": 6}]
+    failures = []
+    out = rt.openupm_snapshot(["com.a.b"], TODAY, failures)
+    assert out == {"com.a.b": {"daily": [{"day": "2026-09-30", "downloads": 4}], "last_month": 6}}
+    assert failures == [] and sleeps == [1]
+
+
+def test_openupm_snapshot_404_and_error(web, sleeps):
+    web["https://package.openupm.com/downloads/range/2026-09-24:2026-10-07/com.b"] = [http_error(500)]
+    failures = []
+    assert rt.openupm_snapshot(["com.a", "com.b"], TODAY, failures) == {}
+    assert failures == ["openupm com.a (HTTP 404: not on OpenUPM)", "openupm com.b (HTTP 500)"]
+    assert sleeps == [1, 1]
+
+
 LISTING = (
     b"<html><head><title>ChatGPT Plugins | Browse and add plugins to ChatGPT</title></head><body>"
     b'<h1 class="text-token-text-primary"> Chart &amp; Graph </h1><dl>'
@@ -553,12 +573,14 @@ def test_append_downloads_csv_every_registry(tmp_path):
         "npm": {"n": {"daily": [{"downloads": 2}, {"downloads": 3}], "last_month": 9}},
         "nuget": {"g": {"last_6_weeks": None, "total": 4}},
         "pypi": {"p": {"daily": [{"downloads": 1}], "last_month": 7}},
+        "openupm": {"com.u": {"daily": [{"downloads": 4}], "last_month": 6}},
     }
     rt.append_downloads_csv(path, psnap, gsnap_one(release=5), "2026-10-08")
     assert path.read_text(encoding="utf-8").splitlines()[1:] == [
         "2026-10-08,npm,n,5,9,,",
         "2026-10-08,nuget,g,,,,4",
         "2026-10-08,pypi,p,1,7,,",
+        "2026-10-08,openupm,com.u,4,6,,",
         "2026-10-08,github-release,r,,,,5",
     ]
 
@@ -594,11 +616,13 @@ def test_top_tables_break_ties_by_name_and_cut_at_n():
         "npm": {"z": {"daily": [], "last_month": 0}, "y": {"daily": [], "last_month": 5}},
         "nuget": {},
         "pypi": {"q": {"daily": [{"downloads": 4}], "last_month": 4}},
+        "openupm": {"com.u": {"daily": [], "last_month": 6}},
     }
     out = rt.top_tables(g, p, 2)
     assert "| 1 | a | 1 | 1 |\n| 2 | b | 1 | 1 |\n\n" in out
     assert "| 1 | y | 0 | 5 |\n| 2 | z | 0 | 0 |" in out
     assert "## PyPI downloads" in out and "| 1 | q | 4 | 4 |" in out
+    assert "## OpenUPM downloads" in out and "| 1 | com.u | 0 | 6 |" in out
     assert "NuGet" not in out and "| 3 |" not in out
 
 
@@ -658,12 +682,15 @@ def test_configure_file_flags_and_defaults(tmp_path):
     (tmp_path / "repo_traffic.json").write_text(
         json.dumps({"owner": "o", "top": "3", "npm_user": "u"}), encoding="utf-8"
     )
-    cfg = rt.configure(rt.parse_args(["--npm-user", "v", "--pypi-packages", " a, ,b "]), tmp_path)
+    cfg = rt.configure(
+        rt.parse_args(["--npm-user", "v", "--pypi-packages", " a, ,b ", "--openupm-packages", "com.x"]), tmp_path
+    )
     assert cfg == {
         "owner": "o",
         "npm_user": "v",
         "nuget_owner": None,
         "pypi_packages": ["a", "b"],
+        "openupm_packages": ["com.x"],
         "codex_plugins": [],
         "data": "data",
         "top": 3,
@@ -727,6 +754,7 @@ def stub_sources(monkeypatch, failures=(), notes=(), gsnap=None):
     monkeypatch.setattr(rt, "nuget_snapshot", lambda owner, f, n: n.extend(notes) or {})
     monkeypatch.setattr(rt, "npm_snapshot", lambda user, today, f: {})
     monkeypatch.setattr(rt, "pypi_snapshot", lambda names, today, f: {"p": {"daily": [], "last_month": 0}})
+    monkeypatch.setattr(rt, "openupm_snapshot", lambda names, today, f: {"u": {"daily": [], "last_month": 0}})
 
 
 def test_snapshot_partial_gap_and_pypi(tmp_path, monkeypatch, capsys):
@@ -734,7 +762,7 @@ def test_snapshot_partial_gap_and_pypi(tmp_path, monkeypatch, capsys):
     data = tmp_path / "data"
     data.mkdir()
     (data / "run.log").write_text("2026-09-01T09:00:00 ok 1 repos\n", encoding="utf-8")
-    cfg = dict(rt.DEFAULTS, owner="o", nuget_owner="n", pypi_packages=["p"])
+    cfg = dict(rt.DEFAULTS, owner="o", nuget_owner="n", pypi_packages=["p"], openupm_packages=["u"])
     assert rt.snapshot(cfg, data, TODAY) == 1
     out = capsys.readouterr()
     assert out.out.startswith("gap: 37 days")
@@ -745,7 +773,8 @@ def test_snapshot_partial_gap_and_pypi(tmp_path, monkeypatch, capsys):
         "traffic from before 2026-09-24 was not saved"
     )
     assert log[2].endswith(
-        " partial 0 repos, 0 npm, 0 nuget, 1 pypi; failed: github repo list (gh exited 1); nuget replica down: x"
+        " partial 0 repos, 0 npm, 0 nuget, 1 pypi, 1 openupm;"
+        " failed: github repo list (gh exited 1); nuget replica down: x"
     )
     summary = (data / "snapshots" / "2026-10-08" / "summary.md").read_text(encoding="utf-8")
     assert summary.startswith("# Repo traffic for o, 2026-10-08\n\n> gap: 37 days")
@@ -894,6 +923,8 @@ def test_pypi_packages_as_a_string_in_the_config(tmp_path):
     assert rt.configure(rt.parse_args([]), tmp_path)["pypi_packages"] == ["foo", "bar"]
     (tmp_path / "repo_traffic.json").write_text(json.dumps({"pypi_packages": None}), encoding="utf-8")
     assert rt.configure(rt.parse_args([]), tmp_path)["pypi_packages"] == []
+    (tmp_path / "repo_traffic.json").write_text(json.dumps({"openupm_packages": "com.a, com.b"}), encoding="utf-8")
+    assert rt.configure(rt.parse_args([]), tmp_path)["openupm_packages"] == ["com.a", "com.b"]
 
 
 def test_codex_plugins_in_the_config_and_the_snapshot(tmp_path, monkeypatch, capsys):
