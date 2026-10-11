@@ -1,39 +1,21 @@
 """Snapshot GitHub traffic and package downloads for every repo you own.
 
-GitHub keeps traffic for 14 days only, so run this at least every 13 days.
-Each run writes, under the data directory:
-
-  snapshots/YYYY-MM-DD/github.json   per repo: daily views and clones,
-                                     referrers, popular paths, stars, forks,
-                                     release asset downloads
-  snapshots/YYYY-MM-DD/packages.json npm daily downloads; NuGet downloads
-                                     all time per version, and last 6
-                                     weeks per version and client; PyPI
-                                     downloads when packages are named
-  snapshots/YYYY-MM-DD/summary.md    top-N tables for that run
-  daily.csv      one row per repo per day, merged across runs
-  downloads.csv  one row per package per run
-  repos.csv      one row per repo per run: stars, forks, release downloads
-  run.log        one line per run: ok, partial (a source failed) or FAILED
-
-Needs Python 3.9+ and the gh CLI, logged in as an account with push access
-to the repos (GitHub only shows traffic to those). Standard library only.
-Settings come from repo_traffic.json (see repo_traffic.example.json) and
-the flags, flags winning. Run as a file, the settings file and the data
-folder sit next to this script; run as the repo-traffic command, in the
-current folder. Exit status: 0 ok, 1 a source failed or the run failed,
-2 bad arguments. Run with --help for the flags.
+GitHub keeps traffic for 14 days only, so run this at least every 13 days. Each run writes snapshots/YYYY-MM-DD/
+(github.json, packages.json, summary.md), daily.csv, downloads.csv, repos.csv, codex.csv and run.log. Needs the gh
+CLI, logged in with push access to the repos; standard library only. Exit: 0 ok, 1 a source failed, 2 bad usage.
 """
 
 import argparse
 import csv
 import datetime as dt
+import html
 import http.client
 import json
 import math
 import re
 import shutil
 import socket
+import ssl
 import subprocess
 import sys
 import time
@@ -44,7 +26,16 @@ from pathlib import Path
 __version__ = "1.0.0b1"
 
 HERE = Path(__file__).resolve().parent
-DEFAULTS = {"owner": None, "npm_user": None, "nuget_owner": None, "pypi_packages": [], "data": "data", "top": 10}
+DEFAULTS = dict(
+    owner=None,
+    npm_user=None,
+    nuget_owner=None,
+    pypi_packages=[],
+    openupm_packages=[],
+    codex_plugins=[],
+    data="data",
+    top=10,
+)
 USER_AGENT = "repo-traffic"
 NUGET_HOSTS = ("azuresearch-usnc", "azuresearch-ussc")
 # Errors a source can fail with: network, HTTP, a cut-off body, a changed shape.
@@ -56,6 +47,10 @@ NO_WINDOW = {"creationflags": subprocess.CREATE_NO_WINDOW} if sys.platform == "w
 DOWNLOADS_HEADER = ["snapshot", "registry", "package", "last_14_days", "last_month", "last_6_weeks", "total"]
 # Headers written by earlier versions; a file with one is migrated once.
 DOWNLOADS_OLD_HEADERS = [["snapshot", "registry", "package", "last_14_days", "last_month", "total"]]
+CODEX_HEADER = ["snapshot", "plugin", "listed", "name", "version", "url"]
+CODEX_TLS = ssl.create_default_context()  # urllib's own offers post-handshake auth, which chatgpt.com refuses (403)
+CODEX_TLS.set_alpn_protocols(["http/1.1"])
+CODEX_VERSION = r">Version</dt><dd[^>]*>(?:<[^>]+>)*([^<]*)"
 REPOS_HEADER = ["snapshot", "repo", "private", "fork", "stars", "forks", "release_downloads"]
 
 
@@ -104,19 +99,19 @@ def retry_wait(e, attempt):
     return 10 * (attempt + 1)
 
 
-def http_json(url, tries=5):
-    """GET url as JSON; None on 404. Retries 429, empty bodies and dropped connections."""
+def http_json(url, tries=5, parse=json.loads, **tls):
+    """GET url as JSON (or through parse); None on 404. Retries 429, empty bodies and dropped connections."""
     for i in range(tries):
         last = i == tries - 1
         try:
             req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
-            with urllib.request.urlopen(req, timeout=30) as f:
+            with urllib.request.urlopen(req, timeout=30, **tls) as f:
                 body = f.read()
-            return json.loads(body)
+            return parse(body)
         except urllib.error.HTTPError as e:
             if e.code == 404:
                 return None
-            if e.code == 429 and not last:
+            if (e.code == 429 or e.headers.get("cf-mitigated")) and not last:
                 time.sleep(retry_wait(e, i))
                 continue
             raise
@@ -176,6 +171,15 @@ def github_snapshot(owner, failures):
     return out
 
 
+def npm_style_downloads(host, name, today):
+    """(found, counts): the last 14 days and last month from an npm-style downloads API; found is False on a 404."""
+    start = (today - dt.timedelta(days=14)).isoformat()
+    end = (today - dt.timedelta(days=1)).isoformat()
+    rng = http_json("%s/downloads/range/%s:%s/%s" % (host, start, end, name))
+    month = http_json("%s/downloads/point/last-month/%s" % (host, name)) or {}
+    return rng is not None, {"daily": (rng or {}).get("downloads", []), "last_month": month.get("downloads", 0)}
+
+
 def npm_snapshot(user, today, failures):
     npm = {}
     try:
@@ -187,13 +191,9 @@ def npm_snapshot(user, today, failures):
     except SOURCE_ERRORS as e:
         failures.append("npm search (%s)" % describe(e))
         return npm
-    start = (today - dt.timedelta(days=14)).isoformat()
-    end = (today - dt.timedelta(days=1)).isoformat()
     for name in names:
         try:
-            rng = http_json("https://api.npmjs.org/downloads/range/%s:%s/%s" % (start, end, name)) or {}
-            month = http_json("https://api.npmjs.org/downloads/point/last-month/" + name) or {}
-            npm[name] = {"daily": rng.get("downloads", []), "last_month": month.get("downloads", 0)}
+            npm[name] = npm_style_downloads("https://api.npmjs.org", name, today)[1]
         except SOURCE_ERRORS as e:
             failures.append("npm %s (%s)" % (name, describe(e)))
         time.sleep(1)
@@ -281,6 +281,41 @@ def pypi_snapshot(names, today, failures):
     return pypi
 
 
+def openupm_snapshot(names, today, failures):
+    # OpenUPM has no API that lists a publisher's packages either, so they are named too.
+    # Its registry answers npm's download routes and leaves out days with no downloads.
+    openupm = {}
+    for name in names:
+        try:
+            found, counts = npm_style_downloads("https://package.openupm.com", name, today)
+            if found:
+                openupm[name] = counts
+            else:
+                failures.append("openupm %s (HTTP 404: not on OpenUPM)" % name)
+        except SOURCE_ERRORS as e:
+            failures.append("openupm %s (%s)" % (name, describe(e)))
+        time.sleep(1)
+    return openupm
+
+
+def codex_snapshot(entries, failures):
+    # No API, no install counts, and a 200 for any id: a listing is live when its page names the plugin in an <h1>.
+    codex = {}
+    for entry in entries:
+        url = entry if entry.startswith("https://") else "https://chatgpt.com/plugins/" + entry
+        try:
+            page = http_json(url, parse=bytes.decode, context=CODEX_TLS) or ""
+            found = [re.search(r, page) for r in (r"<h1[^>]*>([^<]+)</h1>", CODEX_VERSION)]
+            if not found[0] and "Plugin not found" not in page:
+                raise ValueError("the page neither names a plugin nor says it was not found")
+            name, version = (html.unescape(m.group(1)).strip() if m else "" for m in found)
+            codex[entry] = {"listed": bool(found[0]), "name": name, "version": version, "url": url}
+        except SOURCE_ERRORS as e:
+            failures.append("codex %s (%s)" % (entry, describe(e)))
+        time.sleep(1)
+    return codex
+
+
 def merge_daily_csv(path, gsnap):
     rows = {}
     if path.exists():
@@ -352,6 +387,8 @@ def append_downloads_csv(path, psnap, gsnap, today):
             w.writerow([today, "nuget", name, "", "", d["last_6_weeks"], d["total"]])
         for name, d in psnap.get("pypi", {}).items():
             w.writerow([today, "pypi", name, sum(x["downloads"] for x in d["daily"]), d["last_month"], "", ""])
+        for name, d in psnap.get("openupm", {}).items():
+            w.writerow([today, "openupm", name, sum(x["downloads"] for x in d["daily"]), d["last_month"], "", ""])
         for name, d in gsnap.items():
             if release_total(d):
                 w.writerow([today, "github-release", name, "", "", "", release_total(d)])
@@ -361,17 +398,15 @@ def append_repos_csv(path, gsnap, today):
     f, w = open_csv_for_append(path, REPOS_HEADER)
     with f:
         for name, d in gsnap.items():
-            w.writerow(
-                [
-                    today,
-                    name,
-                    str(d["private"]).lower(),
-                    str(d["fork"]).lower(),
-                    d["stars"],
-                    d["forks"],
-                    release_total(d),
-                ]
-            )
+            flags = [str(d["private"]).lower(), str(d["fork"]).lower()]
+            w.writerow([today, name, *flags, d["stars"], d["forks"], release_total(d)])
+
+
+def append_codex_csv(path, codex, today):
+    f, w = open_csv_for_append(path, CODEX_HEADER)
+    with f:
+        for entry, d in codex.items():
+            w.writerow([today, entry, str(d["listed"]).lower(), d["name"], d["version"], d["url"]])
 
 
 def top_tables(gsnap, psnap, n):
@@ -412,6 +447,14 @@ def top_tables(gsnap, psnap, n):
             sorted(
                 ((k, daily_sum(d), d["last_month"]) for k, d in psnap.get("pypi", {}).items()),
                 key=lambda r: (-r[1], r[0]),
+            ),
+        ),
+        (
+            "OpenUPM downloads",
+            ["Package", "Last 14 days", "Last month"],
+            sorted(
+                ((k, daily_sum(d), d["last_month"]) for k, d in psnap.get("openupm", {}).items()),
+                key=lambda r: (-r[1], -r[2], r[0]),
             ),
         ),
         (
@@ -467,7 +510,8 @@ def write_log(data, text):
 def parse_args(argv):
     parser = argparse.ArgumentParser(
         prog="repo-traffic",
-        description="Save GitHub traffic and npm, NuGet and PyPI download counts before GitHub's 14 days run out.",
+        description="Save GitHub traffic and npm, NuGet, PyPI and OpenUPM download counts before GitHub's 14 days "
+        "run out.",
         add_help=False,
         allow_abbrev=False,
     )
@@ -478,6 +522,7 @@ def parse_args(argv):
     p.add_argument("--npm-user", help="npm username whose packages to count (default: npm skipped)")
     p.add_argument("--nuget-owner", help="nuget.org owner whose packages to count (default: NuGet skipped)")
     p.add_argument("--pypi-packages", help="comma-separated PyPI project names to count (default: PyPI skipped)")
+    p.add_argument("--openupm-packages", help="comma-separated OpenUPM package names (default: OpenUPM skipped)")
     p.add_argument("--data", help="data folder, relative to the settings folder (default: data)")
     p.add_argument("--top", type=int, help="rows per summary table (default: 10)")
     p.add_argument("--config", help="settings file (default: repo_traffic.json in the settings folder)")
@@ -498,11 +543,12 @@ def configure(args, base):
     for key in ("owner", "npm_user", "nuget_owner", "data", "top"):
         if getattr(args, key) is not None:
             cfg[key] = getattr(args, key)
-    if args.pypi_packages is not None:
-        cfg["pypi_packages"] = args.pypi_packages
-    if isinstance(cfg["pypi_packages"], str):
-        cfg["pypi_packages"] = cfg["pypi_packages"].split(",")
-    cfg["pypi_packages"] = [x.strip() for x in cfg["pypi_packages"] or [] if x.strip()]
+    for key in ("pypi_packages", "openupm_packages"):
+        if getattr(args, key) is not None:
+            cfg[key] = getattr(args, key)
+    for key in ("pypi_packages", "openupm_packages", "codex_plugins"):
+        items = cfg[key].split(",") if isinstance(cfg[key], str) else cfg[key] or []
+        cfg[key] = [x.strip() for x in items if x.strip()]
     cfg["top"] = int(cfg["top"])
     return cfg
 
@@ -531,11 +577,16 @@ def snapshot(cfg, data, today):
     }
     if cfg["pypi_packages"]:
         psnap["pypi"] = pypi_snapshot(cfg["pypi_packages"], today, failures)
+    if cfg["openupm_packages"]:
+        psnap["openupm"] = openupm_snapshot(cfg["openupm_packages"], today, failures)
+    if cfg["codex_plugins"]:
+        psnap["codex"] = codex_snapshot(cfg["codex_plugins"], failures)
     (snapdir / "packages.json").write_text(json.dumps(psnap, indent=1), encoding="utf-8")
     merge_daily_csv(data / "daily.csv", gsnap)
     for name, write in (
         ("downloads.csv", lambda p: append_downloads_csv(p, psnap, gsnap, today.isoformat())),
         ("repos.csv", lambda p: append_repos_csv(p, gsnap, today.isoformat())),
+        ("codex.csv", lambda p: "codex" in psnap and append_codex_csv(p, psnap["codex"], today.isoformat())),
     ):
         try:
             write(data / name)
@@ -553,8 +604,10 @@ def snapshot(cfg, data, today):
     head = "# Repo traffic for %s, %s\n\n" % (owner, today) + ("> %s\n\n" % gap if gap else "")
     (snapdir / "summary.md").write_text(head + summary, encoding="utf-8")
     counts = "%d repos, %d npm, %d nuget" % (len(gsnap), len(psnap["npm"]), len(psnap["nuget"]))
-    if "pypi" in psnap:
-        counts += ", %d pypi" % len(psnap["pypi"])
+    counts += ", %d pypi" % len(psnap["pypi"]) if "pypi" in psnap else ""
+    counts += ", %d openupm" % len(psnap["openupm"]) if "openupm" in psnap else ""
+    listed = [d["listed"] for d in psnap.get("codex", {}).values()]
+    counts += ", %d of %d codex listed" % (sum(listed), len(listed)) if "codex" in psnap else ""
     extra = ["failed: " + "; ".join(failures)] if failures else []
     extra += ["no traffic access: " + ", ".join(no_access)] if no_access else []
     extra += notes

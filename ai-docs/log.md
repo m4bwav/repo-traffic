@@ -62,4 +62,10 @@ Ran `python repo_traffic.py` (ok, 65 repos, 7 npm, 7 NuGet). Full table of every
 
 ## [2026-10-11] add | OpenUPM downloads (PR #3)
 
-Branch openupm-downloads (worktree ../repo-traffic-openupm), https://github.com/m4bwav/repo-traffic/pull/3, waits for Mark: `--openupm-packages` / `openupm_packages`, counts from package.openupm.com npm-style routes, shared `npm_style_downloads`, golden E1 help text updated in both exceptions files. 82 tests pass, coverage 99%. repo_traffic.py 642 lines = yellow size band (was 594). Local repo_traffic.json now names com.m4bwav.universe-generator (ignored by master code until the merge). Wiki needs an OpenUPM line at its next update. Open Dependabot alert #1 (pytest tmpdir) predates this.
+Branch openupm-downloads (worktree ../repo-traffic-openupm), https://github.com/m4bwav/repo-traffic/pull/3, merged 2026-10-11: `--openupm-packages` / `openupm_packages`, counts from package.openupm.com npm-style routes, shared `npm_style_downloads`, golden E1 help text updated in both exceptions files. 82 tests pass, coverage 99%. repo_traffic.py 642 lines = yellow size band (was 594). Local repo_traffic.json now names com.m4bwav.universe-generator (ignored by master code until the merge). Wiki needs an OpenUPM line at its next update. Open Dependabot alert #1 (pytest tmpdir) predates this.
+
+## [2026-10-11] update | codex_plugins: OpenAI plugin directory listings
+
+- Research ([notes/2026-10-11-codex-plugin-directory.md](notes/2026-10-11-codex-plugin-directory.md)): the directory ChatGPT and Codex share has public listing pages (`chatgpt.com/plugins/<id>`) but no API, install counts or ratings. Built `codex_plugins` (config only, so the golden `--help` text is unchanged): listed yes/no, name and version per run in `codex.csv` and `packages.json`. chatgpt.com's Cloudflare check refuses urllib's default TLS context (post-handshake auth), so those requests use their own context, and a `cf-mitigated` 403 is retried. The script is exactly at the 600-line green limit (module docstring shortened to make room). 86 tests pass, coverage 99 percent, size green, on branch codex-directory.
+## [2026-10-11] index | rebuilt (3 entries)
+## [2026-10-11] index | rebuilt (4 entries)
