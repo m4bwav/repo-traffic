@@ -48,7 +48,24 @@
 - PyPI: the maintainer's account has no 2FA yet, so the Publishing page redirects to the two-factor setup; the pending publisher waits for it. The release (Phases 5 and 6) waits for both.
 - Skill lessons: m4bwav/package-modernize#39 (templates/pypi, references/pypi.md "First run", L-160 to L-166), assigned for review.
 
+## [2026-10-08] update | Wiki for 1.0.0b1 (wikiwright Steps 1 to 6 and 8)
+
+- Preflight: placeholder (d6a39f0). Eight pages, sidebar and footer written in the wiki working copy; not committed, not pushed (the maintainer's session publishes and runs `live`).
+- Verified against repo-traffic 1.0.0b1 from PyPI with notes/2026-10-08-wiki-verify.py: 32 golden-harness cases in three forms (file, `cli()`, `runpy` for `-m`) plus 7 real-command cases, on Windows 3.14.6 and WSL Ubuntu 3.14.4; pipx install and uninstall; both Windows tasks registered under a test name, read back, removed; systemd units checked with systemd-analyze. Outputs saved beside it.
+- Checks: wikiwright check 0 errors, outputs 57 checked 0 missing, snippets 0 missing, the program's --check-pages 51 checked 0 missing, tells 0 strong. Repository tests 80 passed 1 skipped; golden test against the PyPI install 21 passed 1 skipped.
+- Found: `python -m repo_traffic` without `--config` writes `data/` into site-packages; the README's 1st-and-15th cron line exceeds 14 days 11 times a year; five more README/CHANGELOG points. Details: notes/2026-10-08-github-wiki.md.
+## [2026-10-08] index | rebuilt (3 entries)
+
+## [2026-10-11] run | traffic snapshot
+
+Ran `python repo_traffic.py` (ok, 65 repos, 7 npm, 7 NuGet). Full table of every repo with traffic written to data/reports/2026-10-11-traffic.md (gitignored). Note: the console summary stops at the top 10, so a full list needs github.json from the snapshot; summing daily uniques from daily.csv overcounts against GitHub's 14-day uniques. PyPI is not set in repo_traffic.json, so repo-traffic's own PyPI downloads are not collected.
+
+## [2026-10-11] add | OpenUPM downloads (PR #3)
+
+Branch openupm-downloads (worktree ../repo-traffic-openupm), https://github.com/m4bwav/repo-traffic/pull/3, merged 2026-10-11: `--openupm-packages` / `openupm_packages`, counts from package.openupm.com npm-style routes, shared `npm_style_downloads`, golden E1 help text updated in both exceptions files. 82 tests pass, coverage 99%. repo_traffic.py 642 lines = yellow size band (was 594). Local repo_traffic.json now names com.m4bwav.universe-generator (ignored by master code until the merge). Wiki needs an OpenUPM line at its next update. Open Dependabot alert #1 (pytest tmpdir) predates this.
+
 ## [2026-10-11] update | codex_plugins: OpenAI plugin directory listings
 
 - Research ([notes/2026-10-11-codex-plugin-directory.md](notes/2026-10-11-codex-plugin-directory.md)): the directory ChatGPT and Codex share has public listing pages (`chatgpt.com/plugins/<id>`) but no API, install counts or ratings. Built `codex_plugins` (config only, so the golden `--help` text is unchanged): listed yes/no, name and version per run in `codex.csv` and `packages.json`. chatgpt.com's Cloudflare check refuses urllib's default TLS context (post-handshake auth), so those requests use their own context, and a `cf-mitigated` 403 is retried. The script is exactly at the 600-line green limit (module docstring shortened to make room). 86 tests pass, coverage 99 percent, size green, on branch codex-directory.
 ## [2026-10-11] index | rebuilt (3 entries)
+## [2026-10-11] index | rebuilt (4 entries)
