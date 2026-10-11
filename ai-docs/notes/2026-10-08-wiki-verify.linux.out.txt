@@ -1,0 +1,4712 @@
+=== installed ===
+source: an interpreter given in WIKI_VERIFY_PYTHON, with repo-traffic==1.0.0b1 installed beforehand
+repo-traffic 1.0.0b1 (distribution 1.0.0b1), Python 3.14.4, Linux x86_64
+runtime requirements: none
+module: <site-packages>/repo_traffic.py
+installed repo_traffic.py equals the tag's: True (sha256 0a445a36d78b6c82)
+lines in repo_traffic.py: 594
+
+=== command: version ===
+$ repo-traffic --version
+repo-traffic 1.0.0b1
+$ echo $?
+0
+stdout: 1 lines
+stderr: (empty)
+files left in the folder: none
+
+=== command: module-version ===
+$ python -m repo_traffic --version
+repo-traffic 1.0.0b1
+$ echo $?
+0
+stdout: 1 lines
+stderr: (empty)
+files left in the folder: none
+
+=== command: help ===
+$ repo-traffic --help
+usage: repo-traffic [-h] [--owner OWNER] [--npm-user NPM_USER]
+                    [--nuget-owner NUGET_OWNER]
+                    [--pypi-packages PYPI_PACKAGES] [--data DATA] [--top TOP]
+                    [--config CONFIG] [--version]
+
+Save GitHub traffic and npm, NuGet and PyPI download counts before GitHub's 14
+days run out.
+
+options:
+  -h, --help            show this help message and exit
+  --owner OWNER         GitHub owner whose repos to read (default: the gh
+                        login)
+  --npm-user NPM_USER   npm username whose packages to count (default: npm
+                        skipped)
+  --nuget-owner NUGET_OWNER
+                        nuget.org owner whose packages to count (default:
+                        NuGet skipped)
+  --pypi-packages PYPI_PACKAGES
+                        comma-separated PyPI project names to count (default:
+                        PyPI skipped)
+  --data DATA           data folder, relative to the settings folder (default:
+                        data)
+  --top TOP             rows per summary table (default: 10)
+  --config CONFIG       settings file (default: repo_traffic.json in the
+                        settings folder)
+  --version             show program's version number and exit
+$ echo $?
+0
+stdout: 26 lines
+stderr: (empty)
+files left in the folder: none
+
+=== command: top-no-value ===
+$ repo-traffic --top
+usage: repo-traffic [-h] [--owner OWNER] [--npm-user NPM_USER]
+                    [--nuget-owner NUGET_OWNER]
+                    [--pypi-packages PYPI_PACKAGES] [--data DATA] [--top TOP]
+                    [--config CONFIG] [--version]
+repo-traffic: error: argument --top: expected one argument
+$ echo $?
+2
+stdout: (empty)
+stderr: 5 lines
+files left in the folder: none
+
+=== command: abbreviation ===
+$ repo-traffic --own octo-example
+usage: repo-traffic [-h] [--owner OWNER] [--npm-user NPM_USER]
+                    [--nuget-owner NUGET_OWNER]
+                    [--pypi-packages PYPI_PACKAGES] [--data DATA] [--top TOP]
+                    [--config CONFIG] [--version]
+repo-traffic: error: unrecognized arguments: --own octo-example
+$ echo $?
+2
+stdout: (empty)
+stderr: 5 lines
+files left in the folder: none
+
+=== command: unknown-flag ===
+$ repo-traffic --owners octo-example
+usage: repo-traffic [-h] [--owner OWNER] [--npm-user NPM_USER]
+                    [--nuget-owner NUGET_OWNER]
+                    [--pypi-packages PYPI_PACKAGES] [--data DATA] [--top TOP]
+                    [--config CONFIG] [--version]
+repo-traffic: error: unrecognized arguments: --owners octo-example
+$ echo $?
+2
+stdout: (empty)
+stderr: 5 lines
+files left in the folder: none
+
+=== command: top-not-a-number ===
+$ repo-traffic --top many
+usage: repo-traffic [-h] [--owner OWNER] [--npm-user NPM_USER]
+                    [--nuget-owner NUGET_OWNER]
+                    [--pypi-packages PYPI_PACKAGES] [--data DATA] [--top TOP]
+                    [--config CONFIG] [--version]
+repo-traffic: error: argument --top: invalid int value: 'many'
+$ echo $?
+2
+stdout: (empty)
+stderr: 5 lines
+files left in the folder: none
+
+=== case: first-run ===
+form: repo-traffic (repo_traffic.cli() of the installed module)
+--- run 1 at 2026-10-08T09:00:00
+$ repo-traffic
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+$ echo $?
+0
+stdout ends: LF
+stderr last line: (empty)
+gh calls: 22; first: api user -q .login
+http requests: 0
+sleeps: none
+the folder afterwards:
+data/
+  daily.csv
+  downloads.csv
+  repos.csv
+  run.log
+  snapshots/
+    2026-10-08/
+      github.json
+      packages.json
+      summary.md
+files written:
+  data/daily.csv  (CRLF, 302 bytes as text)
+  data/downloads.csv  (CRLF, 112 bytes as text)
+  data/repos.csv  (CRLF, 223 bytes as text)
+  data/run.log  (LF, 47 bytes as text)
+  data/snapshots/2026-10-08/github.json  (LF, 2526 bytes as text)
+  data/snapshots/2026-10-08/packages.json  (LF, 28 bytes as text)
+  data/snapshots/2026-10-08/summary.md  (LF, 555 bytes as text)
+--- data/daily.csv
+repo,date,views,views_uniques,clones,clones_uniques
+alpha-lib,2026-09-25,10,4,0,0
+alpha-lib,2026-09-26,6,3,3,2
+alpha-lib,2026-09-27,0,0,5,5
+alpha-lib,2026-09-28,8,5,0,0
+beta-tool,2026-10-01,5,5,0,0
+beta-tool,2026-10-02,0,0,2,1
+gamma-private,2026-10-06,7,5,0,0
+gamma-private,2026-10-07,1,1,2,1
+--- data/downloads.csv
+snapshot,registry,package,last_14_days,last_month,last_6_weeks,total
+2026-10-08,github-release,alpha-lib,,,,9
+--- data/repos.csv
+snapshot,repo,private,fork,stars,forks,release_downloads
+2026-10-08,alpha-lib,false,false,12,3,9
+2026-10-08,beta-tool,false,true,0,0,0
+2026-10-08,gamma-private,true,false,0,0,0
+2026-10-08,delta-empty,false,false,1,0,0
+--- data/run.log
+2026-10-08T09:00:00 ok 4 repos, 0 npm, 0 nuget
+--- data/snapshots/2026-10-08/summary.md
+# Repo traffic for octo-example, 2026-10-08
+
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+=== case: config-run ===
+form: repo-traffic (repo_traffic.cli() of the installed module)
+repo_traffic.json: {"owner": "octo-example", "npm_user": "npm-example", "nuget_owner": "nuget-example", "pypi_packages": ["octo-tool"], "data": "data", "top": 10}
+--- run 1 at 2026-10-08T09:00:00
+$ repo-traffic
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## npm downloads
+
+| # | Package | Last 14 days | Last month |
+|---|---|---|---|
+| 1 | alpha-lib | 20 | 40 |
+| 2 | gamma-cli | 20 | 41 |
+| 3 | @octo-example/beta | 3 | 3 |
+
+## NuGet downloads
+
+| # | Package | Last 6 weeks | All time |
+|---|---|---|---|
+| 1 | Example.Core | 251 | 251 |
+| 2 | Example.Tools | 42 | 3,923 |
+
+## PyPI downloads
+
+| # | Package | Last 14 days | Last month |
+|---|---|---|---|
+| 1 | octo-tool | 22 | 30 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+$ echo $?
+0
+stdout ends: LF
+stderr last line: (empty)
+gh calls: 21; first: repo list octo-example --limit 1000 --json name,isPrivate,isFork,stargazerCount,forkCount
+http requests: 13
+  GET https://registry.npmjs.org/-/v1/search?size=250&text=maintainer:npm-example  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/point/last-month/alpha-lib  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/range/2026-09-24:2026-10-07/@octo-example/beta  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/point/last-month/@octo-example/beta  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/range/2026-09-24:2026-10-07/gamma-cli  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/point/last-month/gamma-cli  (User-Agent: repo-traffic)
+  GET https://azuresearch-usnc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example  (User-Agent: repo-traffic)
+  GET https://azuresearch-ussc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example  (User-Agent: repo-traffic)
+  GET https://www.nuget.org/stats/reports/packages/Example.Core?groupby=Version  (User-Agent: repo-traffic)
+  GET https://www.nuget.org/stats/reports/packages/Example.Tools?groupby=Version  (User-Agent: repo-traffic)
+  GET https://pypistats.org/api/packages/octo-tool/recent  (User-Agent: repo-traffic)
+  GET https://pypistats.org/api/packages/octo-tool/overall?mirrors=false  (User-Agent: repo-traffic)
+sleeps: 1, 1, 1, 1, 1, 1
+the folder afterwards:
+data/
+  daily.csv
+  downloads.csv
+  repos.csv
+  run.log
+  snapshots/
+    2026-10-08/
+      github.json
+      packages.json
+      summary.md
+files written:
+  data/daily.csv  (CRLF, 302 bytes as text)
+  data/downloads.csv  (CRLF, 339 bytes as text)
+  data/repos.csv  (CRLF, 223 bytes as text)
+  data/run.log  (LF, 55 bytes as text)
+  data/snapshots/2026-10-08/github.json  (LF, 2526 bytes as text)
+  data/snapshots/2026-10-08/packages.json  (LF, 4177 bytes as text)
+  data/snapshots/2026-10-08/summary.md  (LF, 986 bytes as text)
+--- data/daily.csv
+repo,date,views,views_uniques,clones,clones_uniques
+alpha-lib,2026-09-25,10,4,0,0
+alpha-lib,2026-09-26,6,3,3,2
+alpha-lib,2026-09-27,0,0,5,5
+alpha-lib,2026-09-28,8,5,0,0
+beta-tool,2026-10-01,5,5,0,0
+beta-tool,2026-10-02,0,0,2,1
+gamma-private,2026-10-06,7,5,0,0
+gamma-private,2026-10-07,1,1,2,1
+--- data/downloads.csv
+snapshot,registry,package,last_14_days,last_month,last_6_weeks,total
+2026-10-08,npm,alpha-lib,20,40,,
+2026-10-08,npm,@octo-example/beta,3,3,,
+2026-10-08,npm,gamma-cli,20,41,,
+2026-10-08,nuget,Example.Core,,,251,251
+2026-10-08,nuget,Example.Tools,,,42,3923
+2026-10-08,pypi,octo-tool,22,30,,
+2026-10-08,github-release,alpha-lib,,,,9
+--- data/repos.csv
+snapshot,repo,private,fork,stars,forks,release_downloads
+2026-10-08,alpha-lib,false,false,12,3,9
+2026-10-08,beta-tool,false,true,0,0,0
+2026-10-08,gamma-private,true,false,0,0,0
+2026-10-08,delta-empty,false,false,1,0,0
+--- data/run.log
+2026-10-08T09:00:00 ok 4 repos, 3 npm, 2 nuget, 1 pypi
+--- data/snapshots/2026-10-08/summary.md
+# Repo traffic for octo-example, 2026-10-08
+
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## npm downloads
+
+| # | Package | Last 14 days | Last month |
+|---|---|---|---|
+| 1 | alpha-lib | 20 | 40 |
+| 2 | gamma-cli | 20 | 41 |
+| 3 | @octo-example/beta | 3 | 3 |
+
+## NuGet downloads
+
+| # | Package | Last 6 weeks | All time |
+|---|---|---|---|
+| 1 | Example.Core | 251 | 251 |
+| 2 | Example.Tools | 42 | 3,923 |
+
+## PyPI downloads
+
+| # | Package | Last 14 days | Last month |
+|---|---|---|---|
+| 1 | octo-tool | 22 | 30 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+=== case: clone-run ===
+form: python repo_traffic.py (the installed module copied into the folder)
+repo_traffic.json: {"owner": "octo-example", "npm_user": "npm-example", "nuget_owner": "nuget-example", "pypi_packages": ["octo-tool"], "data": "data", "top": 10}
+--- run 1 at 2026-10-08T09:00:00
+$ python repo_traffic.py
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## npm downloads
+
+| # | Package | Last 14 days | Last month |
+|---|---|---|---|
+| 1 | alpha-lib | 20 | 40 |
+| 2 | gamma-cli | 20 | 41 |
+| 3 | @octo-example/beta | 3 | 3 |
+
+## NuGet downloads
+
+| # | Package | Last 6 weeks | All time |
+|---|---|---|---|
+| 1 | Example.Core | 251 | 251 |
+| 2 | Example.Tools | 42 | 3,923 |
+
+## PyPI downloads
+
+| # | Package | Last 14 days | Last month |
+|---|---|---|---|
+| 1 | octo-tool | 22 | 30 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+$ echo $?
+0
+stdout ends: LF
+stderr last line: (empty)
+gh calls: 21; first: repo list octo-example --limit 1000 --json name,isPrivate,isFork,stargazerCount,forkCount
+http requests: 13
+  GET https://registry.npmjs.org/-/v1/search?size=250&text=maintainer:npm-example  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/point/last-month/alpha-lib  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/range/2026-09-24:2026-10-07/@octo-example/beta  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/point/last-month/@octo-example/beta  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/range/2026-09-24:2026-10-07/gamma-cli  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/point/last-month/gamma-cli  (User-Agent: repo-traffic)
+  GET https://azuresearch-usnc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example  (User-Agent: repo-traffic)
+  GET https://azuresearch-ussc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example  (User-Agent: repo-traffic)
+  GET https://www.nuget.org/stats/reports/packages/Example.Core?groupby=Version  (User-Agent: repo-traffic)
+  GET https://www.nuget.org/stats/reports/packages/Example.Tools?groupby=Version  (User-Agent: repo-traffic)
+  GET https://pypistats.org/api/packages/octo-tool/recent  (User-Agent: repo-traffic)
+  GET https://pypistats.org/api/packages/octo-tool/overall?mirrors=false  (User-Agent: repo-traffic)
+sleeps: 1, 1, 1, 1, 1, 1
+the folder afterwards:
+data/
+  daily.csv
+  downloads.csv
+  repos.csv
+  run.log
+  snapshots/
+    2026-10-08/
+      github.json
+      packages.json
+      summary.md
+files written:
+  data/daily.csv  (CRLF, 302 bytes as text)
+  data/downloads.csv  (CRLF, 339 bytes as text)
+  data/repos.csv  (CRLF, 223 bytes as text)
+  data/run.log  (LF, 55 bytes as text)
+  data/snapshots/2026-10-08/github.json  (LF, 2526 bytes as text)
+  data/snapshots/2026-10-08/packages.json  (LF, 4177 bytes as text)
+  data/snapshots/2026-10-08/summary.md  (LF, 986 bytes as text)
+--- data/daily.csv
+repo,date,views,views_uniques,clones,clones_uniques
+alpha-lib,2026-09-25,10,4,0,0
+alpha-lib,2026-09-26,6,3,3,2
+alpha-lib,2026-09-27,0,0,5,5
+alpha-lib,2026-09-28,8,5,0,0
+beta-tool,2026-10-01,5,5,0,0
+beta-tool,2026-10-02,0,0,2,1
+gamma-private,2026-10-06,7,5,0,0
+gamma-private,2026-10-07,1,1,2,1
+--- data/downloads.csv
+snapshot,registry,package,last_14_days,last_month,last_6_weeks,total
+2026-10-08,npm,alpha-lib,20,40,,
+2026-10-08,npm,@octo-example/beta,3,3,,
+2026-10-08,npm,gamma-cli,20,41,,
+2026-10-08,nuget,Example.Core,,,251,251
+2026-10-08,nuget,Example.Tools,,,42,3923
+2026-10-08,pypi,octo-tool,22,30,,
+2026-10-08,github-release,alpha-lib,,,,9
+--- data/repos.csv
+snapshot,repo,private,fork,stars,forks,release_downloads
+2026-10-08,alpha-lib,false,false,12,3,9
+2026-10-08,beta-tool,false,true,0,0,0
+2026-10-08,gamma-private,true,false,0,0,0
+2026-10-08,delta-empty,false,false,1,0,0
+--- data/run.log
+2026-10-08T09:00:00 ok 4 repos, 3 npm, 2 nuget, 1 pypi
+--- data/snapshots/2026-10-08/summary.md
+# Repo traffic for octo-example, 2026-10-08
+
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## npm downloads
+
+| # | Package | Last 14 days | Last month |
+|---|---|---|---|
+| 1 | alpha-lib | 20 | 40 |
+| 2 | gamma-cli | 20 | 41 |
+| 3 | @octo-example/beta | 3 | 3 |
+
+## NuGet downloads
+
+| # | Package | Last 6 weeks | All time |
+|---|---|---|---|
+| 1 | Example.Core | 251 | 251 |
+| 2 | Example.Tools | 42 | 3,923 |
+
+## PyPI downloads
+
+| # | Package | Last 14 days | Last month |
+|---|---|---|---|
+| 1 | octo-tool | 22 | 30 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+=== case: flag-over-config ===
+form: repo-traffic (repo_traffic.cli() of the installed module)
+repo_traffic.json: {"owner": "octo-example", "npm_user": "npm-example", "nuget_owner": null, "top": 10}
+--- run 1 at 2026-10-08T09:00:00
+$ repo-traffic --top 2 --nuget-owner nuget-example
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+
+## npm downloads
+
+| # | Package | Last 14 days | Last month |
+|---|---|---|---|
+| 1 | alpha-lib | 20 | 40 |
+| 2 | gamma-cli | 20 | 41 |
+
+## NuGet downloads
+
+| # | Package | Last 6 weeks | All time |
+|---|---|---|---|
+| 1 | Example.Core | 251 | 251 |
+| 2 | Example.Tools | 42 | 3,923 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+$ echo $?
+0
+stdout ends: LF
+stderr last line: (empty)
+gh calls: 21; first: repo list octo-example --limit 1000 --json name,isPrivate,isFork,stargazerCount,forkCount
+http requests: 11
+  GET https://registry.npmjs.org/-/v1/search?size=250&text=maintainer:npm-example  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/point/last-month/alpha-lib  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/range/2026-09-24:2026-10-07/@octo-example/beta  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/point/last-month/@octo-example/beta  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/range/2026-09-24:2026-10-07/gamma-cli  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/point/last-month/gamma-cli  (User-Agent: repo-traffic)
+  GET https://azuresearch-usnc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example  (User-Agent: repo-traffic)
+  GET https://azuresearch-ussc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example  (User-Agent: repo-traffic)
+  GET https://www.nuget.org/stats/reports/packages/Example.Core?groupby=Version  (User-Agent: repo-traffic)
+  GET https://www.nuget.org/stats/reports/packages/Example.Tools?groupby=Version  (User-Agent: repo-traffic)
+sleeps: 1, 1, 1, 1, 1
+the folder afterwards:
+data/
+  daily.csv
+  downloads.csv
+  repos.csv
+  run.log
+  snapshots/
+    2026-10-08/
+      github.json
+      packages.json
+      summary.md
+files written:
+  data/daily.csv  (CRLF, 302 bytes as text)
+  data/downloads.csv  (CRLF, 304 bytes as text)
+  data/repos.csv  (CRLF, 223 bytes as text)
+  data/run.log  (LF, 47 bytes as text)
+  data/snapshots/2026-10-08/github.json  (LF, 2526 bytes as text)
+  data/snapshots/2026-10-08/packages.json  (LF, 3238 bytes as text)
+  data/snapshots/2026-10-08/summary.md  (LF, 729 bytes as text)
+--- data/daily.csv
+repo,date,views,views_uniques,clones,clones_uniques
+alpha-lib,2026-09-25,10,4,0,0
+alpha-lib,2026-09-26,6,3,3,2
+alpha-lib,2026-09-27,0,0,5,5
+alpha-lib,2026-09-28,8,5,0,0
+beta-tool,2026-10-01,5,5,0,0
+beta-tool,2026-10-02,0,0,2,1
+gamma-private,2026-10-06,7,5,0,0
+gamma-private,2026-10-07,1,1,2,1
+--- data/downloads.csv
+snapshot,registry,package,last_14_days,last_month,last_6_weeks,total
+2026-10-08,npm,alpha-lib,20,40,,
+2026-10-08,npm,@octo-example/beta,3,3,,
+2026-10-08,npm,gamma-cli,20,41,,
+2026-10-08,nuget,Example.Core,,,251,251
+2026-10-08,nuget,Example.Tools,,,42,3923
+2026-10-08,github-release,alpha-lib,,,,9
+--- data/repos.csv
+snapshot,repo,private,fork,stars,forks,release_downloads
+2026-10-08,alpha-lib,false,false,12,3,9
+2026-10-08,beta-tool,false,true,0,0,0
+2026-10-08,gamma-private,true,false,0,0,0
+2026-10-08,delta-empty,false,false,1,0,0
+--- data/run.log
+2026-10-08T09:00:00 ok 4 repos, 3 npm, 2 nuget
+--- data/snapshots/2026-10-08/summary.md
+# Repo traffic for octo-example, 2026-10-08
+
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+
+## npm downloads
+
+| # | Package | Last 14 days | Last month |
+|---|---|---|---|
+| 1 | alpha-lib | 20 | 40 |
+| 2 | gamma-cli | 20 | 41 |
+
+## NuGet downloads
+
+| # | Package | Last 6 weeks | All time |
+|---|---|---|---|
+| 1 | Example.Core | 251 | 251 |
+| 2 | Example.Tools | 42 | 3,923 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+=== case: pypi-flag ===
+form: repo-traffic (repo_traffic.cli() of the installed module)
+--- run 1 at 2026-10-08T09:00:00
+$ repo-traffic --owner octo-example --pypi-packages octo-tool,Octo_Helper
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## PyPI downloads
+
+| # | Package | Last 14 days | Last month |
+|---|---|---|---|
+| 1 | octo-tool | 22 | 30 |
+| 2 | Octo_Helper | 14 | 15 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+$ echo $?
+0
+stdout ends: LF
+stderr last line: (empty)
+gh calls: 21; first: repo list octo-example --limit 1000 --json name,isPrivate,isFork,stargazerCount,forkCount
+http requests: 4
+  GET https://pypistats.org/api/packages/octo-tool/recent  (User-Agent: repo-traffic)
+  GET https://pypistats.org/api/packages/octo-tool/overall?mirrors=false  (User-Agent: repo-traffic)
+  GET https://pypistats.org/api/packages/octo-helper/recent  (User-Agent: repo-traffic)
+  GET https://pypistats.org/api/packages/octo-helper/overall?mirrors=false  (User-Agent: repo-traffic)
+sleeps: 1, 1
+the folder afterwards:
+data/
+  daily.csv
+  downloads.csv
+  repos.csv
+  run.log
+  snapshots/
+    2026-10-08/
+      github.json
+      packages.json
+      summary.md
+files written:
+  data/daily.csv  (CRLF, 302 bytes as text)
+  data/downloads.csv  (CRLF, 184 bytes as text)
+  data/repos.csv  (CRLF, 223 bytes as text)
+  data/run.log  (LF, 55 bytes as text)
+  data/snapshots/2026-10-08/github.json  (LF, 2526 bytes as text)
+  data/snapshots/2026-10-08/packages.json  (LF, 1893 bytes as text)
+  data/snapshots/2026-10-08/summary.md  (LF, 695 bytes as text)
+--- data/daily.csv
+repo,date,views,views_uniques,clones,clones_uniques
+alpha-lib,2026-09-25,10,4,0,0
+alpha-lib,2026-09-26,6,3,3,2
+alpha-lib,2026-09-27,0,0,5,5
+alpha-lib,2026-09-28,8,5,0,0
+beta-tool,2026-10-01,5,5,0,0
+beta-tool,2026-10-02,0,0,2,1
+gamma-private,2026-10-06,7,5,0,0
+gamma-private,2026-10-07,1,1,2,1
+--- data/downloads.csv
+snapshot,registry,package,last_14_days,last_month,last_6_weeks,total
+2026-10-08,pypi,octo-tool,22,30,,
+2026-10-08,pypi,Octo_Helper,14,15,,
+2026-10-08,github-release,alpha-lib,,,,9
+--- data/repos.csv
+snapshot,repo,private,fork,stars,forks,release_downloads
+2026-10-08,alpha-lib,false,false,12,3,9
+2026-10-08,beta-tool,false,true,0,0,0
+2026-10-08,gamma-private,true,false,0,0,0
+2026-10-08,delta-empty,false,false,1,0,0
+--- data/run.log
+2026-10-08T09:00:00 ok 4 repos, 0 npm, 0 nuget, 2 pypi
+--- data/snapshots/2026-10-08/summary.md
+# Repo traffic for octo-example, 2026-10-08
+
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## PyPI downloads
+
+| # | Package | Last 14 days | Last month |
+|---|---|---|---|
+| 1 | octo-tool | 22 | 30 |
+| 2 | Octo_Helper | 14 | 15 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+=== case: config-folder ===
+form: repo-traffic (repo_traffic.cli() of the installed module)
+before: settings/repo_traffic.json (LF)
+{
+  "owner": "octo-example",
+  "data": "traffic"
+}
+--- run 1 at 2026-10-08T09:00:00
+$ repo-traffic --config settings/repo_traffic.json
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+$ echo $?
+0
+stdout ends: LF
+stderr last line: (empty)
+gh calls: 21; first: repo list octo-example --limit 1000 --json name,isPrivate,isFork,stargazerCount,forkCount
+http requests: 0
+sleeps: none
+the folder afterwards:
+settings/
+  repo_traffic.json
+  traffic/
+    daily.csv
+    downloads.csv
+    repos.csv
+    run.log
+    snapshots/
+      2026-10-08/
+        github.json
+        packages.json
+        summary.md
+files written:
+  settings/repo_traffic.json  (LF, 51 bytes as text)
+  settings/traffic/daily.csv  (CRLF, 302 bytes as text)
+  settings/traffic/downloads.csv  (CRLF, 112 bytes as text)
+  settings/traffic/repos.csv  (CRLF, 223 bytes as text)
+  settings/traffic/run.log  (LF, 47 bytes as text)
+  settings/traffic/snapshots/2026-10-08/github.json  (LF, 2526 bytes as text)
+  settings/traffic/snapshots/2026-10-08/packages.json  (LF, 28 bytes as text)
+  settings/traffic/snapshots/2026-10-08/summary.md  (LF, 555 bytes as text)
+--- settings/traffic/daily.csv
+repo,date,views,views_uniques,clones,clones_uniques
+alpha-lib,2026-09-25,10,4,0,0
+alpha-lib,2026-09-26,6,3,3,2
+alpha-lib,2026-09-27,0,0,5,5
+alpha-lib,2026-09-28,8,5,0,0
+beta-tool,2026-10-01,5,5,0,0
+beta-tool,2026-10-02,0,0,2,1
+gamma-private,2026-10-06,7,5,0,0
+gamma-private,2026-10-07,1,1,2,1
+--- settings/traffic/downloads.csv
+snapshot,registry,package,last_14_days,last_month,last_6_weeks,total
+2026-10-08,github-release,alpha-lib,,,,9
+--- settings/traffic/repos.csv
+snapshot,repo,private,fork,stars,forks,release_downloads
+2026-10-08,alpha-lib,false,false,12,3,9
+2026-10-08,beta-tool,false,true,0,0,0
+2026-10-08,gamma-private,true,false,0,0,0
+2026-10-08,delta-empty,false,false,1,0,0
+--- settings/traffic/run.log
+2026-10-08T09:00:00 ok 4 repos, 0 npm, 0 nuget
+--- settings/traffic/snapshots/2026-10-08/summary.md
+# Repo traffic for octo-example, 2026-10-08
+
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+=== case: module-no-config ===
+form: python -m repo_traffic (runpy on the installed module)
+repo_traffic.json: {"owner": "octo-example", "npm_user": "npm-example", "nuget_owner": "nuget-example", "data": "data", "top": 10}
+--- run 1 at 2026-10-08T09:00:00
+$ python -m repo_traffic
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+$ echo $?
+0
+stdout ends: LF
+stderr last line: (empty)
+gh calls: 22; first: api user -q .login
+http requests: 0
+sleeps: none
+the folder afterwards:
+files written:
+after python -m repo_traffic without --config, <site-packages> holds:
+data/
+  daily.csv
+  downloads.csv
+  repos.csv
+  run.log
+  snapshots/
+    2026-10-08/
+      github.json
+      packages.json
+      summary.md
+(removed by this program)
+
+=== case: module-config ===
+form: python -m repo_traffic (runpy on the installed module)
+repo_traffic.json: {"owner": "octo-example"}
+--- run 1 at 2026-10-08T09:00:00
+$ python -m repo_traffic --config repo_traffic.json
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+$ echo $?
+0
+stdout ends: LF
+stderr last line: (empty)
+gh calls: 21; first: repo list octo-example --limit 1000 --json name,isPrivate,isFork,stargazerCount,forkCount
+http requests: 0
+sleeps: none
+the folder afterwards:
+data/
+  daily.csv
+  downloads.csv
+  repos.csv
+  run.log
+  snapshots/
+    2026-10-08/
+      github.json
+      packages.json
+      summary.md
+files written:
+  data/daily.csv  (CRLF, 302 bytes as text)
+  data/downloads.csv  (CRLF, 112 bytes as text)
+  data/repos.csv  (CRLF, 223 bytes as text)
+  data/run.log  (LF, 47 bytes as text)
+  data/snapshots/2026-10-08/github.json  (LF, 2526 bytes as text)
+  data/snapshots/2026-10-08/packages.json  (LF, 28 bytes as text)
+  data/snapshots/2026-10-08/summary.md  (LF, 555 bytes as text)
+--- data/daily.csv
+repo,date,views,views_uniques,clones,clones_uniques
+alpha-lib,2026-09-25,10,4,0,0
+alpha-lib,2026-09-26,6,3,3,2
+alpha-lib,2026-09-27,0,0,5,5
+alpha-lib,2026-09-28,8,5,0,0
+beta-tool,2026-10-01,5,5,0,0
+beta-tool,2026-10-02,0,0,2,1
+gamma-private,2026-10-06,7,5,0,0
+gamma-private,2026-10-07,1,1,2,1
+--- data/downloads.csv
+snapshot,registry,package,last_14_days,last_month,last_6_weeks,total
+2026-10-08,github-release,alpha-lib,,,,9
+--- data/repos.csv
+snapshot,repo,private,fork,stars,forks,release_downloads
+2026-10-08,alpha-lib,false,false,12,3,9
+2026-10-08,beta-tool,false,true,0,0,0
+2026-10-08,gamma-private,true,false,0,0,0
+2026-10-08,delta-empty,false,false,1,0,0
+--- data/run.log
+2026-10-08T09:00:00 ok 4 repos, 0 npm, 0 nuget
+--- data/snapshots/2026-10-08/summary.md
+# Repo traffic for octo-example, 2026-10-08
+
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+=== case: bad-json ===
+form: repo-traffic (repo_traffic.cli() of the installed module)
+before: repo_traffic.json (LF)
+{
+  "owner": "octo-example",
+}
+--- run 1 at 2026-10-08T09:00:00
+$ repo-traffic
+json.decoder.JSONDecodeError: Illegal trailing comma before end of object: line 2 column 26 (char 27)
+$ echo $?
+1
+stdout ends: nothing printed
+stderr last line: json.decoder.JSONDecodeError: Illegal trailing comma before end of object: line 2 column 26 (char 27)
+gh calls: 0; first: -
+http requests: 0
+sleeps: none
+the folder afterwards:
+data/
+  run.log
+files written:
+  data/run.log  (LF, 118 bytes as text)
+--- data/run.log
+2026-10-08T09:00:00 FAILED JSONDecodeError('Illegal trailing comma before end of object: line 2 column 26 (char 27)')
+
+=== case: missing-config ===
+form: repo-traffic (repo_traffic.cli() of the installed module)
+--- run 1 at 2026-10-08T09:00:00
+$ repo-traffic --config settings/missing.json
+FileNotFoundError: [Errno 2] No such file or directory: 'settings/missing.json'
+$ echo $?
+1
+stdout ends: nothing printed
+stderr last line: FileNotFoundError: [Errno 2] No such file or directory: 'settings/missing.json'
+gh calls: 0; first: -
+http requests: 0
+sleeps: none
+the folder afterwards:
+settings/
+  data/
+    run.log
+files written:
+  settings/data/run.log  (LF, 77 bytes as text)
+--- settings/data/run.log
+2026-10-08T09:00:00 FAILED FileNotFoundError(2, 'No such file or directory')
+
+=== case: partial ===
+form: repo-traffic (repo_traffic.cli() of the installed module)
+repo_traffic.json: {"owner": "octo-example", "npm_user": "npm-example", "nuget_owner": "nuget-example", "data": "data", "top": 10}
+--- run 1 at 2026-10-08T09:00:00
+$ repo-traffic
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## npm downloads
+
+| # | Package | Last 14 days | Last month |
+|---|---|---|---|
+| 1 | gamma-cli | 20 | 41 |
+| 2 | @octo-example/beta | 3 | 3 |
+
+## NuGet downloads
+
+| # | Package | Last 6 weeks | All time |
+|---|---|---|---|
+| 1 | Example.Core | 251 | 251 |
+| 2 | Example.Tools | 42 | 3,923 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+## Not counted this run
+
+- npm alpha-lib (HTTP 429)
+
+repo-traffic: some sources failed, see run.log: npm alpha-lib (HTTP 429)
+$ echo $?
+1
+stdout ends: LF
+stderr last line: repo-traffic: some sources failed, see run.log: npm alpha-lib (HTTP 429)
+gh calls: 21; first: repo list octo-example --limit 1000 --json name,isPrivate,isFork,stargazerCount,forkCount
+http requests: 14
+  GET https://registry.npmjs.org/-/v1/search?size=250&text=maintainer:npm-example  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/range/2026-09-24:2026-10-07/@octo-example/beta  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/point/last-month/@octo-example/beta  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/range/2026-09-24:2026-10-07/gamma-cli  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/point/last-month/gamma-cli  (User-Agent: repo-traffic)
+  GET https://azuresearch-usnc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example  (User-Agent: repo-traffic)
+  GET https://azuresearch-ussc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example  (User-Agent: repo-traffic)
+  GET https://www.nuget.org/stats/reports/packages/Example.Core?groupby=Version  (User-Agent: repo-traffic)
+  GET https://www.nuget.org/stats/reports/packages/Example.Tools?groupby=Version  (User-Agent: repo-traffic)
+sleeps: 10, 20, 30, 40, 1, 1, 1, 1, 1
+the folder afterwards:
+data/
+  daily.csv
+  downloads.csv
+  repos.csv
+  run.log
+  snapshots/
+    2026-10-08/
+      github.json
+      packages.json
+      summary.md
+files written:
+  data/daily.csv  (CRLF, 302 bytes as text)
+  data/downloads.csv  (CRLF, 270 bytes as text)
+  data/repos.csv  (CRLF, 223 bytes as text)
+  data/run.log  (LF, 86 bytes as text)
+  data/snapshots/2026-10-08/github.json  (LF, 2526 bytes as text)
+  data/snapshots/2026-10-08/packages.json  (LF, 2351 bytes as text)
+  data/snapshots/2026-10-08/summary.md  (LF, 901 bytes as text)
+--- data/daily.csv
+repo,date,views,views_uniques,clones,clones_uniques
+alpha-lib,2026-09-25,10,4,0,0
+alpha-lib,2026-09-26,6,3,3,2
+alpha-lib,2026-09-27,0,0,5,5
+alpha-lib,2026-09-28,8,5,0,0
+beta-tool,2026-10-01,5,5,0,0
+beta-tool,2026-10-02,0,0,2,1
+gamma-private,2026-10-06,7,5,0,0
+gamma-private,2026-10-07,1,1,2,1
+--- data/downloads.csv
+snapshot,registry,package,last_14_days,last_month,last_6_weeks,total
+2026-10-08,npm,@octo-example/beta,3,3,,
+2026-10-08,npm,gamma-cli,20,41,,
+2026-10-08,nuget,Example.Core,,,251,251
+2026-10-08,nuget,Example.Tools,,,42,3923
+2026-10-08,github-release,alpha-lib,,,,9
+--- data/repos.csv
+snapshot,repo,private,fork,stars,forks,release_downloads
+2026-10-08,alpha-lib,false,false,12,3,9
+2026-10-08,beta-tool,false,true,0,0,0
+2026-10-08,gamma-private,true,false,0,0,0
+2026-10-08,delta-empty,false,false,1,0,0
+--- data/run.log
+2026-10-08T09:00:00 partial 4 repos, 2 npm, 2 nuget; failed: npm alpha-lib (HTTP 429)
+--- data/snapshots/2026-10-08/summary.md
+# Repo traffic for octo-example, 2026-10-08
+
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## npm downloads
+
+| # | Package | Last 14 days | Last month |
+|---|---|---|---|
+| 1 | gamma-cli | 20 | 41 |
+| 2 | @octo-example/beta | 3 | 3 |
+
+## NuGet downloads
+
+| # | Package | Last 6 weeks | All time |
+|---|---|---|---|
+| 1 | Example.Core | 251 | 251 |
+| 2 | Example.Tools | 42 | 3,923 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+## Not counted this run
+
+- npm alpha-lib (HTTP 429)
+
+=== case: full ===
+form: repo-traffic (repo_traffic.cli() of the installed module)
+repo_traffic.json: {"owner": "octo-example", "npm_user": "npm-example", "nuget_owner": "nuget-example", "pypi_packages": ["octo-tool"], "data": "data", "top": 10}
+--- run 1 at 2026-10-08T09:00:00
+$ repo-traffic
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## npm downloads
+
+| # | Package | Last 14 days | Last month |
+|---|---|---|---|
+| 1 | alpha-lib | 20 | 40 |
+| 2 | gamma-cli | 20 | 41 |
+| 3 | @octo-example/beta | 3 | 3 |
+
+## NuGet downloads
+
+| # | Package | Last 6 weeks | All time |
+|---|---|---|---|
+| 1 | Example.Core | 251 | 251 |
+| 2 | Example.Tools | 42 | 3,923 |
+
+## PyPI downloads
+
+| # | Package | Last 14 days | Last month |
+|---|---|---|---|
+| 1 | octo-tool | 22 | 30 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+$ echo $?
+0
+stdout ends: LF
+stderr last line: (empty)
+gh calls: 21; first: repo list octo-example --limit 1000 --json name,isPrivate,isFork,stargazerCount,forkCount
+http requests: 13
+  GET https://registry.npmjs.org/-/v1/search?size=250&text=maintainer:npm-example  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/point/last-month/alpha-lib  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/range/2026-09-24:2026-10-07/@octo-example/beta  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/point/last-month/@octo-example/beta  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/range/2026-09-24:2026-10-07/gamma-cli  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/point/last-month/gamma-cli  (User-Agent: repo-traffic)
+  GET https://azuresearch-usnc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example  (User-Agent: repo-traffic)
+  GET https://azuresearch-ussc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example  (User-Agent: repo-traffic)
+  GET https://www.nuget.org/stats/reports/packages/Example.Core?groupby=Version  (User-Agent: repo-traffic)
+  GET https://www.nuget.org/stats/reports/packages/Example.Tools?groupby=Version  (User-Agent: repo-traffic)
+  GET https://pypistats.org/api/packages/octo-tool/recent  (User-Agent: repo-traffic)
+  GET https://pypistats.org/api/packages/octo-tool/overall?mirrors=false  (User-Agent: repo-traffic)
+sleeps: 1, 1, 1, 1, 1, 1
+the folder afterwards:
+data/
+  daily.csv
+  downloads.csv
+  repos.csv
+  run.log
+  snapshots/
+    2026-10-08/
+      github.json
+      packages.json
+      summary.md
+files written:
+  data/daily.csv  (CRLF, 302 bytes as text)
+  data/downloads.csv  (CRLF, 339 bytes as text)
+  data/repos.csv  (CRLF, 223 bytes as text)
+  data/run.log  (LF, 55 bytes as text)
+  data/snapshots/2026-10-08/github.json  (LF, 2526 bytes as text)
+  data/snapshots/2026-10-08/packages.json  (LF, 4177 bytes as text)
+  data/snapshots/2026-10-08/summary.md  (LF, 986 bytes as text)
+--- data/daily.csv
+repo,date,views,views_uniques,clones,clones_uniques
+alpha-lib,2026-09-25,10,4,0,0
+alpha-lib,2026-09-26,6,3,3,2
+alpha-lib,2026-09-27,0,0,5,5
+alpha-lib,2026-09-28,8,5,0,0
+beta-tool,2026-10-01,5,5,0,0
+beta-tool,2026-10-02,0,0,2,1
+gamma-private,2026-10-06,7,5,0,0
+gamma-private,2026-10-07,1,1,2,1
+--- data/downloads.csv
+snapshot,registry,package,last_14_days,last_month,last_6_weeks,total
+2026-10-08,npm,alpha-lib,20,40,,
+2026-10-08,npm,@octo-example/beta,3,3,,
+2026-10-08,npm,gamma-cli,20,41,,
+2026-10-08,nuget,Example.Core,,,251,251
+2026-10-08,nuget,Example.Tools,,,42,3923
+2026-10-08,pypi,octo-tool,22,30,,
+2026-10-08,github-release,alpha-lib,,,,9
+--- data/repos.csv
+snapshot,repo,private,fork,stars,forks,release_downloads
+2026-10-08,alpha-lib,false,false,12,3,9
+2026-10-08,beta-tool,false,true,0,0,0
+2026-10-08,gamma-private,true,false,0,0,0
+2026-10-08,delta-empty,false,false,1,0,0
+--- data/run.log
+2026-10-08T09:00:00 ok 4 repos, 3 npm, 2 nuget, 1 pypi
+--- data/snapshots/2026-10-08/github.json
+{
+ "alpha-lib": {
+  "private": false,
+  "fork": false,
+  "stars": 12,
+  "forks": 3,
+  "views": {
+   "count": 24,
+   "uniques": 5,
+   "views": [
+    {
+     "timestamp": "2026-09-25T00:00:00Z",
+     "count": 10,
+     "uniques": 4
+    },
+    {
+     "timestamp": "2026-09-26T00:00:00Z",
+     "count": 6,
+     "uniques": 3
+    },
+    {
+     "timestamp": "2026-09-27T00:00:00Z",
+     "count": 0,
+     "uniques": 0
+    },
+    {
+     "timestamp": "2026-09-28T00:00:00Z",
+     "count": 8,
+     "uniques": 5
+    }
+   ]
+  },
+  "clones": {
+   "count": 8,
+   "uniques": 5,
+   "clones": [
+    {
+     "timestamp": "2026-09-26T00:00:00Z",
+     "count": 3,
+     "uniques": 2
+    },
+    {
+     "timestamp": "2026-09-27T00:00:00Z",
+     "count": 5,
+     "uniques": 5
+    }
+   ]
+  },
+  "referrers": [
+   {
+    "referrer": "github.com",
+    "count": 10,
+    "uniques": 4
+   },
+   {
+    "referrer": "news.example",
+    "count": 3,
+    "uniques": 2
+   }
+  ],
+  "paths": [
+   {
+    "path": "/octo-example/alpha-lib",
+    "title": "alpha-lib",
+    "count": 20,
+    "uniques": 6
+   }
+  ],
+  "release_downloads": {
+   "v1.0.0": {
+    "alpha-1.0.0.zip": 7,
+    "alpha-1.0.0.tar.gz": 2
+   },
+   "v0.9.0": {}
+  }
+ },
+ "beta-tool": {
+  "private": false,
+  "fork": true,
+  "stars": 0,
+  "forks": 0,
+  "views": {
+   "count": 5,
+   "uniques": 5,
+   "views": [
+    {
+     "timestamp": "2026-10-01T00:00:00Z",
+     "count": 5,
+     "uniques": 5
+    }
+   ]
+  },
+  "clones": {
+   "count": 2,
+   "uniques": 1,
+   "clones": [
+    {
+     "timestamp": "2026-10-02T00:00:00Z",
+     "count": 2,
+     "uniques": 1
+    }
+   ]
+  },
+  "referrers": [],
+  "paths": [],
+  "release_downloads": {}
+ },
+ "gamma-private": {
+  "private": true,
+  "fork": false,
+  "stars": 0,
+  "forks": 0,
+  "views": {
+   "count": 8,
+   "uniques": 5,
+   "views": [
+    {
+     "timestamp": "2026-10-06T00:00:00Z",
+     "count": 7,
+     "uniques": 5
+    },
+    {
+     "timestamp": "2026-10-07T00:00:00Z",
+     "count": 1,
+     "uniques": 1
+    }
+   ]
+  },
+  "clones": {
+   "count": 2,
+   "uniques": 1,
+   "clones": [
+    {
+     "timestamp": "2026-10-07T00:00:00Z",
+     "count": 2,
+     "uniques": 1
+    }
+   ]
+  },
+  "referrers": [],
+  "paths": [],
+  "release_downloads": {}
+ },
+ "delta-empty": {
+  "private": false,
+  "fork": false,
+  "stars": 1,
+  "forks": 0,
+  "views": {
+   "count": 0,
+   "uniques": 0,
+   "views": []
+  },
+  "clones": {
+   "count": 0,
+   "uniques": 0,
+   "clones": []
+  },
+  "referrers": [],
+  "paths": [],
+  "release_downloads": {
+   "v0.1.0": {
+    "delta.zip": 0
+   }
+  }
+ }
+}
+--- data/snapshots/2026-10-08/packages.json
+{
+ "npm": {
+  "alpha-lib": {
+   "daily": [
+    {
+     "downloads": 1,
+     "day": "2026-09-24"
+    },
+    {
+     "downloads": 0,
+     "day": "2026-09-25"
+    },
+    {
+     "downloads": 4,
+     "day": "2026-09-26"
+    },
+    {
+     "downloads": 2,
+     "day": "2026-09-27"
+    },
+    {
+     "downloads": 0,
+     "day": "2026-09-28"
+    },
+    {
+     "downloads": 0,
+     "day": "2026-09-29"
+    },
+    {
+     "downloads": 3,
+     "day": "2026-09-30"
+    },
+    {
+     "downloads": 1,
+     "day": "2026-10-01"
+    },
+    {
+     "downloads": 1,
+     "day": "2026-10-02"
+    },
+    {
+     "downloads": 0,
+     "day": "2026-10-03"
+    },
+    {
+     "downloads": 2,
+     "day": "2026-10-04"
+    },
+    {
+     "downloads": 5,
+     "day": "2026-10-05"
+    },
+    {
+     "downloads": 0,
+     "day": "2026-10-06"
+    },
+    {
+     "downloads": 1,
+     "day": "2026-10-07"
+    }
+   ],
+   "last_month": 40
+  },
+  "@octo-example/beta": {
+   "daily": [
+    {
+     "downloads": 0,
+     "day": "2026-09-24"
+    },
+    {
+     "downloads": 0,
+     "day": "2026-09-25"
+    },
+    {
+     "downloads": 1,
+     "day": "2026-09-26"
+    },
+    {
+     "downloads": 0,
+     "day": "2026-09-27"
+    },
+    {
+     "downloads": 0,
+     "day": "2026-09-28"
+    },
+    {
+     "downloads": 0,
+     "day": "2026-09-29"
+    },
+    {
+     "downloads": 0,
+     "day": "2026-09-30"
+    },
+    {
+     "downloads": 2,
+     "day": "2026-10-01"
+    },
+    {
+     "downloads": 0,
+     "day": "2026-10-02"
+    },
+    {
+     "downloads": 0,
+     "day": "2026-10-03"
+    },
+    {
+     "downloads": 0,
+     "day": "2026-10-04"
+    },
+    {
+     "downloads": 0,
+     "day": "2026-10-05"
+    },
+    {
+     "downloads": 0,
+     "day": "2026-10-06"
+    },
+    {
+     "downloads": 0,
+     "day": "2026-10-07"
+    }
+   ],
+   "last_month": 3
+  },
+  "gamma-cli": {
+   "daily": [
+    {
+     "downloads": 1,
+     "day": "2026-09-24"
+    },
+    {
+     "downloads": 0,
+     "day": "2026-09-25"
+    },
+    {
+     "downloads": 4,
+     "day": "2026-09-26"
+    },
+    {
+     "downloads": 2,
+     "day": "2026-09-27"
+    },
+    {
+     "downloads": 0,
+     "day": "2026-09-28"
+    },
+    {
+     "downloads": 0,
+     "day": "2026-09-29"
+    },
+    {
+     "downloads": 3,
+     "day": "2026-09-30"
+    },
+    {
+     "downloads": 1,
+     "day": "2026-10-01"
+    },
+    {
+     "downloads": 1,
+     "day": "2026-10-02"
+    },
+    {
+     "downloads": 0,
+     "day": "2026-10-03"
+    },
+    {
+     "downloads": 2,
+     "day": "2026-10-04"
+    },
+    {
+     "downloads": 5,
+     "day": "2026-10-05"
+    },
+    {
+     "downloads": 0,
+     "day": "2026-10-06"
+    },
+    {
+     "downloads": 1,
+     "day": "2026-10-07"
+    }
+   ],
+   "last_month": 41
+  }
+ },
+ "nuget": {
+  "Example.Core": {
+   "total": 251,
+   "versions": {
+    "1.0.0": 183
+   },
+   "last_6_weeks": 251,
+   "last_6_weeks_versions": {
+    "1.0.0": 199,
+    "1.0.0-beta.1": 52
+   },
+   "last_6_weeks_clients": {
+    "NuGet Client": 150,
+    "(unknown)": 49,
+    "Go-http-client": 52
+   }
+  },
+  "Example.Tools": {
+   "total": 3923,
+   "versions": {
+    "2.0.0": 3020,
+    "1.0.0": 903
+   },
+   "last_6_weeks": 42,
+   "last_6_weeks_versions": {
+    "2.0.0": 40,
+    "1.0.0": 2
+   },
+   "last_6_weeks_clients": {
+    "NuGet Client": 42
+   }
+  }
+ },
+ "pypi": {
+  "octo-tool": {
+   "daily": [
+    {
+     "downloads": 0,
+     "day": "2026-09-24"
+    },
+    {
+     "downloads": 3,
+     "day": "2026-09-25"
+    },
+    {
+     "downloads": 1,
+     "day": "2026-09-26"
+    },
+    {
+     "downloads": 0,
+     "day": "2026-09-27"
+    },
+    {
+     "downloads": 2,
+     "day": "2026-09-28"
+    },
+    {
+     "downloads": 5,
+     "day": "2026-09-29"
+    },
+    {
+     "downloads": 1,
+     "day": "2026-09-30"
+    },
+    {
+     "downloads": 0,
+     "day": "2026-10-01"
+    },
+    {
+     "downloads": 0,
+     "day": "2026-10-02"
+    },
+    {
+     "downloads": 4,
+     "day": "2026-10-03"
+    },
+    {
+     "downloads": 2,
+     "day": "2026-10-04"
+    },
+    {
+     "downloads": 1,
+     "day": "2026-10-05"
+    },
+    {
+     "downloads": 0,
+     "day": "2026-10-06"
+    },
+    {
+     "downloads": 3,
+     "day": "2026-10-07"
+    }
+   ],
+   "last_day": 3,
+   "last_week": 10,
+   "last_month": 30
+  }
+ }
+}
+--- data/snapshots/2026-10-08/summary.md
+# Repo traffic for octo-example, 2026-10-08
+
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## npm downloads
+
+| # | Package | Last 14 days | Last month |
+|---|---|---|---|
+| 1 | alpha-lib | 20 | 40 |
+| 2 | gamma-cli | 20 | 41 |
+| 3 | @octo-example/beta | 3 | 3 |
+
+## NuGet downloads
+
+| # | Package | Last 6 weeks | All time |
+|---|---|---|---|
+| 1 | Example.Core | 251 | 251 |
+| 2 | Example.Tools | 42 | 3,923 |
+
+## PyPI downloads
+
+| # | Package | Last 14 days | Last month |
+|---|---|---|---|
+| 1 | octo-tool | 22 | 30 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+=== case: second-run ===
+form: repo-traffic (repo_traffic.cli() of the installed module)
+repo_traffic.json: {"owner": "octo-example", "npm_user": "npm-example", "nuget_owner": "nuget-example", "pypi_packages": ["octo-tool"], "data": "data", "top": 10}
+--- run 1 at 2026-10-08T09:00:00
+$ repo-traffic
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## npm downloads
+
+| # | Package | Last 14 days | Last month |
+|---|---|---|---|
+| 1 | alpha-lib | 20 | 40 |
+| 2 | gamma-cli | 20 | 41 |
+| 3 | @octo-example/beta | 3 | 3 |
+
+## NuGet downloads
+
+| # | Package | Last 6 weeks | All time |
+|---|---|---|---|
+| 1 | Example.Core | 251 | 251 |
+| 2 | Example.Tools | 42 | 3,923 |
+
+## PyPI downloads
+
+| # | Package | Last 14 days | Last month |
+|---|---|---|---|
+| 1 | octo-tool | 22 | 30 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+$ echo $?
+0
+stdout ends: LF
+stderr last line: (empty)
+gh calls: 21; first: repo list octo-example --limit 1000 --json name,isPrivate,isFork,stargazerCount,forkCount
+http requests: 13
+  GET https://registry.npmjs.org/-/v1/search?size=250&text=maintainer:npm-example  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/point/last-month/alpha-lib  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/range/2026-09-24:2026-10-07/@octo-example/beta  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/point/last-month/@octo-example/beta  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/range/2026-09-24:2026-10-07/gamma-cli  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/point/last-month/gamma-cli  (User-Agent: repo-traffic)
+  GET https://azuresearch-usnc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example  (User-Agent: repo-traffic)
+  GET https://azuresearch-ussc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example  (User-Agent: repo-traffic)
+  GET https://www.nuget.org/stats/reports/packages/Example.Core?groupby=Version  (User-Agent: repo-traffic)
+  GET https://www.nuget.org/stats/reports/packages/Example.Tools?groupby=Version  (User-Agent: repo-traffic)
+  GET https://pypistats.org/api/packages/octo-tool/recent  (User-Agent: repo-traffic)
+  GET https://pypistats.org/api/packages/octo-tool/overall?mirrors=false  (User-Agent: repo-traffic)
+sleeps: 1, 1, 1, 1, 1, 1
+the folder afterwards:
+data/
+  daily.csv
+  downloads.csv
+  repos.csv
+  run.log
+  snapshots/
+    2026-10-08/
+      github.json
+      packages.json
+      summary.md
+files written:
+  data/daily.csv  (CRLF, 302 bytes as text)
+  data/downloads.csv  (CRLF, 339 bytes as text)
+  data/repos.csv  (CRLF, 223 bytes as text)
+  data/run.log  (LF, 55 bytes as text)
+  data/snapshots/2026-10-08/github.json  (LF, 2526 bytes as text)
+  data/snapshots/2026-10-08/packages.json  (LF, 4177 bytes as text)
+  data/snapshots/2026-10-08/summary.md  (LF, 986 bytes as text)
+--- data/daily.csv
+repo,date,views,views_uniques,clones,clones_uniques
+alpha-lib,2026-09-25,10,4,0,0
+alpha-lib,2026-09-26,6,3,3,2
+alpha-lib,2026-09-27,0,0,5,5
+alpha-lib,2026-09-28,8,5,0,0
+beta-tool,2026-10-01,5,5,0,0
+beta-tool,2026-10-02,0,0,2,1
+gamma-private,2026-10-06,7,5,0,0
+gamma-private,2026-10-07,1,1,2,1
+--- data/downloads.csv
+snapshot,registry,package,last_14_days,last_month,last_6_weeks,total
+2026-10-08,npm,alpha-lib,20,40,,
+2026-10-08,npm,@octo-example/beta,3,3,,
+2026-10-08,npm,gamma-cli,20,41,,
+2026-10-08,nuget,Example.Core,,,251,251
+2026-10-08,nuget,Example.Tools,,,42,3923
+2026-10-08,pypi,octo-tool,22,30,,
+2026-10-08,github-release,alpha-lib,,,,9
+--- data/repos.csv
+snapshot,repo,private,fork,stars,forks,release_downloads
+2026-10-08,alpha-lib,false,false,12,3,9
+2026-10-08,beta-tool,false,true,0,0,0
+2026-10-08,gamma-private,true,false,0,0,0
+2026-10-08,delta-empty,false,false,1,0,0
+--- data/run.log
+2026-10-08T09:00:00 ok 4 repos, 3 npm, 2 nuget, 1 pypi
+--- data/snapshots/2026-10-08/summary.md
+# Repo traffic for octo-example, 2026-10-08
+
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## npm downloads
+
+| # | Package | Last 14 days | Last month |
+|---|---|---|---|
+| 1 | alpha-lib | 20 | 40 |
+| 2 | gamma-cli | 20 | 41 |
+| 3 | @octo-example/beta | 3 | 3 |
+
+## NuGet downloads
+
+| # | Package | Last 6 weeks | All time |
+|---|---|---|---|
+| 1 | Example.Core | 251 | 251 |
+| 2 | Example.Tools | 42 | 3,923 |
+
+## PyPI downloads
+
+| # | Package | Last 14 days | Last month |
+|---|---|---|---|
+| 1 | octo-tool | 22 | 30 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+--- run 2 at 2026-10-21T09:00:00
+$ repo-traffic
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | beta-tool | 1 | 2 |
+| 2 | gamma-private | 1 | 2 |
+| 3 | alpha-lib | 1 | 1 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | gamma-private | 6 | 15 |
+| 2 | alpha-lib | 5 | 24 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## npm downloads
+
+| # | Package | Last 14 days | Last month |
+|---|---|---|---|
+| 1 | alpha-lib | 28 | 50 |
+| 2 | gamma-cli | 0 | 12 |
+
+## NuGet downloads
+
+| # | Package | Last 6 weeks | All time |
+|---|---|---|---|
+| 1 | Example.Core | 251 | 251 |
+| 2 | Example.Tools | 42 | 3,923 |
+
+## PyPI downloads
+
+| # | Package | Last 14 days | Last month |
+|---|---|---|---|
+| 1 | octo-tool | 21 | 31 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+$ echo $?
+0
+stdout ends: LF
+stderr last line: (empty)
+gh calls: 21; first: repo list octo-example --limit 1000 --json name,isPrivate,isFork,stargazerCount,forkCount
+http requests: 11
+  GET https://registry.npmjs.org/-/v1/search?size=250&text=maintainer:npm-example  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/range/2026-10-07:2026-10-20/alpha-lib  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/point/last-month/alpha-lib  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/range/2026-10-07:2026-10-20/gamma-cli  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/point/last-month/gamma-cli  (User-Agent: repo-traffic)
+  GET https://azuresearch-usnc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example  (User-Agent: repo-traffic)
+  GET https://azuresearch-ussc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example  (User-Agent: repo-traffic)
+  GET https://www.nuget.org/stats/reports/packages/Example.Core?groupby=Version  (User-Agent: repo-traffic)
+  GET https://www.nuget.org/stats/reports/packages/Example.Tools?groupby=Version  (User-Agent: repo-traffic)
+  GET https://pypistats.org/api/packages/octo-tool/recent  (User-Agent: repo-traffic)
+  GET https://pypistats.org/api/packages/octo-tool/overall?mirrors=false  (User-Agent: repo-traffic)
+sleeps: 1, 1, 1, 1, 1
+the folder afterwards:
+data/
+  daily.csv
+  downloads.csv
+  repos.csv
+  run.log
+  snapshots/
+    2026-10-08/
+      github.json
+      packages.json
+      summary.md
+    2026-10-21/
+      github.json
+      packages.json
+      summary.md
+files written:
+  data/daily.csv  (CRLF, 434 bytes as text)
+  data/downloads.csv  (CRLF, 566 bytes as text)
+  data/repos.csv  (CRLF, 388 bytes as text)
+  data/run.log  (LF, 110 bytes as text)
+  data/snapshots/2026-10-08/github.json  (LF, 2526 bytes as text)
+  data/snapshots/2026-10-08/packages.json  (LF, 4177 bytes as text)
+  data/snapshots/2026-10-08/summary.md  (LF, 986 bytes as text)
+  data/snapshots/2026-10-21/github.json  (LF, 2617 bytes as text)
+  data/snapshots/2026-10-21/packages.json  (LF, 3340 bytes as text)
+  data/snapshots/2026-10-21/summary.md  (LF, 951 bytes as text)
+--- data/daily.csv
+repo,date,views,views_uniques,clones,clones_uniques
+alpha-lib,2026-09-25,10,4,0,0
+alpha-lib,2026-09-26,6,3,3,2
+alpha-lib,2026-09-27,0,0,5,5
+alpha-lib,2026-09-28,8,5,0,0
+alpha-lib,2026-10-15,0,0,1,1
+beta-tool,2026-10-01,5,5,0,0
+beta-tool,2026-10-02,0,0,2,1
+gamma-private,2026-10-06,7,5,0,0
+gamma-private,2026-10-07,4,3,2,1
+gamma-private,2026-10-08,2,2,0,0
+gamma-private,2026-10-09,0,0,0,0
+gamma-private,2026-10-10,9,6,0,0
+--- data/downloads.csv
+snapshot,registry,package,last_14_days,last_month,last_6_weeks,total
+2026-10-08,npm,alpha-lib,20,40,,
+2026-10-08,npm,@octo-example/beta,3,3,,
+2026-10-08,npm,gamma-cli,20,41,,
+2026-10-08,nuget,Example.Core,,,251,251
+2026-10-08,nuget,Example.Tools,,,42,3923
+2026-10-08,pypi,octo-tool,22,30,,
+2026-10-08,github-release,alpha-lib,,,,9
+2026-10-21,npm,alpha-lib,28,50,,
+2026-10-21,npm,gamma-cli,0,12,,
+2026-10-21,nuget,Example.Core,,,251,251
+2026-10-21,nuget,Example.Tools,,,42,3923
+2026-10-21,pypi,octo-tool,21,31,,
+2026-10-21,github-release,alpha-lib,,,,9
+--- data/repos.csv
+snapshot,repo,private,fork,stars,forks,release_downloads
+2026-10-08,alpha-lib,false,false,12,3,9
+2026-10-08,beta-tool,false,true,0,0,0
+2026-10-08,gamma-private,true,false,0,0,0
+2026-10-08,delta-empty,false,false,1,0,0
+2026-10-21,alpha-lib,false,false,12,3,9
+2026-10-21,beta-tool,false,true,0,0,0
+2026-10-21,gamma-private,true,false,0,0,0
+2026-10-21,delta-empty,false,false,1,0,0
+--- data/run.log
+2026-10-08T09:00:00 ok 4 repos, 3 npm, 2 nuget, 1 pypi
+2026-10-21T09:00:00 ok 4 repos, 2 npm, 2 nuget, 1 pypi
+--- data/snapshots/2026-10-08/summary.md
+# Repo traffic for octo-example, 2026-10-08
+
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## npm downloads
+
+| # | Package | Last 14 days | Last month |
+|---|---|---|---|
+| 1 | alpha-lib | 20 | 40 |
+| 2 | gamma-cli | 20 | 41 |
+| 3 | @octo-example/beta | 3 | 3 |
+
+## NuGet downloads
+
+| # | Package | Last 6 weeks | All time |
+|---|---|---|---|
+| 1 | Example.Core | 251 | 251 |
+| 2 | Example.Tools | 42 | 3,923 |
+
+## PyPI downloads
+
+| # | Package | Last 14 days | Last month |
+|---|---|---|---|
+| 1 | octo-tool | 22 | 30 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+--- data/snapshots/2026-10-21/summary.md
+# Repo traffic for octo-example, 2026-10-21
+
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | beta-tool | 1 | 2 |
+| 2 | gamma-private | 1 | 2 |
+| 3 | alpha-lib | 1 | 1 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | gamma-private | 6 | 15 |
+| 2 | alpha-lib | 5 | 24 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## npm downloads
+
+| # | Package | Last 14 days | Last month |
+|---|---|---|---|
+| 1 | alpha-lib | 28 | 50 |
+| 2 | gamma-cli | 0 | 12 |
+
+## NuGet downloads
+
+| # | Package | Last 6 weeks | All time |
+|---|---|---|---|
+| 1 | Example.Core | 251 | 251 |
+| 2 | Example.Tools | 42 | 3,923 |
+
+## PyPI downloads
+
+| # | Package | Last 14 days | Last month |
+|---|---|---|---|
+| 1 | octo-tool | 21 | 31 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+=== case: same-day-twice ===
+form: repo-traffic (repo_traffic.cli() of the installed module)
+repo_traffic.json: {"owner": "octo-example"}
+--- run 1 at 2026-10-08T09:00:00
+$ repo-traffic
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+$ echo $?
+0
+stdout ends: LF
+stderr last line: (empty)
+gh calls: 21; first: repo list octo-example --limit 1000 --json name,isPrivate,isFork,stargazerCount,forkCount
+http requests: 0
+sleeps: none
+the folder afterwards:
+data/
+  daily.csv
+  downloads.csv
+  repos.csv
+  run.log
+  snapshots/
+    2026-10-08/
+      github.json
+      packages.json
+      summary.md
+files written:
+  data/daily.csv  (CRLF, 302 bytes as text)
+  data/downloads.csv  (CRLF, 112 bytes as text)
+  data/repos.csv  (CRLF, 223 bytes as text)
+  data/run.log  (LF, 47 bytes as text)
+  data/snapshots/2026-10-08/github.json  (LF, 2526 bytes as text)
+  data/snapshots/2026-10-08/packages.json  (LF, 28 bytes as text)
+  data/snapshots/2026-10-08/summary.md  (LF, 555 bytes as text)
+--- data/daily.csv
+repo,date,views,views_uniques,clones,clones_uniques
+alpha-lib,2026-09-25,10,4,0,0
+alpha-lib,2026-09-26,6,3,3,2
+alpha-lib,2026-09-27,0,0,5,5
+alpha-lib,2026-09-28,8,5,0,0
+beta-tool,2026-10-01,5,5,0,0
+beta-tool,2026-10-02,0,0,2,1
+gamma-private,2026-10-06,7,5,0,0
+gamma-private,2026-10-07,1,1,2,1
+--- data/downloads.csv
+snapshot,registry,package,last_14_days,last_month,last_6_weeks,total
+2026-10-08,github-release,alpha-lib,,,,9
+--- data/repos.csv
+snapshot,repo,private,fork,stars,forks,release_downloads
+2026-10-08,alpha-lib,false,false,12,3,9
+2026-10-08,beta-tool,false,true,0,0,0
+2026-10-08,gamma-private,true,false,0,0,0
+2026-10-08,delta-empty,false,false,1,0,0
+--- data/run.log
+2026-10-08T09:00:00 ok 4 repos, 0 npm, 0 nuget
+--- data/snapshots/2026-10-08/summary.md
+# Repo traffic for octo-example, 2026-10-08
+
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+--- run 2 at 2026-10-08T09:00:00
+$ repo-traffic
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+$ echo $?
+0
+stdout ends: LF
+stderr last line: (empty)
+gh calls: 21; first: repo list octo-example --limit 1000 --json name,isPrivate,isFork,stargazerCount,forkCount
+http requests: 0
+sleeps: none
+the folder afterwards:
+data/
+  daily.csv
+  downloads.csv
+  repos.csv
+  run.log
+  snapshots/
+    2026-10-08/
+      github.json
+      packages.json
+      summary.md
+files written:
+  data/daily.csv  (CRLF, 302 bytes as text)
+  data/downloads.csv  (CRLF, 154 bytes as text)
+  data/repos.csv  (CRLF, 388 bytes as text)
+  data/run.log  (LF, 94 bytes as text)
+  data/snapshots/2026-10-08/github.json  (LF, 2526 bytes as text)
+  data/snapshots/2026-10-08/packages.json  (LF, 28 bytes as text)
+  data/snapshots/2026-10-08/summary.md  (LF, 555 bytes as text)
+--- data/daily.csv
+repo,date,views,views_uniques,clones,clones_uniques
+alpha-lib,2026-09-25,10,4,0,0
+alpha-lib,2026-09-26,6,3,3,2
+alpha-lib,2026-09-27,0,0,5,5
+alpha-lib,2026-09-28,8,5,0,0
+beta-tool,2026-10-01,5,5,0,0
+beta-tool,2026-10-02,0,0,2,1
+gamma-private,2026-10-06,7,5,0,0
+gamma-private,2026-10-07,1,1,2,1
+--- data/downloads.csv
+snapshot,registry,package,last_14_days,last_month,last_6_weeks,total
+2026-10-08,github-release,alpha-lib,,,,9
+2026-10-08,github-release,alpha-lib,,,,9
+--- data/repos.csv
+snapshot,repo,private,fork,stars,forks,release_downloads
+2026-10-08,alpha-lib,false,false,12,3,9
+2026-10-08,beta-tool,false,true,0,0,0
+2026-10-08,gamma-private,true,false,0,0,0
+2026-10-08,delta-empty,false,false,1,0,0
+2026-10-08,alpha-lib,false,false,12,3,9
+2026-10-08,beta-tool,false,true,0,0,0
+2026-10-08,gamma-private,true,false,0,0,0
+2026-10-08,delta-empty,false,false,1,0,0
+--- data/run.log
+2026-10-08T09:00:00 ok 4 repos, 0 npm, 0 nuget
+2026-10-08T09:00:00 ok 4 repos, 0 npm, 0 nuget
+--- data/snapshots/2026-10-08/summary.md
+# Repo traffic for octo-example, 2026-10-08
+
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+=== case: old-header ===
+form: repo-traffic (repo_traffic.cli() of the installed module)
+repo_traffic.json: {"owner": "octo-example", "npm_user": "npm-example", "nuget_owner": "nuget-example", "data": "data", "top": 10}
+before: data/downloads.csv (CRLF)
+snapshot,registry,package,last_14_days,last_month,total
+2026-10-01,npm,alpha-lib,9,30,
+--- run 1 at 2026-10-08T09:00:00
+$ repo-traffic
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## npm downloads
+
+| # | Package | Last 14 days | Last month |
+|---|---|---|---|
+| 1 | alpha-lib | 20 | 40 |
+| 2 | gamma-cli | 20 | 41 |
+| 3 | @octo-example/beta | 3 | 3 |
+
+## NuGet downloads
+
+| # | Package | Last 6 weeks | All time |
+|---|---|---|---|
+| 1 | Example.Core | 251 | 251 |
+| 2 | Example.Tools | 42 | 3,923 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+$ echo $?
+0
+stdout ends: LF
+stderr last line: (empty)
+gh calls: 21; first: repo list octo-example --limit 1000 --json name,isPrivate,isFork,stargazerCount,forkCount
+http requests: 11
+  GET https://registry.npmjs.org/-/v1/search?size=250&text=maintainer:npm-example  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/point/last-month/alpha-lib  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/range/2026-09-24:2026-10-07/@octo-example/beta  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/point/last-month/@octo-example/beta  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/range/2026-09-24:2026-10-07/gamma-cli  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/point/last-month/gamma-cli  (User-Agent: repo-traffic)
+  GET https://azuresearch-usnc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example  (User-Agent: repo-traffic)
+  GET https://azuresearch-ussc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example  (User-Agent: repo-traffic)
+  GET https://www.nuget.org/stats/reports/packages/Example.Core?groupby=Version  (User-Agent: repo-traffic)
+  GET https://www.nuget.org/stats/reports/packages/Example.Tools?groupby=Version  (User-Agent: repo-traffic)
+sleeps: 1, 1, 1, 1, 1
+the folder afterwards:
+data/
+  daily.csv
+  downloads.csv
+  downloads.csv.bak
+  repos.csv
+  run.log
+  snapshots/
+    2026-10-08/
+      github.json
+      packages.json
+      summary.md
+files written:
+  data/daily.csv  (CRLF, 302 bytes as text)
+  data/downloads.csv  (CRLF, 337 bytes as text)
+  data/downloads.csv.bak  (CRLF, 89 bytes as text)
+  data/repos.csv  (CRLF, 223 bytes as text)
+  data/run.log  (LF, 47 bytes as text)
+  data/snapshots/2026-10-08/github.json  (LF, 2526 bytes as text)
+  data/snapshots/2026-10-08/packages.json  (LF, 3238 bytes as text)
+  data/snapshots/2026-10-08/summary.md  (LF, 876 bytes as text)
+--- data/daily.csv
+repo,date,views,views_uniques,clones,clones_uniques
+alpha-lib,2026-09-25,10,4,0,0
+alpha-lib,2026-09-26,6,3,3,2
+alpha-lib,2026-09-27,0,0,5,5
+alpha-lib,2026-09-28,8,5,0,0
+beta-tool,2026-10-01,5,5,0,0
+beta-tool,2026-10-02,0,0,2,1
+gamma-private,2026-10-06,7,5,0,0
+gamma-private,2026-10-07,1,1,2,1
+--- data/downloads.csv
+snapshot,registry,package,last_14_days,last_month,last_6_weeks,total
+2026-10-01,npm,alpha-lib,9,30,,
+2026-10-08,npm,alpha-lib,20,40,,
+2026-10-08,npm,@octo-example/beta,3,3,,
+2026-10-08,npm,gamma-cli,20,41,,
+2026-10-08,nuget,Example.Core,,,251,251
+2026-10-08,nuget,Example.Tools,,,42,3923
+2026-10-08,github-release,alpha-lib,,,,9
+--- data/downloads.csv.bak
+snapshot,registry,package,last_14_days,last_month,total
+2026-10-01,npm,alpha-lib,9,30,
+--- data/repos.csv
+snapshot,repo,private,fork,stars,forks,release_downloads
+2026-10-08,alpha-lib,false,false,12,3,9
+2026-10-08,beta-tool,false,true,0,0,0
+2026-10-08,gamma-private,true,false,0,0,0
+2026-10-08,delta-empty,false,false,1,0,0
+--- data/run.log
+2026-10-08T09:00:00 ok 4 repos, 3 npm, 2 nuget
+--- data/snapshots/2026-10-08/summary.md
+# Repo traffic for octo-example, 2026-10-08
+
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## npm downloads
+
+| # | Package | Last 14 days | Last month |
+|---|---|---|---|
+| 1 | alpha-lib | 20 | 40 |
+| 2 | gamma-cli | 20 | 41 |
+| 3 | @octo-example/beta | 3 | 3 |
+
+## NuGet downloads
+
+| # | Package | Last 6 weeks | All time |
+|---|---|---|---|
+| 1 | Example.Core | 251 | 251 |
+| 2 | Example.Tools | 42 | 3,923 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+=== case: unknown-header ===
+form: repo-traffic (repo_traffic.cli() of the installed module)
+repo_traffic.json: {"owner": "octo-example"}
+before: data/downloads.csv (CRLF)
+date,package,count
+2026-10-01,alpha-lib,9
+--- run 1 at 2026-10-08T09:00:00
+$ repo-traffic
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+## Not counted this run
+
+- downloads.csv has an unknown header, so no rows were added: date,package,count
+
+repo-traffic: some sources failed, see run.log: downloads.csv has an unknown header, so no rows were added: date,package,count
+$ echo $?
+1
+stdout ends: LF
+stderr last line: repo-traffic: some sources failed, see run.log: downloads.csv has an unknown header, so no rows were added: date,package,count
+gh calls: 21; first: repo list octo-example --limit 1000 --json name,isPrivate,isFork,stargazerCount,forkCount
+http requests: 0
+sleeps: none
+the folder afterwards:
+data/
+  daily.csv
+  downloads.csv
+  repos.csv
+  run.log
+  snapshots/
+    2026-10-08/
+      github.json
+      packages.json
+      summary.md
+files written:
+  data/daily.csv  (CRLF, 302 bytes as text)
+  data/downloads.csv  (CRLF, 44 bytes as text)
+  data/repos.csv  (CRLF, 223 bytes as text)
+  data/run.log  (LF, 140 bytes as text)
+  data/snapshots/2026-10-08/github.json  (LF, 2526 bytes as text)
+  data/snapshots/2026-10-08/packages.json  (LF, 28 bytes as text)
+  data/snapshots/2026-10-08/summary.md  (LF, 662 bytes as text)
+--- data/daily.csv
+repo,date,views,views_uniques,clones,clones_uniques
+alpha-lib,2026-09-25,10,4,0,0
+alpha-lib,2026-09-26,6,3,3,2
+alpha-lib,2026-09-27,0,0,5,5
+alpha-lib,2026-09-28,8,5,0,0
+beta-tool,2026-10-01,5,5,0,0
+beta-tool,2026-10-02,0,0,2,1
+gamma-private,2026-10-06,7,5,0,0
+gamma-private,2026-10-07,1,1,2,1
+--- data/downloads.csv
+date,package,count
+2026-10-01,alpha-lib,9
+--- data/repos.csv
+snapshot,repo,private,fork,stars,forks,release_downloads
+2026-10-08,alpha-lib,false,false,12,3,9
+2026-10-08,beta-tool,false,true,0,0,0
+2026-10-08,gamma-private,true,false,0,0,0
+2026-10-08,delta-empty,false,false,1,0,0
+--- data/run.log
+2026-10-08T09:00:00 partial 4 repos, 0 npm, 0 nuget; failed: downloads.csv has an unknown header, so no rows were added: date,package,count
+--- data/snapshots/2026-10-08/summary.md
+# Repo traffic for octo-example, 2026-10-08
+
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+## Not counted this run
+
+- downloads.csv has an unknown header, so no rows were added: date,package,count
+
+=== case: odd-width-row ===
+form: repo-traffic (repo_traffic.cli() of the installed module)
+repo_traffic.json: {"owner": "octo-example", "npm_user": "npm-example", "nuget_owner": "nuget-example", "data": "data", "top": 10}
+before: data/downloads.csv (CRLF)
+snapshot,registry,package,last_14_days,last_month,total
+2026-10-01,npm,alpha-lib,9,30,
+2026-10-02,npm,alpha-lib
+--- run 1 at 2026-10-08T09:00:00
+$ repo-traffic
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## npm downloads
+
+| # | Package | Last 14 days | Last month |
+|---|---|---|---|
+| 1 | alpha-lib | 20 | 40 |
+| 2 | gamma-cli | 20 | 41 |
+| 3 | @octo-example/beta | 3 | 3 |
+
+## NuGet downloads
+
+| # | Package | Last 6 weeks | All time |
+|---|---|---|---|
+| 1 | Example.Core | 251 | 251 |
+| 2 | Example.Tools | 42 | 3,923 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+## Not counted this run
+
+- downloads.csv line 3 has 3 columns; not migrating it
+
+repo-traffic: some sources failed, see run.log: downloads.csv line 3 has 3 columns; not migrating it
+$ echo $?
+1
+stdout ends: LF
+stderr last line: repo-traffic: some sources failed, see run.log: downloads.csv line 3 has 3 columns; not migrating it
+gh calls: 21; first: repo list octo-example --limit 1000 --json name,isPrivate,isFork,stargazerCount,forkCount
+http requests: 11
+  GET https://registry.npmjs.org/-/v1/search?size=250&text=maintainer:npm-example  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/point/last-month/alpha-lib  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/range/2026-09-24:2026-10-07/@octo-example/beta  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/point/last-month/@octo-example/beta  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/range/2026-09-24:2026-10-07/gamma-cli  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/point/last-month/gamma-cli  (User-Agent: repo-traffic)
+  GET https://azuresearch-usnc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example  (User-Agent: repo-traffic)
+  GET https://azuresearch-ussc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example  (User-Agent: repo-traffic)
+  GET https://www.nuget.org/stats/reports/packages/Example.Core?groupby=Version  (User-Agent: repo-traffic)
+  GET https://www.nuget.org/stats/reports/packages/Example.Tools?groupby=Version  (User-Agent: repo-traffic)
+sleeps: 1, 1, 1, 1, 1
+the folder afterwards:
+data/
+  daily.csv
+  downloads.csv
+  repos.csv
+  run.log
+  snapshots/
+    2026-10-08/
+      github.json
+      packages.json
+      summary.md
+files written:
+  data/daily.csv  (CRLF, 302 bytes as text)
+  data/downloads.csv  (CRLF, 115 bytes as text)
+  data/repos.csv  (CRLF, 223 bytes as text)
+  data/run.log  (LF, 114 bytes as text)
+  data/snapshots/2026-10-08/github.json  (LF, 2526 bytes as text)
+  data/snapshots/2026-10-08/packages.json  (LF, 3238 bytes as text)
+  data/snapshots/2026-10-08/summary.md  (LF, 957 bytes as text)
+--- data/daily.csv
+repo,date,views,views_uniques,clones,clones_uniques
+alpha-lib,2026-09-25,10,4,0,0
+alpha-lib,2026-09-26,6,3,3,2
+alpha-lib,2026-09-27,0,0,5,5
+alpha-lib,2026-09-28,8,5,0,0
+beta-tool,2026-10-01,5,5,0,0
+beta-tool,2026-10-02,0,0,2,1
+gamma-private,2026-10-06,7,5,0,0
+gamma-private,2026-10-07,1,1,2,1
+--- data/downloads.csv
+snapshot,registry,package,last_14_days,last_month,total
+2026-10-01,npm,alpha-lib,9,30,
+2026-10-02,npm,alpha-lib
+--- data/repos.csv
+snapshot,repo,private,fork,stars,forks,release_downloads
+2026-10-08,alpha-lib,false,false,12,3,9
+2026-10-08,beta-tool,false,true,0,0,0
+2026-10-08,gamma-private,true,false,0,0,0
+2026-10-08,delta-empty,false,false,1,0,0
+--- data/run.log
+2026-10-08T09:00:00 partial 4 repos, 3 npm, 2 nuget; failed: downloads.csv line 3 has 3 columns; not migrating it
+--- data/snapshots/2026-10-08/summary.md
+# Repo traffic for octo-example, 2026-10-08
+
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## npm downloads
+
+| # | Package | Last 14 days | Last month |
+|---|---|---|---|
+| 1 | alpha-lib | 20 | 40 |
+| 2 | gamma-cli | 20 | 41 |
+| 3 | @octo-example/beta | 3 | 3 |
+
+## NuGet downloads
+
+| # | Package | Last 6 weeks | All time |
+|---|---|---|---|
+| 1 | Example.Core | 251 | 251 |
+| 2 | Example.Tools | 42 | 3,923 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+## Not counted this run
+
+- downloads.csv line 3 has 3 columns; not migrating it
+
+=== case: bom-daily ===
+form: repo-traffic (repo_traffic.cli() of the installed module)
+repo_traffic.json: {"owner": "octo-example"}
+before: data/daily.csv (CRLF)
+repo,date,views,views_uniques,clones,clones_uniques
+alpha-lib,2026-09-20,4,2,0,0
+--- run 1 at 2026-10-08T09:00:00
+$ repo-traffic
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+$ echo $?
+0
+stdout ends: LF
+stderr last line: (empty)
+gh calls: 21; first: repo list octo-example --limit 1000 --json name,isPrivate,isFork,stargazerCount,forkCount
+http requests: 0
+sleeps: none
+the folder afterwards:
+data/
+  daily.csv
+  downloads.csv
+  repos.csv
+  run.log
+  snapshots/
+    2026-10-08/
+      github.json
+      packages.json
+      summary.md
+files written:
+  data/daily.csv  (CRLF, 332 bytes as text)
+  data/downloads.csv  (CRLF, 112 bytes as text)
+  data/repos.csv  (CRLF, 223 bytes as text)
+  data/run.log  (LF, 47 bytes as text)
+  data/snapshots/2026-10-08/github.json  (LF, 2526 bytes as text)
+  data/snapshots/2026-10-08/packages.json  (LF, 28 bytes as text)
+  data/snapshots/2026-10-08/summary.md  (LF, 555 bytes as text)
+--- data/daily.csv
+repo,date,views,views_uniques,clones,clones_uniques
+alpha-lib,2026-09-20,4,2,0,0
+alpha-lib,2026-09-25,10,4,0,0
+alpha-lib,2026-09-26,6,3,3,2
+alpha-lib,2026-09-27,0,0,5,5
+alpha-lib,2026-09-28,8,5,0,0
+beta-tool,2026-10-01,5,5,0,0
+beta-tool,2026-10-02,0,0,2,1
+gamma-private,2026-10-06,7,5,0,0
+gamma-private,2026-10-07,1,1,2,1
+--- data/downloads.csv
+snapshot,registry,package,last_14_days,last_month,last_6_weeks,total
+2026-10-08,github-release,alpha-lib,,,,9
+--- data/repos.csv
+snapshot,repo,private,fork,stars,forks,release_downloads
+2026-10-08,alpha-lib,false,false,12,3,9
+2026-10-08,beta-tool,false,true,0,0,0
+2026-10-08,gamma-private,true,false,0,0,0
+2026-10-08,delta-empty,false,false,1,0,0
+--- data/run.log
+2026-10-08T09:00:00 ok 4 repos, 0 npm, 0 nuget
+--- data/snapshots/2026-10-08/summary.md
+# Repo traffic for octo-example, 2026-10-08
+
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+=== case: no-push-access ===
+form: repo-traffic (repo_traffic.cli() of the installed module)
+repo_traffic.json: {"owner": "octo-example"}
+--- run 1 at 2026-10-08T09:00:00
+$ repo-traffic
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | delta-empty | 0 | 0 |
+| 4 | gamma-private | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | beta-tool | 5 | 5 |
+| 3 | delta-empty | 0 | 0 |
+| 4 | gamma-private | 0 | 0 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+## No traffic access
+
+GitHub refused traffic for this repo (it needs push access): gamma-private
+
+$ echo $?
+0
+stdout ends: LF
+stderr last line: (empty)
+gh calls: 21; first: repo list octo-example --limit 1000 --json name,isPrivate,isFork,stargazerCount,forkCount
+http requests: 0
+sleeps: none
+the folder afterwards:
+data/
+  daily.csv
+  downloads.csv
+  repos.csv
+  run.log
+  snapshots/
+    2026-10-08/
+      github.json
+      packages.json
+      summary.md
+files written:
+  data/daily.csv  (CRLF, 234 bytes as text)
+  data/downloads.csv  (CRLF, 112 bytes as text)
+  data/repos.csv  (CRLF, 223 bytes as text)
+  data/run.log  (LF, 81 bytes as text)
+  data/snapshots/2026-10-08/github.json  (LF, 2230 bytes as text)
+  data/snapshots/2026-10-08/packages.json  (LF, 28 bytes as text)
+  data/snapshots/2026-10-08/summary.md  (LF, 653 bytes as text)
+--- data/daily.csv
+repo,date,views,views_uniques,clones,clones_uniques
+alpha-lib,2026-09-25,10,4,0,0
+alpha-lib,2026-09-26,6,3,3,2
+alpha-lib,2026-09-27,0,0,5,5
+alpha-lib,2026-09-28,8,5,0,0
+beta-tool,2026-10-01,5,5,0,0
+beta-tool,2026-10-02,0,0,2,1
+--- data/downloads.csv
+snapshot,registry,package,last_14_days,last_month,last_6_weeks,total
+2026-10-08,github-release,alpha-lib,,,,9
+--- data/repos.csv
+snapshot,repo,private,fork,stars,forks,release_downloads
+2026-10-08,alpha-lib,false,false,12,3,9
+2026-10-08,beta-tool,false,true,0,0,0
+2026-10-08,gamma-private,true,false,0,0,0
+2026-10-08,delta-empty,false,false,1,0,0
+--- data/run.log
+2026-10-08T09:00:00 ok 4 repos, 0 npm, 0 nuget; no traffic access: gamma-private
+--- data/snapshots/2026-10-08/github.json
+{
+ "alpha-lib": {
+  "private": false,
+  "fork": false,
+  "stars": 12,
+  "forks": 3,
+  "views": {
+   "count": 24,
+   "uniques": 5,
+   "views": [
+    {
+     "timestamp": "2026-09-25T00:00:00Z",
+     "count": 10,
+     "uniques": 4
+    },
+    {
+     "timestamp": "2026-09-26T00:00:00Z",
+     "count": 6,
+     "uniques": 3
+    },
+    {
+     "timestamp": "2026-09-27T00:00:00Z",
+     "count": 0,
+     "uniques": 0
+    },
+    {
+     "timestamp": "2026-09-28T00:00:00Z",
+     "count": 8,
+     "uniques": 5
+    }
+   ]
+  },
+  "clones": {
+   "count": 8,
+   "uniques": 5,
+   "clones": [
+    {
+     "timestamp": "2026-09-26T00:00:00Z",
+     "count": 3,
+     "uniques": 2
+    },
+    {
+     "timestamp": "2026-09-27T00:00:00Z",
+     "count": 5,
+     "uniques": 5
+    }
+   ]
+  },
+  "referrers": [
+   {
+    "referrer": "github.com",
+    "count": 10,
+    "uniques": 4
+   },
+   {
+    "referrer": "news.example",
+    "count": 3,
+    "uniques": 2
+   }
+  ],
+  "paths": [
+   {
+    "path": "/octo-example/alpha-lib",
+    "title": "alpha-lib",
+    "count": 20,
+    "uniques": 6
+   }
+  ],
+  "release_downloads": {
+   "v1.0.0": {
+    "alpha-1.0.0.zip": 7,
+    "alpha-1.0.0.tar.gz": 2
+   },
+   "v0.9.0": {}
+  }
+ },
+ "beta-tool": {
+  "private": false,
+  "fork": true,
+  "stars": 0,
+  "forks": 0,
+  "views": {
+   "count": 5,
+   "uniques": 5,
+   "views": [
+    {
+     "timestamp": "2026-10-01T00:00:00Z",
+     "count": 5,
+     "uniques": 5
+    }
+   ]
+  },
+  "clones": {
+   "count": 2,
+   "uniques": 1,
+   "clones": [
+    {
+     "timestamp": "2026-10-02T00:00:00Z",
+     "count": 2,
+     "uniques": 1
+    }
+   ]
+  },
+  "referrers": [],
+  "paths": [],
+  "release_downloads": {}
+ },
+ "gamma-private": {
+  "private": true,
+  "fork": false,
+  "stars": 0,
+  "forks": 0,
+  "views": null,
+  "clones": null,
+  "referrers": null,
+  "paths": null,
+  "release_downloads": {},
+  "traffic_error": "gh: Must have push access to repository (HTTP 403)"
+ },
+ "delta-empty": {
+  "private": false,
+  "fork": false,
+  "stars": 1,
+  "forks": 0,
+  "views": {
+   "count": 0,
+   "uniques": 0,
+   "views": []
+  },
+  "clones": {
+   "count": 0,
+   "uniques": 0,
+   "clones": []
+  },
+  "referrers": [],
+  "paths": [],
+  "release_downloads": {
+   "v0.1.0": {
+    "delta.zip": 0
+   }
+  }
+ }
+}
+--- data/snapshots/2026-10-08/summary.md
+# Repo traffic for octo-example, 2026-10-08
+
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | delta-empty | 0 | 0 |
+| 4 | gamma-private | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | beta-tool | 5 | 5 |
+| 3 | delta-empty | 0 | 0 |
+| 4 | gamma-private | 0 | 0 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+## No traffic access
+
+GitHub refused traffic for this repo (it needs push access): gamma-private
+
+=== case: unknown-key ===
+form: repo-traffic (repo_traffic.cli() of the installed module)
+before: repo_traffic.json (LF)
+{
+  "owner": "octo-example",
+  "npm-user": "npm-example"
+}
+--- run 1 at 2026-10-08T09:00:00
+$ repo-traffic
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+$ echo $?
+0
+stdout ends: LF
+stderr last line: (empty)
+gh calls: 21; first: repo list octo-example --limit 1000 --json name,isPrivate,isFork,stargazerCount,forkCount
+http requests: 0
+sleeps: none
+the folder afterwards:
+data/
+  daily.csv
+  downloads.csv
+  repos.csv
+  run.log
+  snapshots/
+    2026-10-08/
+      github.json
+      packages.json
+      summary.md
+files written:
+  data/daily.csv  (CRLF, 302 bytes as text)
+  data/downloads.csv  (CRLF, 112 bytes as text)
+  data/repos.csv  (CRLF, 223 bytes as text)
+  data/run.log  (LF, 47 bytes as text)
+  data/snapshots/2026-10-08/github.json  (LF, 2526 bytes as text)
+  data/snapshots/2026-10-08/packages.json  (LF, 28 bytes as text)
+  data/snapshots/2026-10-08/summary.md  (LF, 555 bytes as text)
+--- data/daily.csv
+repo,date,views,views_uniques,clones,clones_uniques
+alpha-lib,2026-09-25,10,4,0,0
+alpha-lib,2026-09-26,6,3,3,2
+alpha-lib,2026-09-27,0,0,5,5
+alpha-lib,2026-09-28,8,5,0,0
+beta-tool,2026-10-01,5,5,0,0
+beta-tool,2026-10-02,0,0,2,1
+gamma-private,2026-10-06,7,5,0,0
+gamma-private,2026-10-07,1,1,2,1
+--- data/downloads.csv
+snapshot,registry,package,last_14_days,last_month,last_6_weeks,total
+2026-10-08,github-release,alpha-lib,,,,9
+--- data/repos.csv
+snapshot,repo,private,fork,stars,forks,release_downloads
+2026-10-08,alpha-lib,false,false,12,3,9
+2026-10-08,beta-tool,false,true,0,0,0
+2026-10-08,gamma-private,true,false,0,0,0
+2026-10-08,delta-empty,false,false,1,0,0
+--- data/run.log
+2026-10-08T09:00:00 ok 4 repos, 0 npm, 0 nuget
+--- data/snapshots/2026-10-08/summary.md
+# Repo traffic for octo-example, 2026-10-08
+
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+=== case: npm-429-then-ok ===
+form: repo-traffic (repo_traffic.cli() of the installed module)
+repo_traffic.json: {"owner": "octo-example", "npm_user": "npm-example"}
+--- run 1 at 2026-10-08T09:00:00
+$ repo-traffic
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## npm downloads
+
+| # | Package | Last 14 days | Last month |
+|---|---|---|---|
+| 1 | alpha-lib | 20 | 40 |
+| 2 | gamma-cli | 20 | 41 |
+| 3 | @octo-example/beta | 3 | 3 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+$ echo $?
+0
+stdout ends: LF
+stderr last line: (empty)
+gh calls: 21; first: repo list octo-example --limit 1000 --json name,isPrivate,isFork,stargazerCount,forkCount
+http requests: 9
+  GET https://registry.npmjs.org/-/v1/search?size=250&text=maintainer:npm-example  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/point/last-month/alpha-lib  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/range/2026-09-24:2026-10-07/@octo-example/beta  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/point/last-month/@octo-example/beta  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/range/2026-09-24:2026-10-07/gamma-cli  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/point/last-month/gamma-cli  (User-Agent: repo-traffic)
+sleeps: 10, 20, 1, 1, 1
+the folder afterwards:
+data/
+  daily.csv
+  downloads.csv
+  repos.csv
+  run.log
+  snapshots/
+    2026-10-08/
+      github.json
+      packages.json
+      summary.md
+files written:
+  data/daily.csv  (CRLF, 302 bytes as text)
+  data/downloads.csv  (CRLF, 221 bytes as text)
+  data/repos.csv  (CRLF, 223 bytes as text)
+  data/run.log  (LF, 47 bytes as text)
+  data/snapshots/2026-10-08/github.json  (LF, 2526 bytes as text)
+  data/snapshots/2026-10-08/packages.json  (LF, 2698 bytes as text)
+  data/snapshots/2026-10-08/summary.md  (LF, 727 bytes as text)
+--- data/daily.csv
+repo,date,views,views_uniques,clones,clones_uniques
+alpha-lib,2026-09-25,10,4,0,0
+alpha-lib,2026-09-26,6,3,3,2
+alpha-lib,2026-09-27,0,0,5,5
+alpha-lib,2026-09-28,8,5,0,0
+beta-tool,2026-10-01,5,5,0,0
+beta-tool,2026-10-02,0,0,2,1
+gamma-private,2026-10-06,7,5,0,0
+gamma-private,2026-10-07,1,1,2,1
+--- data/downloads.csv
+snapshot,registry,package,last_14_days,last_month,last_6_weeks,total
+2026-10-08,npm,alpha-lib,20,40,,
+2026-10-08,npm,@octo-example/beta,3,3,,
+2026-10-08,npm,gamma-cli,20,41,,
+2026-10-08,github-release,alpha-lib,,,,9
+--- data/repos.csv
+snapshot,repo,private,fork,stars,forks,release_downloads
+2026-10-08,alpha-lib,false,false,12,3,9
+2026-10-08,beta-tool,false,true,0,0,0
+2026-10-08,gamma-private,true,false,0,0,0
+2026-10-08,delta-empty,false,false,1,0,0
+--- data/run.log
+2026-10-08T09:00:00 ok 4 repos, 3 npm, 0 nuget
+--- data/snapshots/2026-10-08/summary.md
+# Repo traffic for octo-example, 2026-10-08
+
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## npm downloads
+
+| # | Package | Last 14 days | Last month |
+|---|---|---|---|
+| 1 | alpha-lib | 20 | 40 |
+| 2 | gamma-cli | 20 | 41 |
+| 3 | @octo-example/beta | 3 | 3 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+=== case: npm-empty-body ===
+form: repo-traffic (repo_traffic.cli() of the installed module)
+repo_traffic.json: {"owner": "octo-example", "npm_user": "npm-example"}
+--- run 1 at 2026-10-08T09:00:00
+$ repo-traffic
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## npm downloads
+
+| # | Package | Last 14 days | Last month |
+|---|---|---|---|
+| 1 | alpha-lib | 20 | 40 |
+| 2 | gamma-cli | 20 | 41 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+## Not counted this run
+
+- npm @octo-example/beta (bad response: Expecting value: line 1 column 1 (char 0))
+
+repo-traffic: some sources failed, see run.log: npm @octo-example/beta (bad response: Expecting value: line 1 column 1 (char 0))
+$ echo $?
+1
+stdout ends: LF
+stderr last line: repo-traffic: some sources failed, see run.log: npm @octo-example/beta (bad response: Expecting value: line 1 column 1 (char 0))
+gh calls: 21; first: repo list octo-example --limit 1000 --json name,isPrivate,isFork,stargazerCount,forkCount
+http requests: 11
+  GET https://registry.npmjs.org/-/v1/search?size=250&text=maintainer:npm-example  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/range/2026-09-24:2026-10-07/alpha-lib  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/point/last-month/alpha-lib  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/range/2026-09-24:2026-10-07/@octo-example/beta  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/point/last-month/@octo-example/beta  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/point/last-month/@octo-example/beta  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/point/last-month/@octo-example/beta  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/point/last-month/@octo-example/beta  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/point/last-month/@octo-example/beta  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/range/2026-09-24:2026-10-07/gamma-cli  (User-Agent: repo-traffic)
+  GET https://api.npmjs.org/downloads/point/last-month/gamma-cli  (User-Agent: repo-traffic)
+sleeps: 1, 10, 20, 30, 40, 1, 1
+the folder afterwards:
+data/
+  daily.csv
+  downloads.csv
+  repos.csv
+  run.log
+  snapshots/
+    2026-10-08/
+      github.json
+      packages.json
+      summary.md
+files written:
+  data/daily.csv  (CRLF, 302 bytes as text)
+  data/downloads.csv  (CRLF, 180 bytes as text)
+  data/repos.csv  (CRLF, 223 bytes as text)
+  data/run.log  (LF, 142 bytes as text)
+  data/snapshots/2026-10-08/github.json  (LF, 2526 bytes as text)
+  data/snapshots/2026-10-08/packages.json  (LF, 1803 bytes as text)
+  data/snapshots/2026-10-08/summary.md  (LF, 801 bytes as text)
+--- data/daily.csv
+repo,date,views,views_uniques,clones,clones_uniques
+alpha-lib,2026-09-25,10,4,0,0
+alpha-lib,2026-09-26,6,3,3,2
+alpha-lib,2026-09-27,0,0,5,5
+alpha-lib,2026-09-28,8,5,0,0
+beta-tool,2026-10-01,5,5,0,0
+beta-tool,2026-10-02,0,0,2,1
+gamma-private,2026-10-06,7,5,0,0
+gamma-private,2026-10-07,1,1,2,1
+--- data/downloads.csv
+snapshot,registry,package,last_14_days,last_month,last_6_weeks,total
+2026-10-08,npm,alpha-lib,20,40,,
+2026-10-08,npm,gamma-cli,20,41,,
+2026-10-08,github-release,alpha-lib,,,,9
+--- data/repos.csv
+snapshot,repo,private,fork,stars,forks,release_downloads
+2026-10-08,alpha-lib,false,false,12,3,9
+2026-10-08,beta-tool,false,true,0,0,0
+2026-10-08,gamma-private,true,false,0,0,0
+2026-10-08,delta-empty,false,false,1,0,0
+--- data/run.log
+2026-10-08T09:00:00 partial 4 repos, 2 npm, 0 nuget; failed: npm @octo-example/beta (bad response: Expecting value: line 1 column 1 (char 0))
+--- data/snapshots/2026-10-08/summary.md
+# Repo traffic for octo-example, 2026-10-08
+
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## npm downloads
+
+| # | Package | Last 14 days | Last month |
+|---|---|---|---|
+| 1 | alpha-lib | 20 | 40 |
+| 2 | gamma-cli | 20 | 41 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+## Not counted this run
+
+- npm @octo-example/beta (bad response: Expecting value: line 1 column 1 (char 0))
+
+=== case: nuget-replica-down ===
+form: repo-traffic (repo_traffic.cli() of the installed module)
+repo_traffic.json: {"owner": "octo-example", "nuget_owner": "nuget-example"}
+--- run 1 at 2026-10-08T09:00:00
+$ repo-traffic
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## NuGet downloads
+
+| # | Package | Last 6 weeks | All time |
+|---|---|---|---|
+| 1 | Example.Core | 251 | 251 |
+| 2 | Example.Tools | 42 | 3,894 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+$ echo $?
+0
+stdout ends: LF
+stderr last line: (empty)
+gh calls: 21; first: repo list octo-example --limit 1000 --json name,isPrivate,isFork,stargazerCount,forkCount
+http requests: 3
+  GET https://azuresearch-usnc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example  (User-Agent: repo-traffic)
+  GET https://www.nuget.org/stats/reports/packages/Example.Core?groupby=Version  (User-Agent: repo-traffic)
+  GET https://www.nuget.org/stats/reports/packages/Example.Tools?groupby=Version  (User-Agent: repo-traffic)
+sleeps: 5, 5, 5, 5, 1, 1
+the folder afterwards:
+data/
+  daily.csv
+  downloads.csv
+  repos.csv
+  run.log
+  snapshots/
+    2026-10-08/
+      github.json
+      packages.json
+      summary.md
+files written:
+  data/daily.csv  (CRLF, 302 bytes as text)
+  data/downloads.csv  (CRLF, 195 bytes as text)
+  data/repos.csv  (CRLF, 223 bytes as text)
+  data/run.log  (LF, 140 bytes as text)
+  data/snapshots/2026-10-08/github.json  (LF, 2526 bytes as text)
+  data/snapshots/2026-10-08/packages.json  (LF, 566 bytes as text)
+  data/snapshots/2026-10-08/summary.md  (LF, 704 bytes as text)
+--- data/daily.csv
+repo,date,views,views_uniques,clones,clones_uniques
+alpha-lib,2026-09-25,10,4,0,0
+alpha-lib,2026-09-26,6,3,3,2
+alpha-lib,2026-09-27,0,0,5,5
+alpha-lib,2026-09-28,8,5,0,0
+beta-tool,2026-10-01,5,5,0,0
+beta-tool,2026-10-02,0,0,2,1
+gamma-private,2026-10-06,7,5,0,0
+gamma-private,2026-10-07,1,1,2,1
+--- data/downloads.csv
+snapshot,registry,package,last_14_days,last_month,last_6_weeks,total
+2026-10-08,nuget,Example.Core,,,251,251
+2026-10-08,nuget,Example.Tools,,,42,3894
+2026-10-08,github-release,alpha-lib,,,,9
+--- data/repos.csv
+snapshot,repo,private,fork,stars,forks,release_downloads
+2026-10-08,alpha-lib,false,false,12,3,9
+2026-10-08,beta-tool,false,true,0,0,0
+2026-10-08,gamma-private,true,false,0,0,0
+2026-10-08,delta-empty,false,false,1,0,0
+--- data/run.log
+2026-10-08T09:00:00 ok 4 repos, 0 npm, 2 nuget; nuget replica down: azuresearch-ussc (unreachable: [Errno 10061] golden harness: host down)
+--- data/snapshots/2026-10-08/summary.md
+# Repo traffic for octo-example, 2026-10-08
+
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## NuGet downloads
+
+| # | Package | Last 6 weeks | All time |
+|---|---|---|---|
+| 1 | Example.Core | 251 | 251 |
+| 2 | Example.Tools | 42 | 3,894 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+=== case: nuget-replica-503 ===
+form: repo-traffic (repo_traffic.cli() of the installed module)
+repo_traffic.json: {"owner": "octo-example", "nuget_owner": "nuget-example"}
+--- run 1 at 2026-10-08T09:00:00
+$ repo-traffic
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## NuGet downloads
+
+| # | Package | Last 6 weeks | All time |
+|---|---|---|---|
+| 1 | Example.Core | 251 | 251 |
+| 2 | Example.Tools | 42 | 3,923 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+$ echo $?
+0
+stdout ends: LF
+stderr last line: (empty)
+gh calls: 21; first: repo list octo-example --limit 1000 --json name,isPrivate,isFork,stargazerCount,forkCount
+http requests: 4
+  GET https://azuresearch-usnc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example  (User-Agent: repo-traffic)
+  GET https://azuresearch-ussc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example  (User-Agent: repo-traffic)
+  GET https://www.nuget.org/stats/reports/packages/Example.Core?groupby=Version  (User-Agent: repo-traffic)
+  GET https://www.nuget.org/stats/reports/packages/Example.Tools?groupby=Version  (User-Agent: repo-traffic)
+sleeps: 1, 1
+the folder afterwards:
+data/
+  daily.csv
+  downloads.csv
+  repos.csv
+  run.log
+  snapshots/
+    2026-10-08/
+      github.json
+      packages.json
+      summary.md
+files written:
+  data/daily.csv  (CRLF, 302 bytes as text)
+  data/downloads.csv  (CRLF, 195 bytes as text)
+  data/repos.csv  (CRLF, 223 bytes as text)
+  data/run.log  (LF, 96 bytes as text)
+  data/snapshots/2026-10-08/github.json  (LF, 2526 bytes as text)
+  data/snapshots/2026-10-08/packages.json  (LF, 568 bytes as text)
+  data/snapshots/2026-10-08/summary.md  (LF, 704 bytes as text)
+--- data/daily.csv
+repo,date,views,views_uniques,clones,clones_uniques
+alpha-lib,2026-09-25,10,4,0,0
+alpha-lib,2026-09-26,6,3,3,2
+alpha-lib,2026-09-27,0,0,5,5
+alpha-lib,2026-09-28,8,5,0,0
+beta-tool,2026-10-01,5,5,0,0
+beta-tool,2026-10-02,0,0,2,1
+gamma-private,2026-10-06,7,5,0,0
+gamma-private,2026-10-07,1,1,2,1
+--- data/downloads.csv
+snapshot,registry,package,last_14_days,last_month,last_6_weeks,total
+2026-10-08,nuget,Example.Core,,,251,251
+2026-10-08,nuget,Example.Tools,,,42,3923
+2026-10-08,github-release,alpha-lib,,,,9
+--- data/repos.csv
+snapshot,repo,private,fork,stars,forks,release_downloads
+2026-10-08,alpha-lib,false,false,12,3,9
+2026-10-08,beta-tool,false,true,0,0,0
+2026-10-08,gamma-private,true,false,0,0,0
+2026-10-08,delta-empty,false,false,1,0,0
+--- data/run.log
+2026-10-08T09:00:00 ok 4 repos, 0 npm, 2 nuget; nuget replica down: azuresearch-usnc (HTTP 503)
+--- data/snapshots/2026-10-08/summary.md
+# Repo traffic for octo-example, 2026-10-08
+
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## NuGet downloads
+
+| # | Package | Last 6 weeks | All time |
+|---|---|---|---|
+| 1 | Example.Core | 251 | 251 |
+| 2 | Example.Tools | 42 | 3,923 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+=== case: nuget-both-down ===
+form: repo-traffic (repo_traffic.cli() of the installed module)
+repo_traffic.json: {"owner": "octo-example", "nuget_owner": "nuget-example"}
+--- run 1 at 2026-10-08T09:00:00
+$ repo-traffic
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+## Not counted this run
+
+- nuget search: azuresearch-usnc (unreachable: [Errno 10061] golden harness: host down), azuresearch-ussc (unreachable: [Errno 10061] golden harness: host down)
+
+repo-traffic: some sources failed, see run.log: nuget search: azuresearch-usnc (unreachable: [Errno 10061] golden harness: host down), azuresearch-ussc (unreachable: [Errno 10061] golden harness: host down)
+$ echo $?
+1
+stdout ends: LF
+stderr last line: repo-traffic: some sources failed, see run.log: nuget search: azuresearch-usnc (unreachable: [Errno 10061] golden harness: host down), azuresearch-ussc (unreachable: [Errno 10061] golden harness: host down)
+gh calls: 21; first: repo list octo-example --limit 1000 --json name,isPrivate,isFork,stargazerCount,forkCount
+http requests: 0
+sleeps: 5, 5, 5, 5, 5, 5, 5, 5
+the folder afterwards:
+data/
+  daily.csv
+  downloads.csv
+  repos.csv
+  run.log
+  snapshots/
+    2026-10-08/
+      github.json
+      packages.json
+      summary.md
+files written:
+  data/daily.csv  (CRLF, 302 bytes as text)
+  data/downloads.csv  (CRLF, 112 bytes as text)
+  data/repos.csv  (CRLF, 223 bytes as text)
+  data/run.log  (LF, 220 bytes as text)
+  data/snapshots/2026-10-08/github.json  (LF, 2526 bytes as text)
+  data/snapshots/2026-10-08/packages.json  (LF, 28 bytes as text)
+  data/snapshots/2026-10-08/summary.md  (LF, 742 bytes as text)
+--- data/daily.csv
+repo,date,views,views_uniques,clones,clones_uniques
+alpha-lib,2026-09-25,10,4,0,0
+alpha-lib,2026-09-26,6,3,3,2
+alpha-lib,2026-09-27,0,0,5,5
+alpha-lib,2026-09-28,8,5,0,0
+beta-tool,2026-10-01,5,5,0,0
+beta-tool,2026-10-02,0,0,2,1
+gamma-private,2026-10-06,7,5,0,0
+gamma-private,2026-10-07,1,1,2,1
+--- data/downloads.csv
+snapshot,registry,package,last_14_days,last_month,last_6_weeks,total
+2026-10-08,github-release,alpha-lib,,,,9
+--- data/repos.csv
+snapshot,repo,private,fork,stars,forks,release_downloads
+2026-10-08,alpha-lib,false,false,12,3,9
+2026-10-08,beta-tool,false,true,0,0,0
+2026-10-08,gamma-private,true,false,0,0,0
+2026-10-08,delta-empty,false,false,1,0,0
+--- data/run.log
+2026-10-08T09:00:00 partial 4 repos, 0 npm, 0 nuget; failed: nuget search: azuresearch-usnc (unreachable: [Errno 10061] golden harness: host down), azuresearch-ussc (unreachable: [Errno 10061] golden harness: host down)
+--- data/snapshots/2026-10-08/summary.md
+# Repo traffic for octo-example, 2026-10-08
+
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+## Not counted this run
+
+- nuget search: azuresearch-usnc (unreachable: [Errno 10061] golden harness: host down), azuresearch-ussc (unreachable: [Errno 10061] golden harness: host down)
+
+=== case: nuget-stats-404 ===
+form: repo-traffic (repo_traffic.cli() of the installed module)
+repo_traffic.json: {"owner": "octo-example", "nuget_owner": "nuget-example"}
+--- run 1 at 2026-10-08T09:00:00
+$ repo-traffic
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## NuGet downloads
+
+| # | Package | Last 6 weeks | All time |
+|---|---|---|---|
+| 1 | Example.Core | 0 | 7 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+$ echo $?
+0
+stdout ends: LF
+stderr last line: (empty)
+gh calls: 21; first: repo list octo-example --limit 1000 --json name,isPrivate,isFork,stargazerCount,forkCount
+http requests: 3
+  GET https://azuresearch-usnc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example  (User-Agent: repo-traffic)
+  GET https://azuresearch-ussc.nuget.org/query?take=1000&prerelease=true&semVerLevel=2.0.0&q=owner:nuget-example  (User-Agent: repo-traffic)
+  GET https://www.nuget.org/stats/reports/packages/Example.Core?groupby=Version  (User-Agent: repo-traffic)
+sleeps: 1
+the folder afterwards:
+data/
+  daily.csv
+  downloads.csv
+  repos.csv
+  run.log
+  snapshots/
+    2026-10-08/
+      github.json
+      packages.json
+      summary.md
+files written:
+  data/daily.csv  (CRLF, 302 bytes as text)
+  data/downloads.csv  (CRLF, 148 bytes as text)
+  data/repos.csv  (CRLF, 223 bytes as text)
+  data/run.log  (LF, 47 bytes as text)
+  data/snapshots/2026-10-08/github.json  (LF, 2526 bytes as text)
+  data/snapshots/2026-10-08/packages.json  (LF, 194 bytes as text)
+  data/snapshots/2026-10-08/summary.md  (LF, 665 bytes as text)
+--- data/daily.csv
+repo,date,views,views_uniques,clones,clones_uniques
+alpha-lib,2026-09-25,10,4,0,0
+alpha-lib,2026-09-26,6,3,3,2
+alpha-lib,2026-09-27,0,0,5,5
+alpha-lib,2026-09-28,8,5,0,0
+beta-tool,2026-10-01,5,5,0,0
+beta-tool,2026-10-02,0,0,2,1
+gamma-private,2026-10-06,7,5,0,0
+gamma-private,2026-10-07,1,1,2,1
+--- data/downloads.csv
+snapshot,registry,package,last_14_days,last_month,last_6_weeks,total
+2026-10-08,nuget,Example.Core,,,,7
+2026-10-08,github-release,alpha-lib,,,,9
+--- data/repos.csv
+snapshot,repo,private,fork,stars,forks,release_downloads
+2026-10-08,alpha-lib,false,false,12,3,9
+2026-10-08,beta-tool,false,true,0,0,0
+2026-10-08,gamma-private,true,false,0,0,0
+2026-10-08,delta-empty,false,false,1,0,0
+--- data/run.log
+2026-10-08T09:00:00 ok 4 repos, 0 npm, 1 nuget
+--- data/snapshots/2026-10-08/summary.md
+# Repo traffic for octo-example, 2026-10-08
+
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## NuGet downloads
+
+| # | Package | Last 6 weeks | All time |
+|---|---|---|---|
+| 1 | Example.Core | 0 | 7 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+=== case: pypi-404 ===
+form: repo-traffic (repo_traffic.cli() of the installed module)
+repo_traffic.json: {"owner": "octo-example", "pypi_packages": ["octo-tool", "not-on-pypi"]}
+--- run 1 at 2026-10-08T09:00:00
+$ repo-traffic
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## PyPI downloads
+
+| # | Package | Last 14 days | Last month |
+|---|---|---|---|
+| 1 | octo-tool | 14 | 15 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+## Not counted this run
+
+- pypi not-on-pypi (HTTP 404: not on pypistats.org)
+
+repo-traffic: some sources failed, see run.log: pypi not-on-pypi (HTTP 404: not on pypistats.org)
+$ echo $?
+1
+stdout ends: LF
+stderr last line: repo-traffic: some sources failed, see run.log: pypi not-on-pypi (HTTP 404: not on pypistats.org)
+gh calls: 21; first: repo list octo-example --limit 1000 --json name,isPrivate,isFork,stargazerCount,forkCount
+http requests: 3
+  GET https://pypistats.org/api/packages/octo-tool/recent  (User-Agent: repo-traffic)
+  GET https://pypistats.org/api/packages/octo-tool/overall?mirrors=false  (User-Agent: repo-traffic)
+  GET https://pypistats.org/api/packages/not-on-pypi/recent  (User-Agent: repo-traffic)
+sleeps: 1, 1
+the folder afterwards:
+data/
+  daily.csv
+  downloads.csv
+  repos.csv
+  run.log
+  snapshots/
+    2026-10-08/
+      github.json
+      packages.json
+      summary.md
+files written:
+  data/daily.csv  (CRLF, 302 bytes as text)
+  data/downloads.csv  (CRLF, 147 bytes as text)
+  data/repos.csv  (CRLF, 223 bytes as text)
+  data/run.log  (LF, 119 bytes as text)
+  data/snapshots/2026-10-08/github.json  (LF, 2526 bytes as text)
+  data/snapshots/2026-10-08/packages.json  (LF, 966 bytes as text)
+  data/snapshots/2026-10-08/summary.md  (LF, 743 bytes as text)
+--- data/daily.csv
+repo,date,views,views_uniques,clones,clones_uniques
+alpha-lib,2026-09-25,10,4,0,0
+alpha-lib,2026-09-26,6,3,3,2
+alpha-lib,2026-09-27,0,0,5,5
+alpha-lib,2026-09-28,8,5,0,0
+beta-tool,2026-10-01,5,5,0,0
+beta-tool,2026-10-02,0,0,2,1
+gamma-private,2026-10-06,7,5,0,0
+gamma-private,2026-10-07,1,1,2,1
+--- data/downloads.csv
+snapshot,registry,package,last_14_days,last_month,last_6_weeks,total
+2026-10-08,pypi,octo-tool,14,15,,
+2026-10-08,github-release,alpha-lib,,,,9
+--- data/repos.csv
+snapshot,repo,private,fork,stars,forks,release_downloads
+2026-10-08,alpha-lib,false,false,12,3,9
+2026-10-08,beta-tool,false,true,0,0,0
+2026-10-08,gamma-private,true,false,0,0,0
+2026-10-08,delta-empty,false,false,1,0,0
+--- data/run.log
+2026-10-08T09:00:00 partial 4 repos, 0 npm, 0 nuget, 1 pypi; failed: pypi not-on-pypi (HTTP 404: not on pypistats.org)
+--- data/snapshots/2026-10-08/summary.md
+# Repo traffic for octo-example, 2026-10-08
+
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## PyPI downloads
+
+| # | Package | Last 14 days | Last month |
+|---|---|---|---|
+| 1 | octo-tool | 14 | 15 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+## Not counted this run
+
+- pypi not-on-pypi (HTTP 404: not on pypistats.org)
+
+=== case: gap ===
+form: repo-traffic (repo_traffic.cli() of the installed module)
+repo_traffic.json: {"owner": "octo-example"}
+before: data/run.log (LF)
+2026-10-15T09:00:00 ok 4 repos, 0 npm, 0 nuget
+--- run 1 at 2026-11-01T09:00:00
+$ repo-traffic
+gap: 17 days since the last run that saved GitHub traffic (2026-10-15); traffic from before 2026-10-18 was not saved
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+$ echo $?
+0
+stdout ends: LF
+stderr last line: (empty)
+gh calls: 21; first: repo list octo-example --limit 1000 --json name,isPrivate,isFork,stargazerCount,forkCount
+http requests: 0
+sleeps: none
+the folder afterwards:
+data/
+  daily.csv
+  downloads.csv
+  repos.csv
+  run.log
+  snapshots/
+    2026-11-01/
+      github.json
+      packages.json
+      summary.md
+files written:
+  data/daily.csv  (CRLF, 302 bytes as text)
+  data/downloads.csv  (CRLF, 112 bytes as text)
+  data/repos.csv  (CRLF, 223 bytes as text)
+  data/run.log  (LF, 231 bytes as text)
+  data/snapshots/2026-11-01/github.json  (LF, 2526 bytes as text)
+  data/snapshots/2026-11-01/packages.json  (LF, 28 bytes as text)
+  data/snapshots/2026-11-01/summary.md  (LF, 675 bytes as text)
+--- data/daily.csv
+repo,date,views,views_uniques,clones,clones_uniques
+alpha-lib,2026-09-25,10,4,0,0
+alpha-lib,2026-09-26,6,3,3,2
+alpha-lib,2026-09-27,0,0,5,5
+alpha-lib,2026-09-28,8,5,0,0
+beta-tool,2026-10-01,5,5,0,0
+beta-tool,2026-10-02,0,0,2,1
+gamma-private,2026-10-06,7,5,0,0
+gamma-private,2026-10-07,1,1,2,1
+--- data/downloads.csv
+snapshot,registry,package,last_14_days,last_month,last_6_weeks,total
+2026-11-01,github-release,alpha-lib,,,,9
+--- data/repos.csv
+snapshot,repo,private,fork,stars,forks,release_downloads
+2026-11-01,alpha-lib,false,false,12,3,9
+2026-11-01,beta-tool,false,true,0,0,0
+2026-11-01,gamma-private,true,false,0,0,0
+2026-11-01,delta-empty,false,false,1,0,0
+--- data/run.log
+2026-10-15T09:00:00 ok 4 repos, 0 npm, 0 nuget
+2026-11-01T09:00:00 gap: 17 days since the last run that saved GitHub traffic (2026-10-15); traffic from before 2026-10-18 was not saved
+2026-11-01T09:00:00 ok 4 repos, 0 npm, 0 nuget
+--- data/snapshots/2026-11-01/summary.md
+# Repo traffic for octo-example, 2026-11-01
+
+> gap: 17 days since the last run that saved GitHub traffic (2026-10-15); traffic from before 2026-10-18 was not saved
+
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+=== case: gap-partial-counts ===
+form: repo-traffic (repo_traffic.cli() of the installed module)
+repo_traffic.json: {"owner": "octo-example"}
+before: data/run.log (LF)
+2026-10-15T09:00:00 ok 4 repos, 0 npm, 0 nuget
+2026-10-22T09:00:00 partial 4 repos, 0 npm, 0 nuget; failed: npm search (HTTP 503)
+2026-10-29T09:00:00 partial 0 repos, 0 npm, 0 nuget; failed: github repo list (gh exited 1)
+--- run 1 at 2026-11-01T09:00:00
+$ repo-traffic
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+$ echo $?
+0
+stdout ends: LF
+stderr last line: (empty)
+gh calls: 21; first: repo list octo-example --limit 1000 --json name,isPrivate,isFork,stargazerCount,forkCount
+http requests: 0
+sleeps: none
+the folder afterwards:
+data/
+  daily.csv
+  downloads.csv
+  repos.csv
+  run.log
+  snapshots/
+    2026-11-01/
+      github.json
+      packages.json
+      summary.md
+files written:
+  data/daily.csv  (CRLF, 302 bytes as text)
+  data/downloads.csv  (CRLF, 112 bytes as text)
+  data/repos.csv  (CRLF, 223 bytes as text)
+  data/run.log  (LF, 269 bytes as text)
+  data/snapshots/2026-11-01/github.json  (LF, 2526 bytes as text)
+  data/snapshots/2026-11-01/packages.json  (LF, 28 bytes as text)
+  data/snapshots/2026-11-01/summary.md  (LF, 555 bytes as text)
+--- data/daily.csv
+repo,date,views,views_uniques,clones,clones_uniques
+alpha-lib,2026-09-25,10,4,0,0
+alpha-lib,2026-09-26,6,3,3,2
+alpha-lib,2026-09-27,0,0,5,5
+alpha-lib,2026-09-28,8,5,0,0
+beta-tool,2026-10-01,5,5,0,0
+beta-tool,2026-10-02,0,0,2,1
+gamma-private,2026-10-06,7,5,0,0
+gamma-private,2026-10-07,1,1,2,1
+--- data/downloads.csv
+snapshot,registry,package,last_14_days,last_month,last_6_weeks,total
+2026-11-01,github-release,alpha-lib,,,,9
+--- data/repos.csv
+snapshot,repo,private,fork,stars,forks,release_downloads
+2026-11-01,alpha-lib,false,false,12,3,9
+2026-11-01,beta-tool,false,true,0,0,0
+2026-11-01,gamma-private,true,false,0,0,0
+2026-11-01,delta-empty,false,false,1,0,0
+--- data/run.log
+2026-10-15T09:00:00 ok 4 repos, 0 npm, 0 nuget
+2026-10-22T09:00:00 partial 4 repos, 0 npm, 0 nuget; failed: npm search (HTTP 503)
+2026-10-29T09:00:00 partial 0 repos, 0 npm, 0 nuget; failed: github repo list (gh exited 1)
+2026-11-01T09:00:00 ok 4 repos, 0 npm, 0 nuget
+--- data/snapshots/2026-11-01/summary.md
+# Repo traffic for octo-example, 2026-11-01
+
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 8 |
+| 2 | beta-tool | 1 | 2 |
+| 3 | gamma-private | 1 | 2 |
+| 4 | delta-empty | 0 | 0 |
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+| 1 | alpha-lib | 5 | 24 |
+| 2 | gamma-private | 5 | 8 |
+| 3 | beta-tool | 5 | 5 |
+| 4 | delta-empty | 0 | 0 |
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+| 1 | alpha-lib | 9 |
+
+=== case: gh-not-logged-in ===
+form: repo-traffic (repo_traffic.cli() of the installed module)
+--- run 1 at 2026-10-08T09:00:00
+$ repo-traffic
+subprocess.CalledProcessError: Command '['gh', 'api', 'user', '-q', '.login']' returned non-zero exit status 1.
+$ echo $?
+1
+stdout ends: nothing printed
+stderr last line: subprocess.CalledProcessError: Command '['gh', 'api', 'user', '-q', '.login']' returned non-zero exit status 1.
+gh calls: 1; first: api user -q .login
+http requests: 0
+sleeps: none
+the folder afterwards:
+data/
+  run.log
+files written:
+  data/run.log  (LF, 88 bytes as text)
+--- data/run.log
+2026-10-08T09:00:00 FAILED CalledProcessError(1, ['gh', 'api', 'user', '-q', '.login'])
+
+=== case: repo-list-fails ===
+form: repo-traffic (repo_traffic.cli() of the installed module)
+repo_traffic.json: {"owner": "octo-example"}
+--- run 1 at 2026-10-08T09:00:00
+$ repo-traffic
+## Not counted this run
+
+- github repo list (gh exited 1)
+
+repo-traffic: some sources failed, see run.log: github repo list (gh exited 1)
+$ echo $?
+1
+stdout ends: LF
+stderr last line: repo-traffic: some sources failed, see run.log: github repo list (gh exited 1)
+gh calls: 1; first: repo list octo-example --limit 1000 --json name,isPrivate,isFork,stargazerCount,forkCount
+http requests: 0
+sleeps: none
+the folder afterwards:
+data/
+  daily.csv
+  downloads.csv
+  repos.csv
+  run.log
+  snapshots/
+    2026-10-08/
+      github.json
+      packages.json
+      summary.md
+files written:
+  data/daily.csv  (CRLF, 53 bytes as text)
+  data/downloads.csv  (CRLF, 70 bytes as text)
+  data/repos.csv  (CRLF, 58 bytes as text)
+  data/run.log  (LF, 92 bytes as text)
+  data/snapshots/2026-10-08/github.json  (no line ending, 2 bytes as text)
+  data/snapshots/2026-10-08/packages.json  (LF, 28 bytes as text)
+  data/snapshots/2026-10-08/summary.md  (LF, 103 bytes as text)
+--- data/daily.csv
+repo,date,views,views_uniques,clones,clones_uniques
+--- data/downloads.csv
+snapshot,registry,package,last_14_days,last_month,last_6_weeks,total
+--- data/repos.csv
+snapshot,repo,private,fork,stars,forks,release_downloads
+--- data/run.log
+2026-10-08T09:00:00 partial 0 repos, 0 npm, 0 nuget; failed: github repo list (gh exited 1)
+--- data/snapshots/2026-10-08/summary.md
+# Repo traffic for octo-example, 2026-10-08
+
+## Not counted this run
+
+- github repo list (gh exited 1)
+
+=== case: top-zero ===
+form: repo-traffic (repo_traffic.cli() of the installed module)
+repo_traffic.json: {"owner": "octo-example", "top": 0}
+--- run 1 at 2026-10-08T09:00:00
+$ repo-traffic
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+
+$ echo $?
+0
+stdout ends: LF
+stderr last line: (empty)
+gh calls: 21; first: repo list octo-example --limit 1000 --json name,isPrivate,isFork,stargazerCount,forkCount
+http requests: 0
+sleeps: none
+the folder afterwards:
+data/
+  daily.csv
+  downloads.csv
+  repos.csv
+  run.log
+  snapshots/
+    2026-10-08/
+      github.json
+      packages.json
+      summary.md
+files written:
+  data/daily.csv  (CRLF, 302 bytes as text)
+  data/downloads.csv  (CRLF, 112 bytes as text)
+  data/repos.csv  (CRLF, 223 bytes as text)
+  data/run.log  (LF, 47 bytes as text)
+  data/snapshots/2026-10-08/github.json  (LF, 2526 bytes as text)
+  data/snapshots/2026-10-08/packages.json  (LF, 28 bytes as text)
+  data/snapshots/2026-10-08/summary.md  (LF, 312 bytes as text)
+--- data/daily.csv
+repo,date,views,views_uniques,clones,clones_uniques
+alpha-lib,2026-09-25,10,4,0,0
+alpha-lib,2026-09-26,6,3,3,2
+alpha-lib,2026-09-27,0,0,5,5
+alpha-lib,2026-09-28,8,5,0,0
+beta-tool,2026-10-01,5,5,0,0
+beta-tool,2026-10-02,0,0,2,1
+gamma-private,2026-10-06,7,5,0,0
+gamma-private,2026-10-07,1,1,2,1
+--- data/downloads.csv
+snapshot,registry,package,last_14_days,last_month,last_6_weeks,total
+2026-10-08,github-release,alpha-lib,,,,9
+--- data/repos.csv
+snapshot,repo,private,fork,stars,forks,release_downloads
+2026-10-08,alpha-lib,false,false,12,3,9
+2026-10-08,beta-tool,false,true,0,0,0
+2026-10-08,gamma-private,true,false,0,0,0
+2026-10-08,delta-empty,false,false,1,0,0
+--- data/run.log
+2026-10-08T09:00:00 ok 4 repos, 0 npm, 0 nuget
+--- data/snapshots/2026-10-08/summary.md
+# Repo traffic for octo-example, 2026-10-08
+
+## Unique cloners, last 14 days
+
+| # | Repo | Unique cloners | Clones |
+|---|---|---|---|
+
+## Unique visitors, last 14 days
+
+| # | Repo | Unique visitors | Views |
+|---|---|---|---|
+
+## GitHub release asset downloads, all time
+
+| # | Repo | Downloads |
+|---|---|---|
+
+=== scheduling: unit files, plist and cron line ===
+--- repo-traffic.service
+[Unit]
+Description=Save GitHub traffic and package downloads (repo-traffic)
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/repo-traffic-data
+ExecStart=%h/.local/bin/repo-traffic
+--- repo-traffic.timer
+[Unit]
+Description=Run repo-traffic every Monday
+
+[Timer]
+OnCalendar=Mon *-*-* 09:00:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+systemd-analyze --user verify: exit 0, no messages
+systemd-analyze calendar: exit 0, Normalized form: Mon *-*-* 09:00:00
+systemd: systemd 259 (259.5-0ubuntu3.4)
+--- com.example.repo-traffic.plist
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.example.repo-traffic</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/Users/you/.local/bin/repo-traffic</string>
+  </array>
+  <key>WorkingDirectory</key>
+  <string>/Users/you/repo-traffic-data</string>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+  </dict>
+  <key>StartCalendarInterval</key>
+  <dict>
+    <key>Weekday</key>
+    <integer>1</integer>
+    <key>Hour</key>
+    <integer>9</integer>
+    <key>Minute</key>
+    <integer>0</integer>
+  </dict>
+  <key>StandardOutPath</key>
+  <string>/Users/you/repo-traffic-data/launchd.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/you/repo-traffic-data/launchd.log</string>
+</dict>
+</plist>
+plistlib parses it: Label com.example.repo-traffic, StartCalendarInterval {"Hour": 9, "Minute": 0, "Weekday": 1}
+launchctl: not on this machine (not tested)
+--- crontab line
+0 9 * * 1 cd "$HOME/repo-traffic-data" && "$HOME/.local/bin/repo-traffic"
+cron: not run (it would edit the real crontab); not tested
+
+=== scheduling: days between runs on the 1st and 15th, 2026-10 to 2027-10 ===
+runs: 26, gaps over 14 days (repo-traffic writes a gap line): 11
+  run on 2026-11-01: 17 days after the last
+  run on 2026-12-01: 16 days after the last
+  run on 2027-01-01: 17 days after the last
+  run on 2027-02-01: 17 days after the last
+  run on 2027-04-01: 17 days after the last
+  run on 2027-05-01: 16 days after the last
+  run on 2027-06-01: 17 days after the last
+  run on 2027-07-01: 16 days after the last
+  run on 2027-08-01: 17 days after the last
+  run on 2027-09-01: 17 days after the last
+  run on 2027-10-01: 16 days after the last
+
+=== end ===
+cases: 32 harness, 7 commands
