@@ -48,9 +48,11 @@ def web(monkeypatch, sleeps):
     """urls: url -> list of answers (bytes, an exception, or a JSON-able object), used in order."""
     answers = {}
 
-    def urlopen(req, timeout=None):
+    def urlopen(req, timeout=None, **tls):
         url = req.full_url
         assert req.get_header("User-agent") == "repo-traffic"
+        # Only chatgpt.com gets its own TLS context; every other source keeps urllib's (and the golden shim's) opener.
+        assert tls == ({"context": rt.CODEX_TLS} if url.startswith("https://chatgpt.com/") else {})
         queue = answers.get(url)
         if not queue:
             raise http_error(404)
@@ -411,6 +413,78 @@ def test_openupm_snapshot_404_and_error(web, sleeps):
     assert sleeps == [1, 1]
 
 
+LISTING = (
+    b"<html><head><title>ChatGPT Plugins | Browse and add plugins to ChatGPT</title></head><body>"
+    b'<h1 class="text-token-text-primary"> Chart &amp; Graph </h1><dl>'
+    b'<div><dt class="text-sm">Developer</dt><dd class="text-sm"><span>Example Dev</span></dd></div>'
+    b'<div><dt class="text-sm">Version</dt><dd class="text-sm"><span class="break-words">0.3.1</span></dd></div>'
+    b"</dl></body></html>"
+)
+# What chatgpt.com serves, with status 200, for an id it has no listing for.
+NO_LISTING = (
+    b"<html><head><title>ChatGPT Plugins | Browse and add plugins to ChatGPT</title></head><body></body>"
+    b'<script>window.__REACT_QUERY_CACHE__["x"].reject(new Error("Plugin not found"));</script></html>'
+)
+
+
+def test_codex_snapshot_listed_not_listed_and_url_forms(web, sleeps):
+    web["https://chatgpt.com/plugins/Plugin_aaa"] = [LISTING]
+    web["https://chatgpt.com/plugins/plugins~Plugin_bbb"] = [NO_LISTING]
+    web["https://chatgpt.com/plugins/Plugin_ccc"] = [LISTING.replace(b"0.3.1", b"")]
+    failures = []
+    out = rt.codex_snapshot(["Plugin_aaa", "https://chatgpt.com/plugins/plugins~Plugin_bbb", "Plugin_ccc"], failures)
+    assert out == {
+        "Plugin_aaa": {
+            "listed": True,
+            "name": "Chart & Graph",
+            "version": "0.3.1",
+            "url": "https://chatgpt.com/plugins/Plugin_aaa",
+        },
+        "https://chatgpt.com/plugins/plugins~Plugin_bbb": {
+            "listed": False,
+            "name": "",
+            "version": "",
+            "url": "https://chatgpt.com/plugins/plugins~Plugin_bbb",
+        },
+        "Plugin_ccc": {
+            "listed": True,
+            "name": "Chart & Graph",
+            "version": "",
+            "url": "https://chatgpt.com/plugins/Plugin_ccc",
+        },
+    }
+    assert failures == [] and sleeps == [1, 1, 1]
+
+
+def test_codex_snapshot_errors_are_failures(web, sleeps):
+    web["https://chatgpt.com/plugins/Plugin_bad"] = [http_error(500)]
+    web["https://chatgpt.com/plugins/Plugin_bytes"] = [b"\xff\xfe not utf-8"]
+    # A page that neither names a plugin nor says it was not found is a changed layout, not "not listed".
+    web["https://chatgpt.com/plugins/Plugin_odd"] = [b"<html><body>Just a moment...</body></html>"]
+    failures = []
+    assert rt.codex_snapshot(["Plugin_bad", "Plugin_bytes", "Plugin_odd"], failures) == {}
+    assert failures[0] == "codex Plugin_bad (HTTP 500)"
+    assert failures[1].startswith("codex Plugin_bytes (bad response: 'utf-8' codec can't decode")
+    assert failures[2] == "codex Plugin_odd (bad response: the page neither names a plugin nor says it was not found)"
+
+
+def test_codex_snapshot_retries_a_cloudflare_challenge(web, sleeps):
+    challenge = http_error(403, {"cf-mitigated": "challenge"})
+    web["https://chatgpt.com/plugins/Plugin_a"] = [challenge, LISTING]
+    web["https://chatgpt.com/plugins/Plugin_b"] = [challenge]
+    failures = []
+    assert list(rt.codex_snapshot(["Plugin_a", "Plugin_b"], failures)) == ["Plugin_a"]
+    assert failures == ["codex Plugin_b (HTTP 403)"]
+    assert sleeps == [10, 1, 10, 20, 30, 40, 1]
+
+
+def test_http_json_plain_403_is_not_retried(web, sleeps):
+    web["https://a/"] = [http_error(403)]
+    with pytest.raises(urllib.error.HTTPError):
+        rt.http_json("https://a/")
+    assert sleeps == []
+
+
 # ---------------------------------------------------------------- CSVs
 
 
@@ -520,6 +594,22 @@ def test_append_repos_csv(tmp_path):
 # ---------------------------------------------------------------- summary, gap, log
 
 
+def test_append_codex_csv(tmp_path):
+    path = tmp_path / "codex.csv"
+    codex = {
+        "Plugin_a": {"listed": True, "name": "A, the plugin", "version": "1.0", "url": "https://x.example/a"},
+        "Plugin_b": {"listed": False, "name": "", "version": "", "url": "https://x.example/b"},
+    }
+    rt.append_codex_csv(path, codex, "2026-10-11")
+    rt.append_codex_csv(path, {"Plugin_b": dict(codex["Plugin_b"], listed=True)}, "2026-10-24")
+    assert path.read_text(encoding="utf-8").splitlines() == [
+        "snapshot,plugin,listed,name,version,url",
+        '2026-10-11,Plugin_a,true,"A, the plugin",1.0,https://x.example/a',
+        "2026-10-11,Plugin_b,false,,,https://x.example/b",
+        "2026-10-24,Plugin_b,true,,,https://x.example/b",
+    ]
+
+
 def test_top_tables_break_ties_by_name_and_cut_at_n():
     g = {n: {"views": {"uniques": 1, "count": 1}, "clones": None, "release_downloads": {}} for n in ("c", "a", "b")}
     p = {
@@ -601,6 +691,7 @@ def test_configure_file_flags_and_defaults(tmp_path):
         "nuget_owner": None,
         "pypi_packages": ["a", "b"],
         "openupm_packages": ["com.x"],
+        "codex_plugins": [],
         "data": "data",
         "top": 3,
     }
@@ -834,6 +925,30 @@ def test_pypi_packages_as_a_string_in_the_config(tmp_path):
     assert rt.configure(rt.parse_args([]), tmp_path)["pypi_packages"] == []
     (tmp_path / "repo_traffic.json").write_text(json.dumps({"openupm_packages": "com.a, com.b"}), encoding="utf-8")
     assert rt.configure(rt.parse_args([]), tmp_path)["openupm_packages"] == ["com.a", "com.b"]
+
+
+def test_codex_plugins_in_the_config_and_the_snapshot(tmp_path, monkeypatch, capsys):
+    (tmp_path / "repo_traffic.json").write_text(json.dumps({"codex_plugins": "Plugin_a, Plugin_b"}), encoding="utf-8")
+    assert rt.configure(rt.parse_args([]), tmp_path)["codex_plugins"] == ["Plugin_a", "Plugin_b"]
+    stub_sources(monkeypatch)
+    seen = {"Plugin_a": {"listed": True, "name": "A", "version": "1", "url": "u"}}
+    monkeypatch.setattr(
+        rt, "codex_snapshot", lambda entries, f: f.append("codex Plugin_b (HTTP 500)") or (seen if entries else {})
+    )
+    data = tmp_path / "data"
+    assert rt.snapshot(dict(rt.DEFAULTS, owner="o", codex_plugins=["Plugin_a", "Plugin_b"]), data, TODAY) == 1
+    snap = data / "snapshots" / "2026-10-08"
+    assert json.loads((snap / "packages.json").read_text(encoding="utf-8"))["codex"] == seen
+    assert (data / "codex.csv").read_text(encoding="utf-8").splitlines()[1] == "2026-10-08,Plugin_a,true,A,1,u"
+    log = (data / "run.log").read_text(encoding="utf-8")
+    assert "partial 0 repos, 0 npm, 0 nuget, 1 of 1 codex listed; failed: codex Plugin_b (HTTP 500)" in log
+    assert "- codex Plugin_b (HTTP 500)" in (snap / "summary.md").read_text(encoding="utf-8")
+    # Without codex_plugins: no codex section, no codex.csv, and run.log as before.
+    other = tmp_path / "other"
+    assert rt.snapshot(dict(rt.DEFAULTS, owner="o"), other, TODAY) == 0
+    assert "codex" not in json.loads((other / "snapshots" / "2026-10-08" / "packages.json").read_text("utf-8"))
+    assert not (other / "codex.csv").exists()
+    assert (other / "run.log").read_text(encoding="utf-8").endswith(" ok 0 repos, 0 npm, 0 nuget\n")
 
 
 def test_retry_after_negative_or_not_a_number():
