@@ -69,3 +69,15 @@ Branch openupm-downloads (worktree ../repo-traffic-openupm), https://github.com/
 - Research ([notes/2026-10-11-codex-plugin-directory.md](notes/2026-10-11-codex-plugin-directory.md)): the directory ChatGPT and Codex share has public listing pages (`chatgpt.com/plugins/<id>`) but no API, install counts or ratings. Built `codex_plugins` (config only, so the golden `--help` text is unchanged): listed yes/no, name and version per run in `codex.csv` and `packages.json`. chatgpt.com's Cloudflare check refuses urllib's default TLS context (post-handshake auth), so those requests use their own context, and a `cf-mitigated` 403 is retried. The script is exactly at the 600-line green limit (module docstring shortened to make room). 86 tests pass, coverage 99 percent, size green, on branch codex-directory.
 ## [2026-10-11] index | rebuilt (3 entries)
 ## [2026-10-11] index | rebuilt (4 entries)
+## [2026-10-13] note | three-day popularity check
+
+- Ran a manual snapshot (ok, 67 repos) and summed `daily.csv` rows dated 2026-10-11 to 10-13 for views and clones. For NuGet, the `total` column did not change between the 10-11 and 10-13 snapshots while `last_6_weeks` rose (RandomNameGeneratorLibrary +2,728), so a short-window NuGet count comes from the `last_6_weeks` delta, not `total`. The npm range API had not yet published 10-12 (all zeros) on 10-13; npm lags about a day.
+## [2026-10-14] note | last-24-hours popularity check
+
+- Ran a manual snapshot at 12:40 UTC (ok, 69 repos). `daily.csv` had no rows for 2026-10-14 yet: GitHub's traffic API leaves the current UTC day empty well into the day, so "the last 24 hours" means the latest complete UTC day (2026-10-13 here). Ranked by `views_uniques`, then `views`. Clone counts are mostly CI runners, bots and agent sessions (one repo had 72 clones and 1 view), so don't rank by them. The columns are `views_uniques` and `clones_uniques` (plural), not `views_unique`.
+
+## [2026-10-14] note | unique clones minus CI checkouts
+
+- Mark asked for repos ranked by unique clones minus their pipelines' clones on 2026-10-13. Method ([notes/2026-10-14-ci-clones.py](notes/2026-10-14-ci-clones.py)): for each repo with clones that day, `gh api repos/OWNER/REPO/actions/runs?created=DAY`, then the jobs of each run; count the `Run actions/checkout` steps (the `Post Run actions/checkout` step must not be counted again). Each hosted-runner job clones from its own IP, so one checkout is about one unique clone. Dependabot update runs have no checkout step but may clone; they are reported separately. Result: in five repos, CI checkouts equalled or exceeded the day's unique clones. The repos left at the top had no CI runs that day, so their clones are probably plugin installs and updates (Claude Code clones a plugin's repo) plus Mark's own machines and agent sessions. Plan: [plans/2026-10-14-ci-clone-subtraction.md](plans/2026-10-14-ci-clone-subtraction.md).
+## [2026-10-14] index | rebuilt (5 entries)
+## [2026-10-14] index | rebuilt (5 entries)
