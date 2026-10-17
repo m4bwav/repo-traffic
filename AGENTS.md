@@ -22,6 +22,7 @@ Rules:
 - Never edit `tests/golden/` except the two exceptions files, and those only for a change the maintainer ruled on (write them with `REPO_TRAFFIC_WRITE_EXCEPTIONS=1 python -m pytest tests/test_golden.py`, review, and keep Windows and posix in step). When the golden test fails, fix `repo_traffic.py`.
 - No test reaches the real GitHub, npm, NuGet, pypistats or OpenUPM APIs.
 - File formats only grow: new CSV columns go at the end, with the old header added to the migration list.
+- Answering "top repos" or "how many visitors" from `data/`: take unique visitors and cloners from the latest `data/snapshots/DATE/summary.md` (top N) or `github.json` (every repo), which hold GitHub's own 14-day uniques. Never sum `views_uniques` or `clones_uniques` across days in `daily.csv`: a person who visits on several days is counted once per day (on 2026-10-16 that gave 33 for a repo GitHub counted 24).
 - Releases: bump `__version__` and the CHANGELOG in a pull request, wait for `ci` on master, tag `v<version>`; the maintainer approves the `pypi` environment. Nothing is published from a developer machine.
 - Record what changed and why in `ai-docs/log.md`; `ai-docs/HANDOFF.md` is the starting point for the next session.
 
