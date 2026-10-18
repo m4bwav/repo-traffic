@@ -84,3 +84,6 @@ Branch openupm-downloads (worktree ../repo-traffic-openupm), https://github.com/
 ## [2026-10-16] note | 14-day uniques come from the snapshot, not daily.csv sums
 
 - Answering "most popular repos", a session summed `views_uniques` over 14 days of `daily.csv` and reported 33 unique visitors for obsidian-notes and DotNetRandomNameGenerator; the 2026-10-14 `snapshots/2026-10-14/summary.md` (GitHub's own 14-day uniques) says 24 and 22. Same mistake the 2026-10-11 session noted in agent memory only. Rule added to AGENTS.md so every tool sees it.
+## [2026-10-17] note | "last 2 days" answered per day, CI subtracted
+
+- Mark asked for the most popular repo over the last 2 days. Refreshed with `python repo_traffic.py` (today's UTC row was still empty), then read 2026-10-15 and 2026-10-16 per day from `daily.csv` and ran the CI-clone note script for each day. Per-day uniques can't be added into a two-day unique count (same visitor counts once per day), so the answer gave each day separately. brandwright's 400 clones / 61 uniques on 10-16 were almost all CI (30 Actions runs that day); everscout's 63 unique clones on 10-16 had no Actions runs, so they're probably plugin installs and updates.
