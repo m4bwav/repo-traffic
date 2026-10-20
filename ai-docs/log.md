@@ -84,3 +84,7 @@ Branch openupm-downloads (worktree ../repo-traffic-openupm), https://github.com/
 ## [2026-10-16] note | 14-day uniques come from the snapshot, not daily.csv sums
 
 - Answering "most popular repos", a session summed `views_uniques` over 14 days of `daily.csv` and reported 33 unique visitors for obsidian-notes and DotNetRandomNameGenerator; the 2026-10-14 `snapshots/2026-10-14/summary.md` (GitHub's own 14-day uniques) says 24 and 22. Same mistake the 2026-10-11 session noted in agent memory only. Rule added to AGENTS.md so every tool sees it.
+
+## [2026-10-20] note | scripts/report.py for one-day popularity
+
+- Mark asked for the most popular repos in the last 24 hours, then for scripts that make asking again cheaper. The by-hand route took a memory read, a snapshot, ad-hoc Python over `daily.csv` and the note CI script, which ran sequential gh calls and passed the Bash tool's 120 s timeout. Built `scripts/report.py` (plan [plans/2026-10-14-ci-clone-subtraction.md](plans/2026-10-14-ci-clone-subtraction.md), now done): one command, snapshot once a day, latest complete UTC day, CI subtraction with the gh calls in 8 threads (18 s for 42 repos on 2026-10-19) and a per-day cache in `data/ci_checkouts.csv` (0.15 s on a second ask), about 1 KB of output. Same numbers as the hand run. Tests in `tests/test_report.py`.

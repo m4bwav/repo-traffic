@@ -10,6 +10,8 @@ Compatibility promise: every file 0.1.0 writes keeps its name, columns and forma
 - OpenUPM downloads for the Unity packages named in `--openupm-packages` or the `openupm_packages` config key: the last 14 days and last month from package.openupm.com, an `openupm` section in `packages.json`, rows in `downloads.csv` (registry `openupm`) and a summary table. A package OpenUPM does not know is a failure for that package only.
 - `codex_plugins` config key: listing ids or URLs in OpenAI's plugin directory (shared by ChatGPT and Codex). Each run reads the public listing page and records whether it is live, the name and the version in a `codex` section of `packages.json` and a new `codex.csv`, and counts them in `run.log` ("2 of 3 codex listed"). OpenAI publishes no install counts, so there are none to record. A listing that can't be read is a failure (a partial run); with the key unset nothing changes. Config only, no flag, so `--help` stays as it was.
 
+- `scripts/report.py` (repository only, not in the package): the most popular repos on one UTC day, by unique visitors and by unique cloners minus GitHub Actions checkouts, with the checkout counts cached in `data/ci_checkouts.csv`.
+
 ### Changed
 - A 403 that Cloudflare marks as a challenge (`cf-mitigated`) is retried like a 429; other 403s are not.
 
