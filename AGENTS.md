@@ -23,6 +23,8 @@ Rules:
 - No test reaches the real GitHub, npm, NuGet, pypistats or OpenUPM APIs.
 - File formats only grow: new CSV columns go at the end, with the old header added to the migration list.
 - Answering "top repos" or "how many visitors" from `data/`: take unique visitors and cloners from the latest `data/snapshots/DATE/summary.md` (top N) or `github.json` (every repo), which hold GitHub's own 14-day uniques. Never sum `views_uniques` or `clones_uniques` across days in `daily.csv`: a person who visits on several days is counted once per day (on 2026-10-16 that gave 33 for a repo GitHub counted 24).
+- Answering "most popular repos in the last 24 hours" (or on one day): run `python scripts/report.py` and paste its two tables. It snapshots once a day, picks the latest complete UTC day, subtracts CI checkouts (cached in `data/ci_checkouts.csv`) and prints about 1 KB. `--day YYYY-MM-DD`, `--top N`, `--no-refresh`, `--no-ci`. Don't write ad-hoc Python over `daily.csv` for this.
+- `scripts/report.py` is a maintainer helper, outside the wheel and the size budget; `tests/test_report.py` covers it with gh faked.
 - Releases: bump `__version__` and the CHANGELOG in a pull request, wait for `ci` on master, tag `v<version>`; the maintainer approves the `pypi` environment. Nothing is published from a developer machine.
 - Record what changed and why in `ai-docs/log.md`; `ai-docs/HANDOFF.md` is the starting point for the next session.
 

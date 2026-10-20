@@ -1,12 +1,12 @@
 ---
 title: CI clone subtraction and a popularity report
 kind: plan
-status: proposed
+status: done
 date: 2026-10-14
 verified: 2026-10-14
 stale_after: 2027-01-14
 tags: [plan, clones, github-actions, report, feature]
-summary: "proposed feature: rank repos over the last N complete UTC days by unique views and by unique clones minus GitHub Actions checkouts, so popularity questions stop needing ad-hoc scripts"
+summary: "built 2026-10-20 as scripts/report.py: rank repos on one complete UTC day by unique views and by unique clones minus GitHub Actions checkouts, so popularity questions stop needing ad-hoc scripts"
 ---
 
 # CI clone subtraction and a popularity report
@@ -19,7 +19,7 @@ Answer "what are my most popular repos lately" with one command, with CI clones 
 
 ## Status
 
-Proposed 2026-10-14, nothing built. The note script works by hand.
+Done 2026-10-20 as a separate `scripts/report.py` (one UTC day, `--day` to pick another), so `repo_traffic.py` stays at 647 lines. Mark asked on 2026-10-20 to add whatever cuts the token cost of the question; that settled the open question below. The note script stays as the record of the method. Not built: a `ci_checkouts` column in `daily.csv` during scheduled runs, and multi-day reports (summing daily uniques double-counts people).
 
 ## Why
 
@@ -37,4 +37,4 @@ A `--report DAYS` mode (or a `report` subcommand) that reads `data/daily.csv`, u
 
 ## Next single action
 
-Ask the maintainer: flag in `repo_traffic.py` (size goes up) or a separate `scripts/report.py`? Then write it test-first from the note script.
+None. Reopen if Actions run history turns out too short to cover days asked about later (then record checkouts during the scheduled run).
