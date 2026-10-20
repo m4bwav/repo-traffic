@@ -87,3 +87,7 @@ Branch openupm-downloads (worktree ../repo-traffic-openupm), https://github.com/
 ## [2026-10-17] note | "last 2 days" answered per day, CI subtracted
 
 - Mark asked for the most popular repo over the last 2 days. Refreshed with `python repo_traffic.py` (today's UTC row was still empty), then read 2026-10-15 and 2026-10-16 per day from `daily.csv` and ran the CI-clone note script for each day. Per-day uniques can't be added into a two-day unique count (same visitor counts once per day), so the answer gave each day separately. brandwright's 400 clones / 61 uniques on 10-16 were almost all CI (30 Actions runs that day); everscout's 63 unique clones on 10-16 had no Actions runs, so they're probably plugin installs and updates.
+
+## [2026-10-20] note | scripts/report.py for one-day popularity
+
+- Mark asked for the most popular repos in the last 24 hours, then for scripts that make asking again cheaper. The by-hand route took a memory read, a snapshot, ad-hoc Python over `daily.csv` and the note CI script, which ran sequential gh calls and passed the Bash tool's 120 s timeout. Built `scripts/report.py` (plan [plans/2026-10-14-ci-clone-subtraction.md](plans/2026-10-14-ci-clone-subtraction.md), now done): one command, snapshot once a day, latest complete UTC day, CI subtraction with the gh calls in 8 threads (18 s for 42 repos on 2026-10-19) and a per-day cache in `data/ci_checkouts.csv` (0.15 s on a second ask), about 1 KB of output. Same numbers as the hand run. Tests in `tests/test_report.py`.

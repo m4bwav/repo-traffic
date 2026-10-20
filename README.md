@@ -72,6 +72,10 @@ data/
 
 When one source fails (npm rate-limits you, a NuGet search server is down), the run keeps everything else, says what it missed in `run.log` and the summary, and exits with status 1. Bad arguments exit with 2. If the last complete run is more than 14 days old, the run says how many days of GitHub traffic were lost.
 
+### Most popular repos on one day
+
+From a clone of this repository, `python scripts/report.py` prints the top repos for the latest complete UTC day: by unique visitors, and by unique cloners minus the clones your own GitHub Actions runs made (one per `actions/checkout` step). It takes a snapshot first if today's is missing, and caches the CI counts in `data/ci_checkouts.csv`, so asking again is instant. Options: `--day YYYY-MM-DD`, `--top N`, `--no-refresh`, `--no-ci`.
+
 ## Schedule it
 
 Windows, from a clone (registers a Task Scheduler task that runs every 13 days and catches up if the PC was off):
