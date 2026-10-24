@@ -58,6 +58,10 @@ extend-exclude = ["tests/golden"]
 select = ["E", "F", "W", "I", "B", "UP", "N", "SIM"]
 ignore = ["UP031", "UP032", "SIM105"]
 
+[tool.ruff.lint.per-file-ignores]
+# The dashboard page is an inline HTML/JS string; its line length is not Python's.
+"scripts/dashboard.py" = ["E501"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-p no:cacheprovider"

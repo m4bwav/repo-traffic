@@ -11,6 +11,7 @@ Compatibility promise: every file 0.1.0 writes keeps its name, columns and forma
 - `codex_plugins` config key: listing ids or URLs in OpenAI's plugin directory (shared by ChatGPT and Codex). Each run reads the public listing page and records whether it is live, the name and the version in a `codex` section of `packages.json` and a new `codex.csv`, and counts them in `run.log` ("2 of 3 codex listed"). OpenAI publishes no install counts, so there are none to record. A listing that can't be read is a failure (a partial run); with the key unset nothing changes. Config only, no flag, so `--help` stays as it was.
 
 - `scripts/report.py` (repository only, not in the package): the most popular repos on one UTC day, by unique visitors and by unique cloners minus GitHub Actions checkouts, with the checkout counts cached in `data/ci_checkouts.csv`.
+- `scripts/dashboard.py` (repository only, not in the package): records every snapshot folder once in `data/metrics.csv` (one row per number, stamped with the snapshot's UTC time; the first run backfills the folders already saved) and shows the change over a window (`24h`, `48h`, `7d`, `last`, `all`, any `Nh`/`Nd`). `capture` snapshots, records and prints the tables; `serve` is a local dashboard on 127.0.0.1 with sortable tables, charts and a Capture now button; `build` writes `data/dashboard.html`. NuGet change comes from capture-to-capture deltas. `report.py` records its snapshots too.
 
 ### Changed
 - A 403 that Cloudflare marks as a challenge (`cf-mitigated`) is retried like a 429; other 403s are not.
