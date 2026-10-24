@@ -7,6 +7,7 @@ Answers "what were my most popular repos in the last 24 hours" in one command an
   once per `Run actions/checkout` step, so raw clone counts mostly measure how often CI ran).
 - Checkout counts are cached per repo and day in data/ci_checkouts.csv (gitignored); finished days never change,
   so asking again costs no API calls. The gh calls run in parallel.
+- Records every snapshot folder in data/metrics.csv (scripts/dashboard.py), so each pull is kept for later deltas.
 Owner and data folder come from repo_traffic.json, as for repo_traffic.py. Output goes to the console only.
 """
 
@@ -22,6 +23,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 import repo_traffic as rt  # noqa: E402
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import dashboard  # noqa: E402
 
 CACHE_HEADER = ["repo", "date", "checkouts", "dependabot"]
 
@@ -160,6 +164,7 @@ def main(argv=None, today=None, pages=gh_pages):
         err = refresh(data, dt.date.today() if today is None else today)
         if err:
             print(err)
+    dashboard.record(data)
     rows = load_daily(data / "daily.csv")
     utc_today = dt.datetime.now(dt.timezone.utc).date() if today is None else today
     day = args.day or pick_day(rows, utc_today)
