@@ -103,3 +103,12 @@ Branch openupm-downloads (worktree ../repo-traffic-openupm), https://github.com/
 ## [2026-10-22] note | Last-24h popularity asked; packages are not in report.py
 
 - Mark asked for his most popular repos and packages over the last 24 hours. `scripts/report.py` (day 2026-10-21 UTC) covers GitHub repos only: top visitors polywright, UniverseGenerator, roblox-agent (2 each); top real cloners obsidian-notes 49, roblox-agent 19, everwrite 11, markdown-plain-link-replacer 11 (78 clones were CI). Packages came by hand: npm `api.npmjs.org/downloads/point/last-day/<pkg>` returned day 2026-10-18 (npm's daily stats lag about four days); format-json-files 7, markdown-plain-link-replacer 4, the other four 1-2. NuGet publishes only all-time totals (no daily numbers): RandomNameGeneratorLibrary 4,008,682, JsonPrettyPrinter 314,182, IsImageUrlDotNet 4,826, CachingServiceWithAOPSupport 4,246. The npm search `maintainer:m4bwav` returned nothing, so names came from package-modernization's inventory. Possible addition: a package section in report.py that snapshots NuGet totals daily so a day's difference can be shown.
+
+## [2026-10-26] note | Traffic updates require capture and dashboard rebuild
+
+- A traffic update recorded a capture but left the static dashboard stale until a separate build. Updated [AGENTS.md](../AGENTS.md) and [README.md](../README.md): run `python scripts/dashboard.py capture --window 48h` (or the requested window), wait for it to finish, then `python scripts/dashboard.py build`. Verify recorded stats and the rebuilt page; report failures explicitly. A page-only rebuild does not need another capture.
+- Both commands completed successfully on this machine during the update; build produced a nonempty `data/dashboard.html`. No source behavior changed, no extra capture was taken for this instruction change, and private traffic data stays gitignored.
+
+## [2026-10-26] note | Open the traffic page after an update
+
+- Extended the traffic-update rule in [AGENTS.md](../AGENTS.md) and the usage in [README.md](../README.md): after recording stats and rebuilding the dashboard, open `data/dashboard.html` in the user's browser and report launch failures explicitly. Opening the page is part of the update, not a separate follow-up request.
