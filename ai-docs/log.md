@@ -112,3 +112,11 @@ Branch openupm-downloads (worktree ../repo-traffic-openupm), https://github.com/
 ## [2026-10-26] note | Open the traffic page after an update
 
 - Extended the traffic-update rule in [AGENTS.md](../AGENTS.md) and the usage in [README.md](../README.md): after recording stats and rebuilding the dashboard, open `data/dashboard.html` in the user's browser and report launch failures explicitly. Opening the page is part of the update, not a separate follow-up request.
+
+## [2026-10-29] build | Dashboard links and charts that follow the window
+
+- Mark reported the charts ignore the window selector. Ran [plans/2026-10-28-dashboard-links-and-ranged-charts.md](plans/2026-10-28-dashboard-links-and-ranged-charts.md) on branch feat/ranged-charts.
+- `compute` now returns `start` (window_bounds start as a UTC stamp, null for all); package series carry `basis` (daily or captures). The page clips daily series by UTC day and capture series by timestamp, keeping the newest capture before the start as a baseline; under two points it says "not enough data in this window".
+- `link_for` builds repo, registry and release links; `render_html(owner=...)` adds `url` to every row; build and serve take the owner from `repo_traffic.json` (no hardcoded owner). Sorting still runs on the data, not the markup.
+- Tests: window start bounds, link URLs per registry, owner links and escaping (107 passed, 1 skipped). Checked in Chrome against real data: 24h/48h/7d/14d/30d/all charts draw 2/3/8/15/31/40 daily points, last shows the not-enough note, NuGet 7d starts at the baseline capture.
+- Trap: a JS template literal split across a `+` line break broke the whole page while the Python tests stayed green; `node --check` on the extracted script caught it.
