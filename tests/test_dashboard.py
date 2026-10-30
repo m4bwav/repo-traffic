@@ -112,7 +112,7 @@ def test_summary_and_empty(tmp_path, data):
 def test_html_is_self_contained(data):
     dashboard.record(data)
     page = dashboard.render_html(data, now=NOW)
-    assert "__DATA__" not in page and "src=" not in page and "https://" not in page
+    assert "__DATA__" not in page and "src=" not in page and "<link" not in page
     blob = page.split("const D=")[1].split(",LIVE=")[0]
     payload = json.loads(blob)
     assert set(payload["windows"]) == set(dashboard.WINDOWS)
@@ -164,3 +164,40 @@ def test_server_checks_host_and_header(data, monkeypatch):
     finally:
         server.shutdown()
         server.server_close()
+
+
+def test_window_start_bounds_in_payload(data):
+    dashboard.record(data)
+    payload = json.loads(dashboard.render_html(data, now=NOW).split("const D=")[1].split(",LIVE=")[0])
+    starts = {w: payload["windows"][w]["start"] for w in dashboard.WINDOWS}
+    assert starts["all"] is None
+    assert starts["last"] == "2026-10-21T12:00:00Z"
+    assert starts["24h"] == "2026-10-23T13:00:00Z"
+    assert starts["7d"] == "2026-10-17T13:00:00Z"
+    series = payload["series"]
+    assert series["packages"]["nuget/Lib.A"]["basis"] == "captures"
+    assert series["packages"]["npm/pkg-a"]["basis"] == "daily"
+    assert series["any"] is True
+
+
+def test_link_urls_per_registry():
+    link = dashboard.link_for
+    assert link("repos", {"name": "alpha"}, "someone") == "https://github.com/someone/alpha"
+    assert link("repos", {"name": "alpha"}, None) is None
+    assert link("packages", {"registry": "npm", "name": "@s/p"}, "o") == "https://www.npmjs.com/package/@s/p"
+    assert link("packages", {"registry": "nuget", "name": "Lib.A"}, "o") == "https://www.nuget.org/packages/Lib.A"
+    assert link("packages", {"registry": "pypi", "name": "py-a"}, "o") == "https://pypi.org/project/py-a/"
+    assert link("packages", {"registry": "openupm", "name": "com.x.y"}, "o") == "https://openupm.com/packages/com.x.y/"
+    rel = {"registry": "github-release", "name": "alpha"}
+    assert link("packages", rel, "o") == "https://github.com/o/alpha/releases"
+
+
+def test_owner_links_in_page_and_escaping(data):
+    (data / "daily.csv").write_text(DAILY + "<b>x</b>,2026-10-23,1,1,0,0" + chr(10), encoding="utf-8")
+    dashboard.record(data)
+    page = dashboard.render_html(data, now=NOW, owner="someone")
+    payload = json.loads(page.split("const D=")[1].split(",LIVE=")[0])
+    rows = {r["name"]: r for r in payload["windows"]["all"]["repos"]}
+    assert rows["alpha"]["url"] == "https://github.com/someone/alpha"
+    assert "<b>x</b>" not in page  # names reach the page only as JSON; the script escapes them in cells
+    assert 'target="_blank" rel="noopener"' in page and "esc(r.url)" in page and "esc(r[c])" in page

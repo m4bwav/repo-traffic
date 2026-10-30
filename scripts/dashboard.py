@@ -47,10 +47,36 @@ LABELS = {
 STAMP = "%Y-%m-%dT%H:%M:%SZ"
 
 
-def data_folder():
+def load_config():
     cfg_path = ROOT / "repo_traffic.json"
-    cfg = json.loads(cfg_path.read_text(encoding="utf-8")) if cfg_path.exists() else {}
-    return ROOT / cfg.get("data", "data")
+    return json.loads(cfg_path.read_text(encoding="utf-8")) if cfg_path.exists() else {}
+
+
+def data_folder():
+    return ROOT / load_config().get("data", "data")
+
+
+def config_owner():
+    """The GitHub owner from repo_traffic.json, or None (repo names are then shown without links)."""
+    return load_config().get("owner") or None
+
+
+REGISTRY_URLS = {
+    "npm": "https://www.npmjs.com/package/%s",
+    "nuget": "https://www.nuget.org/packages/%s",
+    "pypi": "https://pypi.org/project/%s/",
+    "openupm": "https://openupm.com/packages/%s/",
+}
+
+
+def link_for(kind, row, owner):
+    """The page a repo or package row links to, or None."""
+    if kind == "repos":
+        return "https://github.com/%s/%s" % (owner, row["name"]) if owner else None
+    if row["registry"] == "github-release":
+        return "https://github.com/%s/%s/releases" % (owner, row["name"]) if owner else None
+    url = REGISTRY_URLS.get(row["registry"])
+    return url % row["name"] if url else None
 
 
 def stamp(path):
@@ -248,6 +274,7 @@ def compute(data, window, now=None):
     span = (parse_stamp(latest) - parse_stamp(base)).total_seconds() / 3600 if latest and base else 0.0
     return {
         "window": window,
+        "start": start.strftime(STAMP) if start else None,
         "label": LABELS.get(window, window),
         "now": now.strftime(STAMP),
         "start_day": start_day or "the first day recorded",
@@ -321,7 +348,7 @@ def series_payload(data):
             t[0] += v[0]
             t[1] += v[2]
     packages = {
-        "%s/%s" % k: {"label": "downloads per day", "points": sorted([d, n] for d, n in days.items())}
+        "%s/%s" % k: {"label": "downloads per day", "basis": "daily", "points": sorted([d, n] for d, n in days.items())}
         for k, days in load_package_daily(data).items()
     }
     for (src, name, metric), s in series.items():
@@ -333,18 +360,28 @@ def series_payload(data):
             if hours > 0:
                 pts.append([tb, round((vb - va) * 24 / hours, 1)])
         reg = "nuget" if src == "nuget" else "github-release"
-        packages["%s/%s" % (reg, name)] = {"label": "downloads per day between captures", "points": pts}
+        packages["%s/%s" % (reg, name)] = {
+            "label": "downloads per day between captures",
+            "basis": "captures",
+            "points": pts,
+        }
     t = sorted(totals.items())
     return {
         "repos": repos,
         "packages": packages,
+        "any": bool(totals or packages),
         "totals": {"views": [[d, v[0]] for d, v in t], "clones": [[d, v[1]] for d, v in t]},
     }
 
 
-def render_html(data, live=False, now=None):
+def render_html(data, live=False, now=None, owner=None):
+    windows = {w: compute(data, w, now) for w in WINDOWS}
+    for w in windows.values():
+        for kind in ("repos", "packages"):
+            for row in w[kind]:
+                row["url"] = link_for(kind, row, owner)
     payload = {
-        "windows": {w: compute(data, w, now) for w in WINDOWS},
+        "windows": windows,
         "order": WINDOWS,
         "labels": LABELS,
         "default_window": "48h",
@@ -400,7 +437,7 @@ def make_server(data, port):
                 return self.reply(403, "forbidden")
             if self.path == "/":
                 record(data)
-                return self.reply(200, render_html(data, live=True), "text/html; charset=utf-8")
+                return self.reply(200, render_html(data, live=True, owner=config_owner()), "text/html; charset=utf-8")
             if self.path == "/status":
                 return self.reply(200, json.dumps(state), "application/json")
             return self.reply(404, "not found")
@@ -446,7 +483,7 @@ def main(argv=None):
     if args.cmd == "build":
         record(data)
         out = data / "dashboard.html"
-        out.write_text(render_html(data), encoding="utf-8")
+        out.write_text(render_html(data, owner=config_owner()), encoding="utf-8")
         print(out)
         return 0
     record(data)
@@ -475,6 +512,7 @@ cursor:pointer}button.on{background:#3b6fd8;border-color:#3b6fd8}
 table{border-collapse:collapse;width:100%}th,td{padding:4px 8px;border-bottom:1px solid #222c40;text-align:right}
 th{cursor:pointer;color:#8a96ab;user-select:none}.l{text-align:left}
 tr.row:hover{background:#18213a;cursor:pointer}tr.sel{background:#22315a}.pos{color:#6fd38a}.neg{color:#e07070}
+td a{color:#8fb8ff;text-decoration:none}td a:hover{text-decoration:underline}
 #chart{background:#131a2a;border-radius:8px;padding:12px;margin:14px 0}
 </style></head><body>
 <h1>repo-traffic</h1>
@@ -507,15 +545,18 @@ return dir*String(x).localeCompare(String(y));return dir*((x??-1e18)-(y??-1e18))
 let h="<tr>"+COLS[kind].map(([c,t])=>`<th data-k="${c}" class="${c==="name"||c==="registry"?"l":""}">${t}`+
 `${c===k?(dir<0?" &#9660;":" &#9650;"):""}</th>`).join("")+"</tr>";
 for(const r of rows){const id=rowId(kind,r);h+=`<tr class="row ${id===sel?"sel":""}" data-id="${esc(id)}">`+
-COLS[kind].map(([c])=>typeof r[c]==="string"?`<td class="l">${esc(r[c])}</td>`:`<td>${num(r[c],c.endsWith("_delta"))}</td>`)
+COLS[kind].map(([c])=>c==="name"&&r.url?`<td class="l"><a href="${esc(r.url)}" target="_blank" rel="noopener">`+
+`${esc(r[c])}</a></td>`:typeof r[c]==="string"?`<td class="l">${esc(r[c])}</td>`:`<td>${num(r[c],c.endsWith("_delta"))}</td>`)
 .join("")+"</tr>"}
 if(!rows.length)h+=`<tr><td class="l muted" colspan="9">nothing in this window</td></tr>`;
 const t=$(kind);t.innerHTML=h;t.querySelectorAll("th").forEach(th=>th.onclick=()=>{const c=th.dataset.k;
 sort[kind]=[c,sort[kind][0]===c?-sort[kind][1]:(c==="name"||c==="registry"?1:-1)];renderTable(kind)});
+t.querySelectorAll("tr.row a").forEach(a=>a.onclick=e=>e.stopPropagation());
 t.querySelectorAll("tr.row").forEach(tr=>tr.onclick=()=>{sel=sel===tr.dataset.id?null:tr.dataset.id;render()})}
-function chart(title,series){$("ctitle").textContent=title;const svg=$("svg"),W=svg.clientWidth||900,H=230,L=80,R=20,T=24,B=28;
+function drawChart(title,series){$("ctitle").textContent=title;const svg=$("svg"),W=svg.clientWidth||900,H=230,L=80,R=20,T=24,B=28;
 const xs=[...new Set(series.flatMap(s=>s.points.map(q=>q[0])))].sort();
-if(!xs.length){svg.innerHTML='<text x="10" y="40" fill="#6b7790">no data recorded yet</text>';return}
+if(xs.length<2){svg.innerHTML='<text x="10" y="40" fill="#6b7790">'+(D.series.any?"not enough data in this window":
+"no data recorded yet")+"</text>";return}
 const t=x=>Date.parse(x.length===10?x+"T00:00:00Z":x),x0=t(xs[0]),x1=t(xs[xs.length-1]);
 const ys=series.flatMap(s=>s.points.map(q=>q[1])),y0=Math.min(0,...ys),y1=Math.max(1,...ys);
 const X=x=>L+(W-L-R)*(x1===x0?0.5:(t(x)-x0)/(x1-x0)),Y=y=>H-B-(H-T-B)*(y-y0)/(y1-y0||1);
@@ -528,12 +569,18 @@ g+=`<polyline fill="none" stroke="${s.color}" stroke-width="2" points="${p.map(q
 p.map(q=>`<circle cx="${X(q[0])}" cy="${Y(q[1])}" r="3" fill="${s.color}"><title>${esc(s.name)} ${esc(q[0])}: `+
 `${q[1].toLocaleString()}</title></circle>`).join("")+
 `<text x="${W-R}" y="${14+i*14}" fill="${s.color}" font-size="12" text-anchor="end">${esc(s.name)}</text>`});svg.innerHTML=g}
+function clip(points,basis){const st=D.windows[win].start;if(!st)return points;
+if(basis!=="captures"){const day=st.slice(0,10);return points.filter(q=>q[0].slice(0,10)>=day)}
+const before=points.filter(q=>q[0]<st),after=points.filter(q=>q[0]>=st);
+return before.length?[before[before.length-1],...after]:after}
+function chart(title,series){series=series.map(s=>({...s,points:clip(s.points,s.basis)}));
+drawChart(title+" ("+D.windows[win].label.toLowerCase()+")",series)}
 function renderChart(){if(!sel){const s=D.series.totals;return chart("All repos: views and clones per day (UTC). Click a row"+
 " to chart it.",[{name:"views",color:"#5b9cff",points:s.views},{name:"clones",color:"#f0a050",points:s.clones}])}
 const kind=sel.slice(0,sel.indexOf(":")),id=sel.slice(sel.indexOf(":")+1),s=D.series[kind][id];
 if(!s)return chart(id+": nothing to chart",[]);
 if(kind==="repos")return chart(id+": views and clones per day (UTC)",[{name:"views",color:"#5b9cff",points:s.views},
-{name:"clones",color:"#f0a050",points:s.clones}]);chart(id+": "+s.label,[{name:"downloads",color:"#6fd38a",points:s.points}])}
+{name:"clones",color:"#f0a050",points:s.clones}]);chart(id+": "+s.label,[{name:"downloads",color:"#6fd38a",basis:s.basis,points:s.points}])}
 function render(){const W=D.windows[win];renderWins();
 $("meta").textContent=W.latest?`${W.label}: daily counts from ${W.start_day} (UTC); capture changes ${W.base} to `+
 `${W.latest} (${W.span_hours} h). ${W.captures} captures recorded.`:"Nothing recorded yet.";
