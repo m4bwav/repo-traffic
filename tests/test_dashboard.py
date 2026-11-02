@@ -4,6 +4,7 @@ import datetime as dt
 import http.client
 import json
 import os
+import re
 import sys
 import threading
 from pathlib import Path
@@ -112,7 +113,9 @@ def test_summary_and_empty(tmp_path, data):
 def test_html_is_self_contained(data):
     dashboard.record(data)
     page = dashboard.render_html(data, now=NOW)
-    assert "__DATA__" not in page and "src=" not in page and "<link" not in page
+    assert "__DATA__" not in page and "src=" not in page
+    assert re.findall(r'<link[^>]*href="(?!data:)', page) == []
+    assert 'rel="icon" href="data:image/svg+xml' in page
     blob = page.split("const D=")[1].split(",LIVE=")[0]
     payload = json.loads(blob)
     assert set(payload["windows"]) == set(dashboard.WINDOWS)
