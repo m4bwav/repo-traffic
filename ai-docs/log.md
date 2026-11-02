@@ -120,3 +120,8 @@ Branch openupm-downloads (worktree ../repo-traffic-openupm), https://github.com/
 - `link_for` builds repo, registry and release links; `render_html(owner=...)` adds `url` to every row; build and serve take the owner from `repo_traffic.json` (no hardcoded owner). Sorting still runs on the data, not the markup.
 - Tests: window start bounds, link URLs per registry, owner links and escaping (107 passed, 1 skipped). Checked in Chrome against real data: 24h/48h/7d/14d/30d/all charts draw 2/3/8/15/31/40 daily points, last shows the not-enough note, NuGet 7d starts at the baseline capture.
 - Trap: a JS template literal split across a `+` line break broke the whole page while the Python tests stayed green; `node --check` on the extracted script caught it.
+
+## 2026-11-01 - dashboard favicon
+
+- dashboard.html has a favicon: a blue tile with three white bars, an inline SVG data URI in `<link rel="icon">`, so the page stays one self-contained file.
+- test_html_is_self_contained used to ban every `<link>`; it now bans only links whose href is not a data: URI, and checks that the icon is there.

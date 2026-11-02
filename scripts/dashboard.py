@@ -502,6 +502,7 @@ def main(argv=None):
 PAGE = r"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>repo-traffic</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27%3E%3Crect width=%2716%27 height=%2716%27 rx=%273%27 fill=%27%231f6feb%27/%3E%3Crect x=%273%27 y=%279%27 width=%272%27 height=%274%27 fill=%27%23fff%27/%3E%3Crect x=%277%27 y=%276%27 width=%272%27 height=%277%27 fill=%27%23fff%27/%3E%3Crect x=%2711%27 y=%273%27 width=%272%27 height=%2710%27 fill=%27%23fff%27/%3E%3C/svg%3E">
 <style>
 body{font:14px system-ui,sans-serif;margin:24px;background:#0f1420;color:#dde3ee}
 h1{font-size:20px;margin:0 0 4px}h2{font-size:16px;margin:8px 0}
