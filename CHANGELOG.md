@@ -7,6 +7,7 @@ Compatibility promise: every file 0.1.0 writes keeps its name, columns and forma
 ## [Unreleased]
 
 ### Added
+- Dashboard and capture summary: npm known totals, shown as `1,234≥`. They add up every day saved in the snapshots, so they are floors, and they catch up when npm fills in a day it published late.
 - Dashboard: repo names link to their GitHub repo and package names to their registry page (npm, NuGet, PyPI, OpenUPM; release assets to the repo's releases page), opening in a new tab. The owner comes from the config.
 - Dashboard: charts follow the selected time window instead of always showing everything; a window with fewer than two points shows "not enough data in this window". Each window's start bound is in the page data.
 - OpenUPM downloads for the Unity packages named in `--openupm-packages` or the `openupm_packages` config key: the last 14 days and last month from package.openupm.com, an `openupm` section in `packages.json`, rows in `downloads.csv` (registry `openupm`) and a summary table. A package OpenUPM does not know is a failure for that package only.

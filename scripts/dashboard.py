@@ -13,6 +13,9 @@
 - Windows: Nh, Nd, last (since the previous capture), all. Repo views and clones and npm, PyPI and OpenUPM downloads
   come from daily counts (UTC days from the window's start day on); NuGet and release asset downloads, stars and
   forks are the latest capture minus the newest capture at or before the window's start.
+- npm known totals add up every day ever saved, so they are floors (shown as 1,234≥): history before the first
+  snapshot is missing. npm publishes a day late and reads 0 until then, sometimes for days; a later snapshot's count
+  replaces the earlier one, so totals catch up. summary prints the last day with npm counts.
 - serve listens on 127.0.0.1 only; build writes data/dashboard.html. Everything stays in the data folder (gitignored).
 """
 
@@ -256,11 +259,14 @@ def compute(data, window, now=None):
     repos.sort(key=lambda r: (-r["visitors"], -r["views"], -r["cloners"], r["name"]))
 
     packages = []
+    npm_through = ""
     for (reg, name), days in load_package_daily(data).items():
         n = sum(v for d, v in days.items() if d >= start_day)
-        packages.append(
-            {"registry": reg, "name": name, "downloads": n, "total": None, "through": max(days, default="")}
-        )
+        row = {"registry": reg, "name": name, "downloads": n, "total": None, "through": max(days, default="")}
+        if reg == "npm":
+            row.update(total=sum(days.values()), floor=True)
+            npm_through = max([npm_through] + [d for d, v in days.items() if v])
+        packages.append(row)
     for (src, name, metric), _ in series.items():
         if (src, metric) == ("nuget", "total") or (src, metric) == ("github", "release_downloads"):
             total = current((src, name, metric))
@@ -282,6 +288,7 @@ def compute(data, window, now=None):
         "latest": latest,
         "span_hours": round(span, 1),
         "captures": len(captures),
+        "npm_through": npm_through,
         "repos": repos,
         "packages": packages,
     }
@@ -325,16 +332,32 @@ def summary_text(w, top=10):
     )
     out += ["* daily uniques added up: someone seen on two days counts twice", "", "Packages:"]
     out += table(
-        ["#", "registry", "package", "downloads", "basis"],
+        ["#", "registry", "package", "downloads", "known total", "basis"],
         [
-            (i, p["registry"], p["name"], num(p["downloads"]), "daily" if p["total"] is None else "captures")
+            (
+                i,
+                p["registry"],
+                p["name"],
+                num(p["downloads"]),
+                total_text(p),
+                "daily" if p["registry"] in DAILY_REGISTRIES else "captures",
+            )
             for i, p in enumerate([p for p in w["packages"] if p["downloads"]][:top], 1)
         ],
     )
     out.append("NuGet totals update in batches (flat for days, then a jump), so short-window NuGet deltas are lumpy")
+    if w["npm_through"]:
+        out.append(
+            "npm totals with ≥ are what was recorded, counted through %s; recent days can still fill in"
+            % w["npm_through"]
+        )
     if w["span_hours"] == 0:
         out.append("(only one capture in range, so NuGet, release and star changes read as 0; capture again later)")
     return "\n".join(out)
+
+
+def total_text(p):
+    return num(p["total"]) + ("≥" if p.get("floor") else "")
 
 
 def series_payload(data):
@@ -456,6 +479,8 @@ def make_server(data, port):
 
 
 def main(argv=None):
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")  # the totals' ≥ crashes on a cp1252 console
     p = argparse.ArgumentParser(description="Record snapshots over time and show the change over a window.")
     sub = p.add_subparsers(dest="cmd", required=True)
     for name in ("capture", "summary"):
@@ -525,7 +550,8 @@ td a{color:#8fb8ff;text-decoration:none}td a:hover{text-decoration:underline}
 <p class="muted">Visitors and cloners add up each day's uniques, so someone seen on two days counts twice.
 Stars change is between captures.</p></div>
 <div><h2>Packages</h2><table id="packages"></table>
-<p class="muted">npm, PyPI, OpenUPM: daily counts. NuGet and release assets: latest capture minus the capture at the
+<p class="muted">npm, PyPI, OpenUPM: daily counts. npm totals ending in ≥ add up the days recorded, so the true
+total is at least that; npm publishes days late, so recent days can still fill in. NuGet and release assets: latest capture minus the capture at the
 window's start (Total is all time; NuGet updates its totals in batches, so short windows are lumpy).</p></div></div>
 <script>
 const D=__DATA__,LIVE=__LIVE__,$=id=>document.getElementById(id);
@@ -547,7 +573,7 @@ let h="<tr>"+COLS[kind].map(([c,t])=>`<th data-k="${c}" class="${c==="name"||c==
 `${c===k?(dir<0?" &#9660;":" &#9650;"):""}</th>`).join("")+"</tr>";
 for(const r of rows){const id=rowId(kind,r);h+=`<tr class="row ${id===sel?"sel":""}" data-id="${esc(id)}">`+
 COLS[kind].map(([c])=>c==="name"&&r.url?`<td class="l"><a href="${esc(r.url)}" target="_blank" rel="noopener">`+
-`${esc(r[c])}</a></td>`:typeof r[c]==="string"?`<td class="l">${esc(r[c])}</td>`:`<td>${num(r[c],c.endsWith("_delta"))}</td>`)
+`${esc(r[c])}</a></td>`:typeof r[c]==="string"?`<td class="l">${esc(r[c])}</td>`:`<td>${num(r[c],c.endsWith("_delta"))}${c==="total"&&r.floor?"≥":""}</td>`)
 .join("")+"</tr>"}
 if(!rows.length)h+=`<tr><td class="l muted" colspan="9">nothing in this window</td></tr>`;
 const t=$(kind);t.innerHTML=h;t.querySelectorAll("th").forEach(th=>th.onclick=()=>{const c=th.dataset.k;
