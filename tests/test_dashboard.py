@@ -93,6 +93,24 @@ def test_window_48h(data):
     assert [p["name"] for p in w["packages"]][:2] == ["Lib.A", "pkg-a"]
 
 
+def test_npm_known_total_is_a_floor_that_catches_up(data):
+    dashboard.record(data)
+    pkg = lambda w: next(p for p in w["packages"] if p["registry"] == "npm")  # noqa: E731
+    w = dashboard.compute(data, "all", NOW)
+    assert (pkg(w)["total"], pkg(w)["floor"], w["npm_through"]) == (13, True, "2026-10-23")
+    text = dashboard.summary_text(w)
+    assert "13≥" in text and "counted through 2026-10-23" in text
+    # A day npm had not published yet reads 0, then the later snapshot's count replaces it.
+    snap(data, "2026-10-25", "2026-10-25T12:00:00Z", 4, 1600, {"2026-10-23": 4, "2026-10-24": 0})
+    assert dashboard.compute(data, "all", NOW)["npm_through"] == "2026-10-23"
+    snap(data, "2026-10-26", "2026-10-26T12:00:00Z", 4, 1600, {"2026-10-24": 7})
+    w = dashboard.compute(data, "all", NOW)
+    assert (pkg(w)["total"], w["npm_through"]) == (20, "2026-10-24")
+    # The other daily registries have no known total, and NuGet's is exact.
+    assert next(p for p in w["packages"] if p["registry"] == "pypi")["total"] is None
+    assert "floor" not in next(p for p in w["packages"] if p["registry"] == "nuget")
+
+
 def test_window_all_and_bad(data):
     dashboard.record(data)
     w = dashboard.compute(data, "all", NOW)
@@ -106,7 +124,7 @@ def test_summary_and_empty(tmp_path, data):
     dashboard.record(data)
     out = dashboard.summary_text(dashboard.compute(data, "48h", NOW))
     assert "| 1 | alpha | 3 | 6 | 1 | 2 | 4 | +2 |" in out
-    assert "| 1 | nuget | Lib.A | 600 | captures |" in out
+    assert "| 1 | nuget | Lib.A | 600 | 1,600 | captures |" in out
     assert "py-a" not in out
 
 

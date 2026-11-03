@@ -125,3 +125,6 @@ Branch openupm-downloads (worktree ../repo-traffic-openupm), https://github.com/
 
 - dashboard.html has a favicon: a blue tile with three white bars, an inline SVG data URI in `<link rel="icon">`, so the page stays one self-contained file.
 - test_html_is_self_contained used to ban every `<link>`; it now bans only links whose href is not a data: URI, and checks that the icon is there.
+
+## 2026-11-03
+- npm known totals (`1,234≥`) in `scripts/dashboard.py`: the sum of every day merged from the snapshots, a floor because history before 2026-09-24 is missing. Checked the 16 snapshots: 34 package-days were revised after first being read, every one upward, typically from 0, so npm's recent zeros are unpublished days and later-snapshot-wins is correct. The summary names the newest day with any npm count. Capturing at least every 14 days avoids losing days. npm's range API could backfill real history (not done; not asked).
