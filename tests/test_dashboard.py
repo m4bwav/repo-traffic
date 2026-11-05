@@ -222,3 +222,52 @@ def test_owner_links_in_page_and_escaping(data):
     assert rows["alpha"]["url"] == "https://github.com/someone/alpha"
     assert "<b>x</b>" not in page  # names reach the page only as JSON; the script escapes them in cells
     assert 'target="_blank" rel="noopener"' in page and "esc(r.url)" in page and "esc(r[c])" in page
+
+
+def workshop(data, day, title, subs, views):
+    d = {"title": title, "subscribers": subs, "lifetime_subscribers": subs + 5, "favorites": 2, "views": views}
+    (data / "snapshots" / day / "workshop.json").write_text(json.dumps({"123": d}), encoding="utf-8")
+
+
+def test_mods_track_changes_and_survive_a_rename(data):
+    workshop(data, "2026-10-21", "Old Name", 10, 100)
+    workshop(data, "2026-10-24", "New Name", 13, 150)
+    dashboard.record(data)
+    m = dashboard.compute(data, "48h", NOW)["mods"][0]
+    assert (m["id"], m["name"], m["subscribers"], m["subscribers_delta"]) == ("workshop/123", "New Name", 13, 3)
+    assert (m["lifetime_subscribers"], m["favorites"], m["views_delta"]) == (18, 2, 50)
+    assert "New Name" in dashboard.summary_text(dashboard.compute(data, "48h", NOW))
+    page = dashboard.render_html(data, now=NOW)
+    assert 'data-tab="mods"' in page and "filedetails/?id=123" in page
+    assert dashboard.series_payload(data)["mods"]["workshop/123"]["points"][-1][1] == 13
+
+
+def test_no_mods_configured_changes_nothing(data):
+    dashboard.record(data)
+    w = dashboard.compute(data, "48h", NOW)
+    assert w["mods"] == [] and "Mods (" not in dashboard.summary_text(w)
+
+
+def test_workshop_failure_is_reported_and_leaves_no_stale_file(data, monkeypatch):
+    stale = data / "snapshots" / "2026-10-24" / "workshop.json"
+    stale.write_text("{}", encoding="utf-8")
+    monkeypatch.setattr(dashboard, "load_config", lambda: {"workshop_items": [123]})
+
+    def boom(items):
+        raise OSError("offline")
+
+    monkeypatch.setattr(dashboard, "fetch_workshop", boom)
+    assert "offline" in dashboard.snapshot_mods(data)
+    assert not stale.exists()
+
+
+def test_curseforge_mod_shows_downloads_and_its_own_page(data):
+    for day, n in (("2026-10-21", 20), ("2026-10-24", 23)):
+        d = {"title": "Some Addon", "url": "https://example.test/addon", "downloads": n}
+        (data / "snapshots" / day / "curseforge.json").write_text(json.dumps({"77": d}), encoding="utf-8")
+    dashboard.record(data)
+    m = dashboard.compute(data, "48h", NOW)["mods"][0]
+    assert (m["registry"], m["name"], m["downloads"], m["downloads_delta"]) == ("curseforge", "Some Addon", 23, 3)
+    assert m["subscribers"] is None
+    assert dashboard.link_for("mods", m, None) == "https://example.test/addon"
+    assert dashboard.series_payload(data)["mods"]["curseforge/77"]["name"] == "downloads"
