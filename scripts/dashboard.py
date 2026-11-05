@@ -16,6 +16,10 @@
 - npm known totals add up every day ever saved, so they are floors (shown as 1,234≥): history before the first
   snapshot is missing. npm publishes a day late and reads 0 until then, sometimes for days; a later snapshot's count
   replaces the earlier one, so totals catch up. summary prints the last day with npm counts.
+- Mods: Steam Workshop items listed as workshop_items in repo_traffic.json are read at each capture from Steam's
+  public API (no key) into the snapshot's workshop.json; CurseForge projects in curseforge_items likewise through
+  api.cfwidget.com (a third-party mirror; CurseForge's own API needs a key) into curseforge.json. Neither has daily
+  counts, so changes are between captures.
 - serve listens on 127.0.0.1 only; build writes data/dashboard.html. Everything stays in the data folder (gitignored).
 """
 
@@ -27,6 +31,8 @@ import re
 import subprocess
 import sys
 import threading
+import urllib.parse
+import urllib.request
 import webbrowser
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -64,6 +70,18 @@ def config_owner():
     return load_config().get("owner") or None
 
 
+WORKSHOP_API = "https://api.steampowered.com/ISteamRemoteStorage/GetPublishedFileDetails/v1/"
+WORKSHOP_URL = "https://steamcommunity.com/sharedfiles/filedetails/?id=%s"
+WORKSHOP_METRICS = {
+    "subscribers": "subscriptions",
+    "lifetime_subscribers": "lifetime_subscriptions",
+    "favorites": "favorited",
+    "views": "views",
+}
+CURSEFORGE_API = "https://api.cfwidget.com/%s"
+MOD_SOURCES = {"workshop": "steam", "curseforge": "curseforge"}
+MOD_METRICS = {"workshop": list(WORKSHOP_METRICS), "curseforge": ["downloads"]}
+ALL_MOD_METRICS = [*WORKSHOP_METRICS, "downloads"]
 REGISTRY_URLS = {
     "npm": "https://www.npmjs.com/package/%s",
     "nuget": "https://www.nuget.org/packages/%s",
@@ -74,6 +92,8 @@ REGISTRY_URLS = {
 
 def link_for(kind, row, owner):
     """The page a repo or package row links to, or None."""
+    if kind == "mods":
+        return row.get("page") or WORKSHOP_URL % row["id"].split("/")[-1]
     if kind == "repos":
         return "https://github.com/%s/%s" % (owner, row["name"]) if owner else None
     if row["registry"] == "github-release":
@@ -126,6 +146,11 @@ def snapshot_rows(snapdir):
         rows.append(("nuget", name, "total", d["total"]))
         if d.get("last_6_weeks") is not None:
             rows.append(("nuget", name, "last_6_weeks", d["last_6_weeks"]))
+    for source, metrics in MOD_METRICS.items():
+        path = snapdir / (source + ".json")
+        if path.exists():
+            for item, d in read_json(path).items():
+                rows += [(source, item, metric, d[metric]) for metric in metrics]
     return rows
 
 
@@ -222,6 +247,17 @@ def window_bounds(window, captures, now):
     return start, max((c for c in captures if parse_stamp(c) <= start), default=first)
 
 
+def mod_details(data):
+    """Each mod's newest title and page by (source, id); metrics key on the id so a rename keeps its history."""
+    details = {}
+    for snapdir in snapshot_dirs(data):
+        for source in MOD_SOURCES:
+            path = snapdir / (source + ".json")
+            if path.exists():
+                details.update({(source, item): d for item, d in read_json(path).items()})
+    return details
+
+
 def compute(data, window, now=None):
     now = now or dt.datetime.now(dt.timezone.utc)
     captures, series = load_metrics(data)
@@ -277,6 +313,22 @@ def compute(data, window, now=None):
             packages.append({"registry": reg, "name": name, "downloads": d, "total": total, "through": latest})
     packages.sort(key=lambda r: (-(r["downloads"] or 0), -(r["total"] or 0), r["registry"], r["name"]))
 
+    details = mod_details(data)
+    mods = []
+    for source, item in sorted({k[:2] for k in series if k[0] in MOD_SOURCES}):
+        d = details.get((source, item), {})
+        row = {
+            "id": "%s/%s" % (source, item),
+            "registry": MOD_SOURCES[source],
+            "name": d.get("title") or item,
+            "page": d.get("url"),
+        }
+        for metric in ALL_MOD_METRICS:
+            row[metric] = current((source, item, metric))
+            row[metric + "_delta"] = delta((source, item, metric))
+        mods.append(row)
+    mods.sort(key=lambda r: (-(r["subscribers"] or 0), -(r["downloads"] or 0), r["name"]))
+
     span = (parse_stamp(latest) - parse_stamp(base)).total_seconds() / 3600 if latest and base else 0.0
     return {
         "window": window,
@@ -291,6 +343,7 @@ def compute(data, window, now=None):
         "npm_through": npm_through,
         "repos": repos,
         "packages": packages,
+        "mods": mods,
     }
 
 
@@ -353,6 +406,39 @@ def summary_text(w, top=10):
         )
     if w["span_hours"] == 0:
         out.append("(only one capture in range, so NuGet, release and star changes read as 0; capture again later)")
+    if w["mods"]:
+        out += ["", "Mods (changes are between captures):"]
+        out += table(
+            [
+                "#",
+                "platform",
+                "mod",
+                "subscribers",
+                "+/-",
+                "downloads",
+                "+/-",
+                "lifetime",
+                "favorites",
+                "views",
+                "views +/-",
+            ],
+            [
+                (
+                    i,
+                    m["registry"],
+                    m["name"],
+                    num(m["subscribers"]),
+                    num(m["subscribers_delta"], True),
+                    num(m["downloads"]),
+                    num(m["downloads_delta"], True),
+                    num(m["lifetime_subscribers"]),
+                    num(m["favorites"]),
+                    num(m["views"]),
+                    num(m["views_delta"], True),
+                )
+                for i, m in enumerate(w["mods"][:top], 1)
+            ],
+        )
     return "\n".join(out)
 
 
@@ -388,10 +474,20 @@ def series_payload(data):
             "basis": "captures",
             "points": pts,
         }
+    mods = {}
+    for (src, name, metric), s in series.items():
+        if (src, metric) in (("workshop", "subscribers"), ("curseforge", "downloads")):
+            mods["%s/%s" % (src, name)] = {
+                "label": metric + " at each capture",
+                "name": metric,
+                "basis": "captures",
+                "points": [list(q) for q in s],
+            }
     t = sorted(totals.items())
     return {
         "repos": repos,
         "packages": packages,
+        "mods": mods,
         "any": bool(totals or packages),
         "totals": {"views": [[d, v[0]] for d, v in t], "clones": [[d, v[1]] for d, v in t]},
     }
@@ -400,7 +496,7 @@ def series_payload(data):
 def render_html(data, live=False, now=None, owner=None):
     windows = {w: compute(data, w, now) for w in WINDOWS}
     for w in windows.values():
-        for kind in ("repos", "packages"):
+        for kind in ("repos", "packages", "mods"):
             for row in w[kind]:
                 row["url"] = link_for(kind, row, owner)
     payload = {
@@ -420,9 +516,57 @@ def snapshot_now():
     return None if r.returncode == 0 else "snapshot exited %d; see data/run.log" % r.returncode
 
 
+def fetch_workshop(items):
+    """Public Steam details for these Workshop ids: {id: {title, the WORKSHOP_METRICS counts}}."""
+    form = [("itemcount", len(items))] + [("publishedfileids[%d]" % i, x) for i, x in enumerate(items)]
+    req = urllib.request.Request(WORKSHOP_API, urllib.parse.urlencode(form).encode(), {"User-Agent": "repo-traffic"})
+    with urllib.request.urlopen(req, timeout=30) as r:
+        details = json.load(r)["response"]["publishedfiledetails"]
+    out = {}
+    for d in details:
+        if d.get("result") == 1:
+            out[d["publishedfileid"]] = {
+                "title": d.get("title"),
+                **{metric: d.get(field, 0) for metric, field in WORKSHOP_METRICS.items()},
+            }
+    return out
+
+
+def fetch_curseforge(items):
+    """Public CurseForge details for these project ids, through the cfwidget mirror."""
+    out = {}
+    for item in items:
+        req = urllib.request.Request(CURSEFORGE_API % item, headers={"User-Agent": "repo-traffic"})
+        with urllib.request.urlopen(req, timeout=30) as r:
+            d = json.load(r)
+        out[item] = {"title": d.get("title"), "url": d["urls"]["project"], "downloads": d["downloads"]["total"]}
+    return out
+
+
+def snapshot_mods(data):
+    """Write each mod source's file into the newest snapshot; an error line, or None. A failed read leaves no file."""
+    dirs = snapshot_dirs(data)
+    errors = []
+    for source, key, fetch in (
+        ("workshop", "workshop_items", fetch_workshop),
+        ("curseforge", "curseforge_items", fetch_curseforge),
+    ):
+        items = [str(x) for x in load_config().get(key, [])]
+        if not items or not dirs:
+            continue
+        path = dirs[-1] / (source + ".json")
+        path.unlink(missing_ok=True)
+        try:
+            path.write_text(json.dumps(fetch(items), indent=1), encoding="utf-8")
+        except (OSError, ValueError, KeyError) as e:
+            errors.append("%s read failed: %s" % (source, e))
+    return "; ".join(errors) or None
+
+
 def capture(data):
     err = snapshot_now()
-    return err, record(data)
+    mods_err = snapshot_mods(data)
+    return "; ".join(e for e in (err, mods_err) if e) or None, record(data)
 
 
 def make_server(data, port):
@@ -549,20 +693,28 @@ td a{color:#8fb8ff;text-decoration:none}td a:hover{text-decoration:underline}
 <div><h2>Repos</h2><table id="repos"></table>
 <p class="muted">Visitors and cloners add up each day's uniques, so someone seen on two days counts twice.
 Stars change is between captures.</p></div>
-<div><h2>Packages</h2><table id="packages"></table>
+<div><div id="tabs"><button data-tab="packages">Packages</button><button data-tab="mods">Mods</button></div>
+<div id="pane-mods" hidden><table id="mods"></table>
+<p class="muted">Steam Workshop and CurseForge items listed in repo_traffic.json. Both give current counts only, so
+each +/- is the latest capture minus the capture at the window's start. Click a row to chart it.</p></div>
+<div id="pane-packages"><table id="packages"></table>
 <p class="muted">npm, PyPI, OpenUPM: daily counts. npm totals ending in ≥ add up the days recorded, so the true
 total is at least that; npm publishes days late, so recent days can still fill in. NuGet and release assets: latest capture minus the capture at the
-window's start (Total is all time; NuGet updates its totals in batches, so short windows are lumpy).</p></div></div>
+window's start (Total is all time; NuGet updates its totals in batches, so short windows are lumpy).</p></div></div></div>
 <script>
 const D=__DATA__,LIVE=__LIVE__,$=id=>document.getElementById(id);
 const COLS={repos:[["name","Repo"],["visitors","Visitors"],["views","Views"],["cloners","Cloners"],["clones","Clones"],
 ["stars","Stars"],["stars_delta","Stars +/-"]],packages:[["registry","Registry"],["name","Package"],
-["downloads","Downloads"],["total","Total"]]};
-const sort={repos:["visitors",-1],packages:["downloads",-1]};let win=D.default_window,sel=null;
+["downloads","Downloads"],["total","Total"]],mods:[["registry","Platform"],["name","Mod"],["subscribers","Subscribers"],
+["subscribers_delta","Subs +/-"],["downloads","Downloads"],["downloads_delta","Downloads +/-"],["lifetime_subscribers","Lifetime"],["favorites","Favorites"],["views","Views"],
+["views_delta","Views +/-"]]};
+const sort={repos:["visitors",-1],packages:["downloads",-1],mods:["subscribers",-1]};let win=D.default_window,sel=null,tab="packages";
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 function num(v,d){if(v==null)return'<span class="muted">-</span>';const s=v.toLocaleString();
 return d&&v>0?'<span class="pos">+'+s+"</span>":d&&v<0?'<span class="neg">'+s+"</span>":s}
-function rowId(kind,r){return kind+":"+(r.registry?r.registry+"/":"")+r.name}
+function rowId(kind,r){return kind+":"+(r.id||(r.registry?r.registry+"/":"")+r.name)}
+function renderTabs(){document.querySelectorAll("#tabs button").forEach(b=>{b.className=b.dataset.tab===tab?"on":"";
+b.onclick=()=>{tab=b.dataset.tab;renderTabs()}});$("pane-packages").hidden=tab!=="packages";$("pane-mods").hidden=tab!=="mods"}
 function renderWins(){$("wins").innerHTML=D.order.map(w=>`<button class="${w===win?"on":""}" data-w="${w}">`+
 `${D.labels[w]}</button>`).join("");document.querySelectorAll("#wins button").forEach(b=>b.onclick=()=>{
 win=b.dataset.w;render()})}
@@ -607,11 +759,11 @@ function renderChart(){if(!sel){const s=D.series.totals;return chart("All repos:
 const kind=sel.slice(0,sel.indexOf(":")),id=sel.slice(sel.indexOf(":")+1),s=D.series[kind][id];
 if(!s)return chart(id+": nothing to chart",[]);
 if(kind==="repos")return chart(id+": views and clones per day (UTC)",[{name:"views",color:"#5b9cff",points:s.views},
-{name:"clones",color:"#f0a050",points:s.clones}]);chart(id+": "+s.label,[{name:"downloads",color:"#6fd38a",basis:s.basis,points:s.points}])}
+{name:"clones",color:"#f0a050",points:s.clones}]);const m=kind==="mods"&&D.windows[win].mods.find(r=>r.id===id);chart((m?m.name:id)+": "+s.label,[{name:s.name||"downloads",color:"#6fd38a",basis:s.basis,points:s.points}])}
 function render(){const W=D.windows[win];renderWins();
 $("meta").textContent=W.latest?`${W.label}: daily counts from ${W.start_day} (UTC); capture changes ${W.base} to `+
 `${W.latest} (${W.span_hours} h). ${W.captures} captures recorded.`:"Nothing recorded yet.";
-renderTable("repos");renderTable("packages");renderChart()}
+renderTabs();renderTable("repos");renderTable("packages");renderTable("mods");renderChart()}
 if(LIVE){const b=$("capbtn");b.hidden=false;const poll=()=>fetch("/status").then(r=>r.json()).then(s=>{
 $("cap").textContent=s.message;if(s.running)setTimeout(poll,4000);else if(s.message.startsWith("captured"))location.reload()});
 b.onclick=()=>{b.disabled=true;$("cap").textContent="capturing (a few minutes)";

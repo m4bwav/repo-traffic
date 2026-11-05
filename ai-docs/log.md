@@ -128,3 +128,11 @@ Branch openupm-downloads (worktree ../repo-traffic-openupm), https://github.com/
 
 ## 2026-11-03
 - npm known totals (`1,234≥`) in `scripts/dashboard.py`: the sum of every day merged from the snapshots, a floor because history before 2026-09-24 is missing. Checked the 16 snapshots: 34 package-days were revised after first being read, every one upward, typically from 0, so npm's recent zeros are unpublished days and later-snapshot-wins is correct. The summary names the newest day with any npm count. Capturing at least every 14 days avoids losing days. npm's range API could backfill real history (not done; not asked).
+
+## 2026-10-31
+- Added skills/repo-traffic/SKILL.md (PR #19, #20): every stats request captures, builds and opens the dashboard, and explains raw vs CI cloners. User-level copy at ~/.claude/skills/repo-traffic (copy, re-copy after edits). Cause: a session outside the repo used report.py and never saw AGENTS.md.
+
+## 2026-11-05
+- 24h stats run (capture, build, open). Gap: capture does not track Steam Workshop. Director (item 3822329165) read by hand from the public Steam API: 58 subscribers, 77 lifetime, 20 favorites, 580 views. Earlier recorded subscribers: 56 on 2026-11-03. Possible next step: add Workshop as a capture source so mods land in metrics.csv.
+- Dashboard: Mods tab beside Packages. Steam Workshop items in `workshop_items` (repo_traffic.json) are read at each capture into the snapshot's workshop.json and recorded in metrics.csv under source `workshop`, keyed by id so renames keep history; closes the gap above. No history before the first capture with it.
+- Mods tab also tracks CurseForge (`curseforge_items`), for the minewright Bedrock add-on The Given (project 1773067). Downloads come from api.cfwidget.com because www.curseforge.com/api returned 403 and the official API needs a key; if the mirror goes, get a key.
