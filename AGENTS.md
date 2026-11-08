@@ -1,6 +1,6 @@
 # repo-traffic
 
-One script, `repo_traffic.py` (Python 3.9+, standard library plus the `gh` CLI), that saves GitHub traffic and npm, NuGet, PyPI and OpenUPM download counts before GitHub's 14-day window drops them. It is published on PyPI as `repo-traffic` (a single module with a `repo-traffic` console command). `install-task.ps1` schedules it on Windows. The README covers usage; the wiki covers every file and column.
+One script, `repo_traffic.py` (Python 3.9+, standard library plus the `gh` CLI), that saves GitHub traffic and npm, NuGet, PyPI, OpenUPM and JSR download counts before GitHub's 14-day window drops them. It is published on PyPI as `repo-traffic` (a single module with a `repo-traffic` console command). `install-task.ps1` schedules it on Windows. The README covers usage; the wiki covers every file and column.
 
 Layout:
 - `repo_traffic.py`: the whole tool. `pyproject.toml`: packaging (hatchling, version read from `__version__`), ruff, pytest and coverage settings.
@@ -20,7 +20,7 @@ Rules:
 - `data/` and `repo_traffic.json` are gitignored and must stay that way. They hold private repo traffic and account names. Never commit them or paste their contents into issues, pull requests, CI logs, the wiki or images; fixtures use invented names only.
 - Keep the script stdlib-only and a single file, inside the size budget (green up to 600 lines, red over 800; wheel green up to 25 KB).
 - Never edit `tests/golden/` except the two exceptions files, and those only for a change the maintainer ruled on (write them with `REPO_TRAFFIC_WRITE_EXCEPTIONS=1 python -m pytest tests/test_golden.py`, review, and keep Windows and posix in step). When the golden test fails, fix `repo_traffic.py`.
-- No test reaches the real GitHub, npm, NuGet, pypistats or OpenUPM APIs.
+- No test reaches the real GitHub, npm, NuGet, pypistats, OpenUPM or JSR APIs.
 - File formats only grow: new CSV columns go at the end, with the old header added to the migration list.
 - Answering "top repos" or "how many visitors" from `data/`: take unique visitors and cloners from the latest `data/snapshots/DATE/summary.md` (top N) or `github.json` (every repo), which hold GitHub's own 14-day uniques. Never sum `views_uniques` or `clones_uniques` across days in `daily.csv`: a person who visits on several days is counted once per day (on 2026-10-16 that gave 33 for a repo GitHub counted 24).
 - Answering "most popular repos in the last 24 hours" (or on one day): run `python scripts/report.py` and paste its two tables. It snapshots once a day, picks the latest complete UTC day, subtracts CI checkouts (cached in `data/ci_checkouts.csv`) and prints about 1 KB. `--day YYYY-MM-DD`, `--top N`, `--no-refresh`, `--no-ci`. Don't write ad-hoc Python over `daily.csv` for this.

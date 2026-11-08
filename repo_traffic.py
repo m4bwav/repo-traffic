@@ -32,6 +32,7 @@ DEFAULTS = dict(
     nuget_owner=None,
     pypi_packages=[],
     openupm_packages=[],
+    jsr_packages=[],
     codex_plugins=[],
     data="data",
     top=10,
@@ -298,6 +299,36 @@ def openupm_snapshot(names, today, failures):
     return openupm
 
 
+def jsr_snapshot(names, today, failures):
+    # JSR lists no publisher's packages either, so they are named ("@scope/name"). Its downloads route gives daily
+    # buckets of two kinds, npm_tarball (installs through JSR's npm compatibility registry) and jsr_meta (Deno and
+    # jsr-CLI resolutions); both count as downloads here. A new package with no downloads answers {"total": []}.
+    jsr = {}
+    start = (today - dt.timedelta(days=14)).isoformat()
+    month = (today - dt.timedelta(days=30)).isoformat()
+    end = (today - dt.timedelta(days=1)).isoformat()
+    for name in names:
+        try:
+            scope, _, pkg = name.lstrip("@").partition("/")
+            data = http_json("https://api.jsr.io/scopes/%s/packages/%s/downloads" % (scope, pkg))
+            if data is None:
+                failures.append("jsr %s (HTTP 404: not on JSR)" % name)
+                time.sleep(1)
+                continue
+            days = {}
+            for b in data.get("total", []):
+                day = b["timeBucket"][:10]
+                days[day] = days.get(day, 0) + b["count"]
+            jsr[name] = {
+                "daily": [{"day": d, "downloads": n} for d, n in sorted(days.items()) if start <= d <= end],
+                "last_month": sum(n for d, n in days.items() if month <= d <= end),
+            }
+        except SOURCE_ERRORS as e:
+            failures.append("jsr %s (%s)" % (name, describe(e)))
+        time.sleep(1)
+    return jsr
+
+
 def codex_snapshot(entries, failures):
     # No API, no install counts, and a 200 for any id: a listing is live when its page names the plugin in an <h1>.
     codex = {}
@@ -389,6 +420,8 @@ def append_downloads_csv(path, psnap, gsnap, today):
             w.writerow([today, "pypi", name, sum(x["downloads"] for x in d["daily"]), d["last_month"], "", ""])
         for name, d in psnap.get("openupm", {}).items():
             w.writerow([today, "openupm", name, sum(x["downloads"] for x in d["daily"]), d["last_month"], "", ""])
+        for name, d in psnap.get("jsr", {}).items():
+            w.writerow([today, "jsr", name, sum(x["downloads"] for x in d["daily"]), d["last_month"], "", ""])
         for name, d in gsnap.items():
             if release_total(d):
                 w.writerow([today, "github-release", name, "", "", "", release_total(d)])
@@ -458,6 +491,14 @@ def top_tables(gsnap, psnap, n):
             ),
         ),
         (
+            "JSR downloads",
+            ["Package", "Last 14 days", "Last month"],
+            sorted(
+                ((k, daily_sum(d), d["last_month"]) for k, d in psnap.get("jsr", {}).items()),
+                key=lambda r: (-r[1], -r[2], r[0]),
+            ),
+        ),
+        (
             "GitHub release asset downloads, all time",
             ["Repo", "Downloads"],
             sorted(((k, release_total(d)) for k, d in gsnap.items() if release_total(d)), key=lambda r: (-r[1], r[0])),
@@ -523,6 +564,7 @@ def parse_args(argv):
     p.add_argument("--nuget-owner", help="nuget.org owner whose packages to count (default: NuGet skipped)")
     p.add_argument("--pypi-packages", help="comma-separated PyPI project names to count (default: PyPI skipped)")
     p.add_argument("--openupm-packages", help="comma-separated OpenUPM package names (default: OpenUPM skipped)")
+    p.add_argument("--jsr-packages", help="comma-separated JSR packages as @scope/name (default: JSR skipped)")
     p.add_argument("--data", help="data folder, relative to the settings folder (default: data)")
     p.add_argument("--top", type=int, help="rows per summary table (default: 10)")
     p.add_argument("--config", help="settings file (default: repo_traffic.json in the settings folder)")
@@ -543,10 +585,10 @@ def configure(args, base):
     for key in ("owner", "npm_user", "nuget_owner", "data", "top"):
         if getattr(args, key) is not None:
             cfg[key] = getattr(args, key)
-    for key in ("pypi_packages", "openupm_packages"):
+    for key in ("pypi_packages", "openupm_packages", "jsr_packages"):
         if getattr(args, key) is not None:
             cfg[key] = getattr(args, key)
-    for key in ("pypi_packages", "openupm_packages", "codex_plugins"):
+    for key in ("pypi_packages", "openupm_packages", "jsr_packages", "codex_plugins"):
         items = cfg[key].split(",") if isinstance(cfg[key], str) else cfg[key] or []
         cfg[key] = [x.strip() for x in items if x.strip()]
     cfg["top"] = int(cfg["top"])
@@ -579,6 +621,8 @@ def snapshot(cfg, data, today):
         psnap["pypi"] = pypi_snapshot(cfg["pypi_packages"], today, failures)
     if cfg["openupm_packages"]:
         psnap["openupm"] = openupm_snapshot(cfg["openupm_packages"], today, failures)
+    if cfg["jsr_packages"]:
+        psnap["jsr"] = jsr_snapshot(cfg["jsr_packages"], today, failures)
     if cfg["codex_plugins"]:
         psnap["codex"] = codex_snapshot(cfg["codex_plugins"], failures)
     (snapdir / "packages.json").write_text(json.dumps(psnap, indent=1), encoding="utf-8")
@@ -606,6 +650,7 @@ def snapshot(cfg, data, today):
     counts = "%d repos, %d npm, %d nuget" % (len(gsnap), len(psnap["npm"]), len(psnap["nuget"]))
     counts += ", %d pypi" % len(psnap["pypi"]) if "pypi" in psnap else ""
     counts += ", %d openupm" % len(psnap["openupm"]) if "openupm" in psnap else ""
+    counts += ", %d jsr" % len(psnap["jsr"]) if "jsr" in psnap else ""
     listed = [d["listed"] for d in psnap.get("codex", {}).values()]
     counts += ", %d of %d codex listed" % (sum(listed), len(listed)) if "codex" in psnap else ""
     extra = ["failed: " + "; ".join(failures)] if failures else []

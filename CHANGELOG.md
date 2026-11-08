@@ -6,6 +6,8 @@ Compatibility promise: every file 0.1.0 writes keeps its name, columns and forma
 
 ## [Unreleased]
 
+- JSR downloads for the packages named in `--jsr-packages` or the `jsr_packages` config key (`@scope/name`): the last 14 days and last 30 days from api.jsr.io, both download kinds summed, in the summary, `downloads.csv` (registry `jsr`) and the dashboard (linked to jsr.io).
+
 ### Added
 - Dashboard and capture summary: npm known totals, shown as `1,234≥`. They add up every day saved in the snapshots, so they are floors, and they catch up when npm fills in a day it published late.
 - Dashboard: repo names link to their GitHub repo and package names to their registry page (npm, NuGet, PyPI, OpenUPM; release assets to the repo's releases page), opening in a new tab. The owner comes from the config.
