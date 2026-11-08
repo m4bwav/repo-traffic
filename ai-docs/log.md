@@ -136,3 +136,7 @@ Branch openupm-downloads (worktree ../repo-traffic-openupm), https://github.com/
 - 24h stats run (capture, build, open). Gap: capture does not track Steam Workshop. Director (item 3822329165) read by hand from the public Steam API: 58 subscribers, 77 lifetime, 20 favorites, 580 views. Earlier recorded subscribers: 56 on 2026-11-03. Possible next step: add Workshop as a capture source so mods land in metrics.csv.
 - Dashboard: Mods tab beside Packages. Steam Workshop items in `workshop_items` (repo_traffic.json) are read at each capture into the snapshot's workshop.json and recorded in metrics.csv under source `workshop`, keyed by id so renames keep history; closes the gap above. No history before the first capture with it.
 - Mods tab also tracks CurseForge (`curseforge_items`), for the minewright Bedrock add-on The Given (project 1773067). Downloads come from api.cfwidget.com because www.curseforge.com/api returned 403 and the official API needs a key; if the mirror goes, get a key.
+
+## 2026-11-08, JSR downloads
+
+- PR #26 merged: `jsr_packages` / `--jsr-packages` (`@scope/name`) counted from api.jsr.io downloads (npm_tarball + jsr_meta summed, 14 days and 30 days), summary table, downloads.csv registry `jsr`, dashboard daily registry linked to jsr.io. Help-text golden updated under E1 (Mark asked for the flag). Local repo_traffic.json now lists `@m4bwav/universe-generator`. Skill notes updated (installed skill is the same file).
