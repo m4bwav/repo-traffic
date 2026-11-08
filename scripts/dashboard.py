@@ -42,7 +42,7 @@ sys.path.insert(0, str(ROOT))
 import repo_traffic as rt  # noqa: E402
 
 METRICS_HEADER = ["captured_at", "source", "name", "metric", "value"]
-DAILY_REGISTRIES = ("npm", "pypi", "openupm")
+DAILY_REGISTRIES = ("npm", "pypi", "openupm", "jsr")
 WINDOWS = ["last", "24h", "48h", "7d", "14d", "30d", "all"]
 LABELS = {
     "last": "Since last capture",
@@ -87,6 +87,7 @@ REGISTRY_URLS = {
     "nuget": "https://www.nuget.org/packages/%s",
     "pypi": "https://pypi.org/project/%s/",
     "openupm": "https://openupm.com/packages/%s/",
+    "jsr": "https://jsr.io/%s",
 }
 
 

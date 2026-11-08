@@ -405,6 +405,32 @@ def test_openupm_snapshot_range_and_month(web, sleeps):
     assert failures == [] and sleeps == [1]
 
 
+def test_jsr_snapshot_sums_kinds_by_day(web, sleeps):
+    web["https://api.jsr.io/scopes/s/packages/p/downloads"] = [
+        {
+            "total": [
+                {"timeBucket": "2026-09-01T00:00:00Z", "kind": "jsr_meta", "count": 100},
+                {"timeBucket": "2026-09-20T00:00:00Z", "kind": "npm_tarball", "count": 5},
+                {"timeBucket": "2026-09-30T00:00:00Z", "kind": "npm_tarball", "count": 3},
+                {"timeBucket": "2026-09-30T00:00:00Z", "kind": "jsr_meta", "count": 4},
+                {"timeBucket": "2026-10-08T00:00:00Z", "kind": "jsr_meta", "count": 9},
+            ]
+        }
+    ]
+    failures = []
+    out = rt.jsr_snapshot(["@s/p"], TODAY, failures)
+    assert out == {"@s/p": {"daily": [{"day": "2026-09-30", "downloads": 7}], "last_month": 12}}
+    assert failures == [] and sleeps == [1]
+
+
+def test_jsr_snapshot_404_and_error(web, sleeps):
+    web["https://api.jsr.io/scopes/s/packages/b/downloads"] = [http_error(500)]
+    failures = []
+    assert rt.jsr_snapshot(["@s/a", "@s/b"], TODAY, failures) == {}
+    assert failures == ["jsr @s/a (HTTP 404: not on JSR)", "jsr @s/b (HTTP 500)"]
+    assert sleeps == [1, 1]
+
+
 def test_openupm_snapshot_404_and_error(web, sleeps):
     web["https://package.openupm.com/downloads/range/2026-09-24:2026-10-07/com.b"] = [http_error(500)]
     failures = []
@@ -691,6 +717,7 @@ def test_configure_file_flags_and_defaults(tmp_path):
         "nuget_owner": None,
         "pypi_packages": ["a", "b"],
         "openupm_packages": ["com.x"],
+        "jsr_packages": [],
         "codex_plugins": [],
         "data": "data",
         "top": 3,
