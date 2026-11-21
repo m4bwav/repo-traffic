@@ -271,3 +271,41 @@ def test_curseforge_mod_shows_downloads_and_its_own_page(data):
     assert m["subscribers"] is None
     assert dashboard.link_for("mods", m, None) == "https://example.test/addon"
     assert dashboard.series_payload(data)["mods"]["curseforge/77"]["name"] == "downloads"
+
+
+def test_missed_capture_days_are_gaps_not_zeros():
+    covered = dashboard.covered_days(["2026-10-05T12:00:00Z"])  # sees 09-22 .. 10-05
+    pts = dashboard.dense([["2026-10-04", 3], ["2026-10-07", 5]], covered)
+    assert pts == [["2026-10-04", 3], ["2026-10-05", 0], ["2026-10-06", None], ["2026-10-07", 5]]
+    assert dashboard.dense([], covered) == []
+
+
+def test_check_metrics_flags_duplicates_and_drops(data):
+    dashboard.record(data)
+    assert dashboard.check_metrics(data) == []  # good data stays quiet
+    with (data / "metrics.csv").open("a", newline="", encoding="utf-8") as f:
+        f.write("2026-10-24T12:00:00Z,nuget,Lib.A,total,1600\n2026-10-25T12:00:00Z,nuget,Lib.A,total,900\n")
+    out = dashboard.check_metrics(data)
+    assert out[0] == "1 duplicate rows in metrics.csv"
+    assert any("Lib.A total fell 1600 -> 900" in x for x in out)
+
+
+def test_check_daily_range():
+    assert dashboard.check_daily({"a": {"2026-10-01": (1, 1, 1, 1)}}, {("npm", "p"): {"2026-10-01": 5}}) == []
+    out = dashboard.check_daily({"a": {"2026-10-01": (-1, 0, 0, 0)}}, {("npm", "p"): {"2026-10-01": 10**7}})
+    assert len(out) == 2
+
+
+def test_colours_fixed_and_deltas_name_window(data):
+    dashboard.record(data)
+    payload = json.loads(dashboard.render_html(data, now=NOW).split("const D=")[1].split(",LIVE=")[0])
+    seen = {}
+    for w in payload["windows"].values():
+        for r in w["repos"] + w["packages"]:
+            assert seen.setdefault(r["name"], r["color"]) == r["color"]
+    assert payload["windows"]["48h"]["delta_head"] == "+/- 48h"
+    assert payload["windows"]["last"]["delta_head"] == "+/- since last"
+    assert payload["checks"] == []
+    assert "stars +/- 48h" in dashboard.summary_text(dashboard.compute(data, "48h", NOW))
+    page = dashboard.render_html(data, now=NOW)
+    assert '["trend","Views"]' in page and "function spark(" in page
