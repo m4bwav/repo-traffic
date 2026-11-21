@@ -54,6 +54,21 @@ LABELS = {
     "all": "All recorded",
 }
 STAMP = "%Y-%m-%dT%H:%M:%SZ"
+# One colour per repo or package name, the same in every table, sparkline and chart (fixed, not by rank).
+PALETTE = ["#5b9cff", "#f0a050", "#6fd38a", "#c792ea", "#e0c060", "#4fc1c9", "#e07aa0", "#a0a8b8"]
+CUMULATIVE = {("nuget", "total"), ("github", "release_downloads"), ("workshop", "lifetime_subscribers")}
+CUMULATIVE.add(("curseforge", "downloads"))
+DAILY_CEILING = 100_000  # a daily count above this is a bad read, not traffic
+GITHUB_DAYS = 14  # each capture holds the 14 days up to it
+
+
+def delta_head(window):
+    """The +/- column header naming its window, so a change is never read without its span."""
+    return "+/- " + {"last": "since last", "all": "all"}.get(window, window)
+
+
+def colours(names):
+    return {n: PALETTE[i % len(PALETTE)] for i, n in enumerate(sorted(set(names)))}
 
 
 def load_config():
@@ -195,6 +210,72 @@ def load_metrics(data):
         s.sort()
     captures = sorted({t for s in series.values() for t, _ in s})
     return captures, series
+
+
+def check_metrics(data):
+    """Problems in metrics.csv: duplicate (capture, source, name, metric) rows, a cumulative count that fell
+    between captures, a negative value. Stars and forks may fall (unstars), so they are not checked."""
+    path = data / "metrics.csv"
+    if not path.exists():
+        return []
+    seen, dups, series = set(), 0, {}
+    with path.open(newline="", encoding="utf-8") as f:
+        for r in csv.DictReader(f):
+            key = (r["captured_at"], r["source"], r["name"], r["metric"])
+            dups += key in seen
+            seen.add(key)
+            series.setdefault(key[1:], []).append((key[0], int(float(r["value"]))))
+    out = ["%d duplicate rows in metrics.csv" % dups] if dups else []
+    for (src, name, metric), s in sorted(series.items()):
+        s.sort()
+        if any(v < 0 for _, v in s):
+            out.append("%s %s %s is negative" % (src, name, metric))
+        if (src, metric) in CUMULATIVE:
+            out += [
+                "%s %s %s fell %s -> %s (%s)" % (src, name, metric, a, b, t)
+                for (_, a), (t, b) in zip(s, s[1:])
+                if b < a
+            ]
+    return out
+
+
+def check_daily(repo_daily, package_daily):
+    """Daily counts above DAILY_CEILING or below zero: flagged, not charted as traffic."""
+    out = []
+    for name, days in sorted(repo_daily.items()):
+        out += ["%s views/clones on %s out of range" % (name, d) for d, v in sorted(days.items()) if bad_count(v)]
+    for (reg, name), days in sorted(package_daily.items()):
+        out += ["%s %s downloads on %s out of range" % (reg, name, d) for d, v in sorted(days.items()) if bad_count(v)]
+    return out
+
+
+def bad_count(v):
+    vals = v if isinstance(v, tuple) else (v,)
+    return any(x < 0 or x > DAILY_CEILING for x in vals)
+
+
+def covered_days(captures):
+    """UTC days some capture's 14-day window saw; a day outside every window was missed, not quiet."""
+    out = set()
+    for c in captures:
+        day = parse_stamp(c).date()
+        out |= {(day - dt.timedelta(days=i)).isoformat() for i in range(GITHUB_DAYS)}
+    return out
+
+
+def dense(points, covered):
+    """[[day, value]] with every calendar day between the first and last: a seen day without a count is 0,
+    a day no capture saw is None, which the page draws as a gap rather than a drop to zero."""
+    have = dict(points)
+    if not have:
+        return []
+    d, last = dt.date.fromisoformat(min(have)), dt.date.fromisoformat(max(have))
+    out = []
+    while d <= last:
+        k = d.isoformat()
+        out.append([k, have.get(k, 0 if k in covered else None)])
+        d += dt.timedelta(days=1)
+    return out
 
 
 def load_repo_daily(data):
@@ -369,7 +450,7 @@ def summary_text(w, top=10):
         "Repos:",
     ]
     out += table(
-        ["#", "repo", "visitors*", "views", "cloners*", "clones", "stars", "stars +/-"],
+        ["#", "repo", "visitors*", "views", "cloners*", "clones", "stars", "stars " + delta_head(w["window"])],
         [
             (
                 i,
@@ -415,13 +496,13 @@ def summary_text(w, top=10):
                 "platform",
                 "mod",
                 "subscribers",
-                "+/-",
+                delta_head(w["window"]),
                 "downloads",
-                "+/-",
+                delta_head(w["window"]),
                 "lifetime",
                 "favorites",
                 "views",
-                "views +/-",
+                "views " + delta_head(w["window"]),
             ],
             [
                 (
@@ -448,17 +529,21 @@ def total_text(p):
 
 
 def series_payload(data):
-    _, series = load_metrics(data)
+    captures, series = load_metrics(data)
+    covered = covered_days(captures)
     repos, totals = {}, {}
     for name, days in load_repo_daily(data).items():
         ordered = sorted(days.items())
-        repos[name] = {"views": [[d, v[0]] for d, v in ordered], "clones": [[d, v[2]] for d, v in ordered]}
+        repos[name] = {
+            "views": dense([[d, v[0]] for d, v in ordered], covered),
+            "clones": dense([[d, v[2]] for d, v in ordered], covered),
+        }
         for d, v in ordered:
             t = totals.setdefault(d, [0, 0])
             t[0] += v[0]
             t[1] += v[2]
     packages = {
-        "%s/%s" % k: {"label": "downloads per day", "basis": "daily", "points": sorted([d, n] for d, n in days.items())}
+        "%s/%s" % k: {"label": "downloads per day", "basis": "daily", "points": dense(days.items(), covered)}
         for k, days in load_package_daily(data).items()
     }
     for (src, name, metric), s in series.items():
@@ -490,18 +575,26 @@ def series_payload(data):
         "packages": packages,
         "mods": mods,
         "any": bool(totals or packages),
-        "totals": {"views": [[d, v[0]] for d, v in t], "clones": [[d, v[1]] for d, v in t]},
+        "totals": {
+            "views": dense([[d, v[0]] for d, v in t], covered),
+            "clones": dense([[d, v[1]] for d, v in t], covered),
+        },
     }
 
 
 def render_html(data, live=False, now=None, owner=None):
     windows = {w: compute(data, w, now) for w in WINDOWS}
+    names = {r["name"] for w in windows.values() for kind in ("repos", "packages", "mods") for r in w[kind]}
+    palette = colours(names)
     for w in windows.values():
+        w["delta_head"] = delta_head(w["window"])
         for kind in ("repos", "packages", "mods"):
             for row in w[kind]:
                 row["url"] = link_for(kind, row, owner)
+                row["color"] = palette[row["name"]]
     payload = {
         "windows": windows,
+        "checks": problems(data),
         "order": WINDOWS,
         "labels": LABELS,
         "default_window": "48h",
@@ -509,6 +602,15 @@ def render_html(data, live=False, now=None, owner=None):
     }
     blob = json.dumps(payload, separators=(",", ":")).replace("</", "<\\/")
     return PAGE.replace("__DATA__", blob).replace("__LIVE__", "true" if live else "false")
+
+
+def problems(data):
+    return check_metrics(data) + check_daily(load_repo_daily(data), load_package_daily(data))
+
+
+def print_problems(data):
+    for line in problems(data):
+        print("check: " + line)
 
 
 def snapshot_now():
@@ -649,12 +751,14 @@ def main(argv=None):
         else:
             record(data)
         print(summary_text(compute(data, args.window), args.top))
+        print_problems(data)
         return 0
     if args.cmd == "build":
         record(data)
         out = data / "dashboard.html"
         out.write_text(render_html(data, owner=config_owner()), encoding="utf-8")
         print(out)
+        print_problems(data)
         return 0
     record(data)
     server = make_server(data, args.port)
@@ -704,15 +808,24 @@ total is at least that; npm publishes days late, so recent days can still fill i
 window's start (Total is all time; NuGet updates its totals in batches, so short windows are lumpy).</p></div></div></div>
 <script>
 const D=__DATA__,LIVE=__LIVE__,$=id=>document.getElementById(id);
-const COLS={repos:[["name","Repo"],["visitors","Visitors"],["views","Views"],["cloners","Cloners"],["clones","Clones"],
+const COLS={repos:[["name","Repo"],["trend","Views"],["visitors","Visitors"],["views","Views"],["cloners","Cloners"],["clones","Clones"],
 ["stars","Stars"],["stars_delta","Stars +/-"]],packages:[["registry","Registry"],["name","Package"],
-["downloads","Downloads"],["total","Total"]],mods:[["registry","Platform"],["name","Mod"],["subscribers","Subscribers"],
+["trend","Per day"],["downloads","Downloads"],["total","Total"]],mods:[["registry","Platform"],["name","Mod"],["subscribers","Subscribers"],
 ["subscribers_delta","Subs +/-"],["downloads","Downloads"],["downloads_delta","Downloads +/-"],["lifetime_subscribers","Lifetime"],["favorites","Favorites"],["views","Views"],
 ["views_delta","Views +/-"]]};
 const sort={repos:["visitors",-1],packages:["downloads",-1],mods:["subscribers",-1]};let win=D.default_window,sel=null,tab="packages";
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 function num(v,d){if(v==null)return'<span class="muted">-</span>';const s=v.toLocaleString();
 return d&&v>0?'<span class="pos">+'+s+"</span>":d&&v<0?'<span class="neg">'+s+"</span>":s}
+function head(c,t){return c.endsWith("_delta")?t.replace("+/-",D.windows[win].delta_head):t}
+function segs(p,X,Y){const out=[];let cur=[];for(const q of p){if(q[1]==null){if(cur.length)out.push(cur);cur=[]}
+else cur.push(X(q[0])+","+Y(q[1]))}if(cur.length)out.push(cur);return out}
+function spark(kind,r){const s=kind==="repos"?D.series.repos[r.name]:D.series.packages[r.registry+"/"+r.name];
+if(!s)return"";const p=clip(kind==="repos"?s.views:s.points,s.basis||"daily"),v=p.filter(q=>q[1]!=null);
+if(v.length<2)return"";const w=80,h=18,ys=v.map(q=>q[1]),lo=Math.min(0,...ys),hi=Math.max(1,...ys);
+const X=(x)=>2+(w-4)*p.findIndex(q=>q[0]===x)/(p.length-1),Y=y=>h-2-(h-4)*(y-lo)/(hi-lo||1),e=v[v.length-1];
+return `<svg class="spark" width="${w}" height="${h}">`+segs(p,X,Y).map(g=>`<polyline fill="none" stroke="${r.color}" `+
+`stroke-width="1.3" points="${g.join(" ")}"/>`).join("")+`<circle cx="${X(e[0])}" cy="${Y(e[1])}" r="2" fill="${r.color}"/></svg>`}
 function rowId(kind,r){return kind+":"+(r.id||(r.registry?r.registry+"/":"")+r.name)}
 function renderTabs(){document.querySelectorAll("#tabs button").forEach(b=>{b.className=b.dataset.tab===tab?"on":"";
 b.onclick=()=>{tab=b.dataset.tab;renderTabs()}});$("pane-packages").hidden=tab!=="packages";$("pane-mods").hidden=tab!=="mods"}
@@ -722,10 +835,10 @@ win=b.dataset.w;render()})}
 function renderTable(kind){const W=D.windows[win],[k,dir]=sort[kind],rows=[...W[kind]];
 rows.sort((a,b)=>{const x=a[k],y=b[k];if(typeof x==="string"||typeof y==="string")
 return dir*String(x).localeCompare(String(y));return dir*((x??-1e18)-(y??-1e18))});
-let h="<tr>"+COLS[kind].map(([c,t])=>`<th data-k="${c}" class="${c==="name"||c==="registry"?"l":""}">${t}`+
+let h="<tr>"+COLS[kind].map(([c,t])=>`<th data-k="${c}" class="${c==="name"||c==="registry"?"l":""}">${head(c,t)}`+
 `${c===k?(dir<0?" &#9660;":" &#9650;"):""}</th>`).join("")+"</tr>";
 for(const r of rows){const id=rowId(kind,r);h+=`<tr class="row ${id===sel?"sel":""}" data-id="${esc(id)}">`+
-COLS[kind].map(([c])=>c==="name"&&r.url?`<td class="l"><a href="${esc(r.url)}" target="_blank" rel="noopener">`+
+COLS[kind].map(([c])=>c==="trend"?`<td>${spark(kind,r)}</td>`:c==="name"&&r.url?`<td class="l"><a href="${esc(r.url)}" target="_blank" rel="noopener">`+
 `${esc(r[c])}</a></td>`:typeof r[c]==="string"?`<td class="l">${esc(r[c])}</td>`:`<td>${num(r[c],c.endsWith("_delta"))}${c==="total"&&r.floor?"≥":""}</td>`)
 .join("")+"</tr>"}
 if(!rows.length)h+=`<tr><td class="l muted" colspan="9">nothing in this window</td></tr>`;
@@ -738,15 +851,15 @@ const xs=[...new Set(series.flatMap(s=>s.points.map(q=>q[0])))].sort();
 if(xs.length<2){svg.innerHTML='<text x="10" y="40" fill="#6b7790">'+(D.series.any?"not enough data in this window":
 "no data recorded yet")+"</text>";return}
 const t=x=>Date.parse(x.length===10?x+"T00:00:00Z":x),x0=t(xs[0]),x1=t(xs[xs.length-1]);
-const ys=series.flatMap(s=>s.points.map(q=>q[1])),y0=Math.min(0,...ys),y1=Math.max(1,...ys);
+const ys=series.flatMap(s=>s.points.map(q=>q[1]).filter(y=>y!=null)),y0=Math.min(0,...ys),y1=Math.max(1,...ys);
 const X=x=>L+(W-L-R)*(x1===x0?0.5:(t(x)-x0)/(x1-x0)),Y=y=>H-B-(H-T-B)*(y-y0)/(y1-y0||1);
 const lab=(x,y,s,a)=>`<text x="${x}" y="${y}" fill="#6b7790" font-size="11" text-anchor="${a}">${esc(s)}</text>`;
 let g=`<line x1="${L}" y1="${H-B}" x2="${W-R}" y2="${H-B}" stroke="#33405a"/>`+lab(L,H-B+16,xs[0].slice(0,16),"start")+
 lab(W-R,H-B+16,xs[xs.length-1].slice(0,16),"end")+lab(L-6,Y(y1)+4,y1.toLocaleString(),"end")+
 lab(L-6,Y(y0)+4,y0.toLocaleString(),"end");
 series.forEach((s,i)=>{const p=[...s.points].sort((a,b)=>t(a[0])-t(b[0]));
-g+=`<polyline fill="none" stroke="${s.color}" stroke-width="2" points="${p.map(q=>X(q[0])+","+Y(q[1])).join(" ")}"/>`+
-p.map(q=>`<circle cx="${X(q[0])}" cy="${Y(q[1])}" r="3" fill="${s.color}"><title>${esc(s.name)} ${esc(q[0])}: `+
+g+=segs(p,X,Y).map(pts=>`<polyline fill="none" stroke="${s.color}" stroke-width="2"${s.dash?' stroke-dasharray="5 3"':""} `+
+`points="${pts.join(" ")}"/>`).join("")+p.filter(q=>q[1]!=null).map(q=>`<circle cx="${X(q[0])}" cy="${Y(q[1])}" r="3" fill="${s.color}"><title>${esc(s.name)} ${esc(q[0])}: `+
 `${q[1].toLocaleString()}</title></circle>`).join("")+
 `<text x="${W-R}" y="${14+i*14}" fill="${s.color}" font-size="12" text-anchor="end">${esc(s.name)}</text>`});svg.innerHTML=g}
 function clip(points,basis){const st=D.windows[win].start;if(!st)return points;
@@ -759,11 +872,14 @@ function renderChart(){if(!sel){const s=D.series.totals;return chart("All repos:
 " to chart it.",[{name:"views",color:"#5b9cff",points:s.views},{name:"clones",color:"#f0a050",points:s.clones}])}
 const kind=sel.slice(0,sel.indexOf(":")),id=sel.slice(sel.indexOf(":")+1),s=D.series[kind][id];
 if(!s)return chart(id+": nothing to chart",[]);
-if(kind==="repos")return chart(id+": views and clones per day (UTC)",[{name:"views",color:"#5b9cff",points:s.views},
-{name:"clones",color:"#f0a050",points:s.clones}]);const m=kind==="mods"&&D.windows[win].mods.find(r=>r.id===id);chart((m?m.name:id)+": "+s.label,[{name:s.name||"downloads",color:"#6fd38a",basis:s.basis,points:s.points}])}
+const row=D.windows[win][kind].find(r=>rowId(kind,r)===sel),col=row?row.color:"#6fd38a";
+if(kind==="repos")return chart(id+": views (solid) and clones (dashed) per day (UTC); gaps are days no capture saw",
+[{name:"views",color:col,points:s.views},{name:"clones",color:col,dash:1,points:s.clones}]);
+chart((row?row.name:id)+": "+s.label,[{name:s.name||"downloads",color:col,basis:s.basis,points:s.points}])}
 function render(){const W=D.windows[win];renderWins();
 $("meta").textContent=W.latest?`${W.label}: daily counts from ${W.start_day} (UTC); capture changes ${W.base} to `+
-`${W.latest} (${W.span_hours} h). ${W.captures} captures recorded.`:"Nothing recorded yet.";
+`${W.latest} (${W.span_hours} h). ${W.captures} captures recorded.`+(D.checks.length?" Data checks: "+
+D.checks.join("; "):""):"Nothing recorded yet.";
 renderTabs();renderTable("repos");renderTable("packages");renderTable("mods");renderChart()}
 if(LIVE){const b=$("capbtn");b.hidden=false;const poll=()=>fetch("/status").then(r=>r.json()).then(s=>{
 $("cap").textContent=s.message;if(s.running)setTimeout(poll,4000);else if(s.message.startsWith("captured"))location.reload()});

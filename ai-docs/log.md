@@ -143,3 +143,5 @@ Branch openupm-downloads (worktree ../repo-traffic-openupm), https://github.com/
 - 2026-11-14: added Steam Workshop item 3837705778 (Nexus Prominence, Hank Raid map) to repo_traffic.json; found via profile 76561197988198474 myworkshopfiles?appid=488860. Only Director was tracked before.
 - 2026-11-16: 48h capture; data/ci_checkouts.csv has no rows for cinewright/pixelwright/polywright/madnesswright in 11-14..16 although clones far exceed views, so CI share of those cloners is unverified (CI log may not be recording).
 - 2026-11-19: traffic check (window last, 68 h). data/ci_checkouts.csv has no rows after 2026-11-04, so raw cloners can't be split into real vs CI; CI checkout collection needs a look.
+
+- 2026-11-21: dashboard.py round 7 track 59: sparklines, fixed colours, missed-day gaps (covered_days/dense), check_metrics/check_daily, windowed +/- headers. Stars/forks deliberately not drop-checked (unstars are real). Dropped: real-cloner primary column, previous-window comparison, exception marks, compact numbers, layout moves, weekly bins, data-size warning, HTTP cache.
