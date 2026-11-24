@@ -309,3 +309,33 @@ def test_colours_fixed_and_deltas_name_window(data):
     assert "stars +/- 48h" in dashboard.summary_text(dashboard.compute(data, "48h", NOW))
     page = dashboard.render_html(data, now=NOW)
     assert '["trend","Views"]' in page and "function spark(" in page
+
+
+def test_page_has_paging_sort_filter_and_a11y_markup(data):
+    page = dashboard.render_html(data, now=NOW)
+    payload = json.loads(page.split("const D=")[1].split(",LIVE=")[0])
+    assert payload["generated_at"] == NOW.strftime("%Y-%m-%dT%H:%M:%SZ")
+    for kind in ("repos", "packages", "mods"):
+        assert 'id="p-%s"' % kind in page and 'for="f-%s"' % kind in page
+    assert "const PAGE=25" in page and "aria-sort" in page and "Showing " in page
+    assert "prefers-color-scheme:light" in page and "prefers-reduced-motion" in page and "position:sticky" in page
+    assert "history.replaceState" in page and "tabular-nums" in page and ":focus-visible" in page
+
+
+def test_noscript_tables_page_and_empty_state():
+    rows = [
+        {"name": "r%02d" % i, "visitors": 1000 + i, "views": 1, "cloners": 0, "clones": 0, "stars": 2}
+        for i in range(60)
+    ]
+    w = {"label": "Last 48 hours", "repos": rows, "packages": [], "mods": []}
+    out = dashboard.static_tables(w, limit=50)
+    assert out.startswith("<noscript>") and out.endswith("</noscript>")
+    assert "Showing 1-50 of 60." in out and "r49" in out and "r50" not in out
+    assert "1,049" in out
+    assert "No packages in this window." in out and "No mods in this window." in out
+
+
+def test_noscript_escapes_names():
+    w = {"label": "x", "repos": [{"name": "<b>"}], "packages": [], "mods": []}
+    out = dashboard.static_tables(w)
+    assert '<td class="l">&lt;b&gt;</td>' in out and "<b>" not in out

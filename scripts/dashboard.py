@@ -26,6 +26,7 @@
 import argparse
 import csv
 import datetime as dt
+import html
 import json
 import re
 import subprocess
@@ -582,6 +583,50 @@ def series_payload(data):
     }
 
 
+NOSCRIPT_COLS = {
+    "repos": [
+        ("name", "Repo"),
+        ("visitors", "Visitors"),
+        ("views", "Views"),
+        ("cloners", "Cloners"),
+        ("clones", "Clones"),
+        ("stars", "Stars"),
+    ],
+    "packages": [("registry", "Registry"), ("name", "Package"), ("downloads", "Downloads"), ("total", "Total")],
+    "mods": [("registry", "Platform"), ("name", "Mod"), ("subscribers", "Subscribers"), ("downloads", "Downloads")],
+}
+
+
+def static_tables(w, limit=50):
+    """Plain HTML tables of one window for readers without JavaScript (first `limit` rows of each)."""
+    out = [
+        '<noscript><p class="meta">JavaScript is off: showing %s, first %d rows of each table, without filter, '
+        "sorting, paging or charts.</p>" % (html.escape(w["label"]), limit)
+    ]
+    for kind, cols in NOSCRIPT_COLS.items():
+        rows = w[kind]
+        out.append("<h2>%s</h2>" % kind.capitalize())
+        if not rows:
+            out.append('<p class="muted">No %s in this window.</p>' % kind)
+            continue
+        head = "".join(
+            '<th scope="col"%s>%s</th>' % (' class="l"' if c in ("name", "registry") else "", t) for c, t in cols
+        )
+        body = "".join(
+            "<tr>%s</tr>"
+            % "".join(
+                '<td class="l">%s</td>' % html.escape(str(r.get(c) or ""))
+                if c in ("name", "registry")
+                else "<td>%s</td>" % num(r.get(c))
+                for c, _ in cols
+            )
+            for r in rows[:limit]
+        )
+        more = '<p class="muted">Showing 1-%d of %d.</p>' % (min(limit, len(rows)), len(rows))
+        out.append('<div class="wrap"><table><tr>%s</tr>%s</table></div>%s' % (head, body, more))
+    return "".join(out) + "</noscript>"
+
+
 def render_html(data, live=False, now=None, owner=None):
     windows = {w: compute(data, w, now) for w in WINDOWS}
     names = {r["name"] for w in windows.values() for kind in ("repos", "packages", "mods") for r in w[kind]}
@@ -599,9 +644,14 @@ def render_html(data, live=False, now=None, owner=None):
         "labels": LABELS,
         "default_window": "48h",
         "series": series_payload(data),
+        "generated_at": (now or dt.datetime.now(dt.timezone.utc)).strftime("%Y-%m-%dT%H:%M:%SZ"),
     }
     blob = json.dumps(payload, separators=(",", ":")).replace("</", "<\\/")
-    return PAGE.replace("__DATA__", blob).replace("__LIVE__", "true" if live else "false")
+    return (
+        PAGE.replace("__NOSCRIPT__", static_tables(windows["48h"]))
+        .replace("__DATA__", blob)
+        .replace("__LIVE__", "true" if live else "false")
+    )
 
 
 def problems(data):
@@ -778,31 +828,52 @@ PAGE = r"""<!doctype html>
 <title>repo-traffic</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27%3E%3Crect width=%2716%27 height=%2716%27 rx=%273%27 fill=%27%231f6feb%27/%3E%3Crect x=%273%27 y=%279%27 width=%272%27 height=%274%27 fill=%27%23fff%27/%3E%3Crect x=%277%27 y=%276%27 width=%272%27 height=%277%27 fill=%27%23fff%27/%3E%3Crect x=%2711%27 y=%273%27 width=%272%27 height=%2710%27 fill=%27%23fff%27/%3E%3C/svg%3E">
 <style>
-body{font:14px system-ui,sans-serif;margin:24px;background:#0f1420;color:#dde3ee}
+:root{color-scheme:dark;--bg:#0f1420;--fg:#dde3ee;--mut:#8a96ab;--btn:#1d2638;--bd:#33405a;--line:#222c40;
+--hov:#18213a;--sel:#22315a;--pos:#6fd38a;--neg:#f08080;--link:#8fb8ff;--panel:#131a2a;--on:#2f62c8;--focus:#ffcc4d}
+@media(prefers-color-scheme:light){:root{color-scheme:light;--bg:#fff;--fg:#1b2333;--mut:#566179;--btn:#f1f4f9;
+--bd:#c4ccda;--line:#e3e7ee;--hov:#f2f6fd;--sel:#dce7fb;--pos:#17803a;--neg:#b42318;--link:#1856c9;--panel:#f7f9fc;
+--on:#2f62c8;--focus:#b35c00}}
+body{font:14px system-ui,sans-serif;margin:24px;background:var(--bg);color:var(--fg)}
+@media(max-width:600px){body{margin:10px}}
 h1{font-size:20px;margin:0 0 4px}h2{font-size:16px;margin:8px 0}
-.meta,.muted{color:#8a96ab}.meta{margin:6px 0 14px}
-button{background:#1d2638;color:#dde3ee;border:1px solid #33405a;border-radius:6px;padding:5px 11px;margin:0 4px 4px 0;
-cursor:pointer}button.on{background:#3b6fd8;border-color:#3b6fd8}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}@media(max-width:1100px){.grid{grid-template-columns:1fr}}
-table{border-collapse:collapse;width:100%}th,td{padding:4px 8px;border-bottom:1px solid #222c40;text-align:right}
-th{cursor:pointer;color:#8a96ab;user-select:none}.l{text-align:left}
-tr.row:hover{background:#18213a;cursor:pointer}tr.sel{background:#22315a}.pos{color:#6fd38a}.neg{color:#e07070}
-td a{color:#8fb8ff;text-decoration:none}td a:hover{text-decoration:underline}
-#chart{background:#131a2a;border-radius:8px;padding:12px;margin:14px 0}
+.meta,.muted{color:var(--mut)}.meta{margin:6px 0 14px}
+button{background:var(--btn);color:var(--fg);border:1px solid var(--bd);border-radius:6px;padding:5px 11px;margin:0 4px 4px 0;
+cursor:pointer;font:inherit}button.on{background:var(--on);border-color:var(--on);color:#fff}button:disabled{opacity:.5;cursor:default}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px}@media(max-width:1100px){.grid{grid-template-columns:minmax(0,1fr)}}
+.wrap{overflow:auto;max-height:70vh;border:1px solid var(--line);border-radius:6px}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+th,td{padding:4px 8px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th{position:sticky;top:0;background:var(--bg);color:var(--mut);z-index:1}
+th button{all:unset;cursor:pointer;display:inline-block}th button:focus-visible{outline:2px solid var(--focus)}.l{text-align:left}
+td.nm{max-width:16em;overflow:hidden;text-overflow:ellipsis}
+tr.row:hover{background:var(--hov);cursor:pointer}tr.sel{background:var(--sel)}.pos{color:var(--pos)}.neg{color:var(--neg)}
+td a{color:var(--link);text-decoration:none}td a:hover{text-decoration:underline}
+#chart{background:var(--panel);border-radius:8px;padding:12px;margin:14px 0}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:4px 0 6px}
+.tools input{background:var(--bg);color:var(--fg);border:1px solid var(--bd);border-radius:6px;padding:4px 8px;font:inherit;min-width:0;flex:1 1 10em}
+.pager{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:6px 0}.pager button{margin:0}
+.spin{display:inline-block;width:10px;height:10px;border:2px solid var(--mut);border-top-color:transparent;border-radius:50%;
+animation:sp 1s linear infinite;vertical-align:-1px}@keyframes sp{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.spin{animation:none;border-top-color:var(--mut)}}
+.empty{padding:10px 8px;text-align:left;white-space:normal}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 </style></head><body>
 <h1>repo-traffic</h1>
-<div id="wins"></div><button id="capbtn" hidden>Capture now</button> <span id="cap" class="muted"></span>
+<div class="muted" id="gen"></div>
+<div id="wins" role="group" aria-label="Time window"></div><button id="capbtn" hidden>Capture now</button> <span id="cap" class="muted" role="status" aria-live="polite"></span>
 <div class="meta" id="meta"></div>
+__NOSCRIPT__
 <div id="chart"><div id="ctitle" class="muted"></div><svg id="svg" width="100%" height="230"></svg></div>
 <div class="grid">
-<div><h2>Repos</h2><table id="repos"></table>
+<div><h2>Repos</h2><div class="tools"><label class="sr" for="f-repos">Filter repos</label><input id="f-repos" type="search" placeholder="Filter repos by name" autocomplete="off"></div><div class="wrap"><table id="repos"><caption class="sr">Repos</caption></table></div><div class="pager" id="p-repos"></div>
 <p class="muted">Visitors and cloners add up each day's uniques, so someone seen on two days counts twice.
 Stars change is between captures.</p></div>
-<div><div id="tabs"><button data-tab="packages">Packages</button><button data-tab="mods">Mods</button></div>
-<div id="pane-mods" hidden><table id="mods"></table>
+<div><div id="tabs" role="group" aria-label="Packages or mods"><button data-tab="packages">Packages</button><button data-tab="mods">Mods</button></div>
+<div id="pane-mods" hidden><div class="tools"><label class="sr" for="f-mods">Filter mods</label><input id="f-mods" type="search" placeholder="Filter mods by name" autocomplete="off"></div><div class="wrap"><table id="mods"><caption class="sr">Mods</caption></table></div><div class="pager" id="p-mods"></div>
 <p class="muted">Steam Workshop and CurseForge items listed in repo_traffic.json. Both give current counts only, so
 each +/- is the latest capture minus the capture at the window's start. Click a row to chart it.</p></div>
-<div id="pane-packages"><table id="packages"></table>
+<div id="pane-packages"><div class="tools"><label class="sr" for="f-packages">Filter packages</label><input id="f-packages" type="search" placeholder="Filter packages by name" autocomplete="off"></div><div class="wrap"><table id="packages"><caption class="sr">Packages</caption></table></div><div class="pager" id="p-packages"></div>
 <p class="muted">npm, PyPI, OpenUPM: daily counts. npm totals ending in ≥ add up the days recorded, so the true
 total is at least that; npm publishes days late, so recent days can still fill in. NuGet and release assets: latest capture minus the capture at the
 window's start (Total is all time; NuGet updates its totals in batches, so short windows are lumpy).</p></div></div></div>
@@ -814,6 +885,16 @@ const COLS={repos:[["name","Repo"],["trend","Views"],["visitors","Visitors"],["v
 ["subscribers_delta","Subs +/-"],["downloads","Downloads"],["downloads_delta","Downloads +/-"],["lifetime_subscribers","Lifetime"],["favorites","Favorites"],["views","Views"],
 ["views_delta","Views +/-"]]};
 const sort={repos:["visitors",-1],packages:["downloads",-1],mods:["subscribers",-1]};let win=D.default_window,sel=null,tab="packages";
+const PAGE=25,page={repos:1,packages:1,mods:1},filt={repos:"",packages:"",mods:""};
+const EMPTY={repos:"No repo traffic recorded in this window. Run <code>python scripts/dashboard.py capture</code> (or Capture now when served), or pick a longer window.",
+packages:"No package downloads in this window. Name packages in repo_traffic.json (npm_packages, nuget_packages, pypi_packages, ...) and capture again, or pick a longer window.",
+mods:"No mods tracked. Add workshop_items or curseforge_projects to repo_traffic.json and capture again."};
+function saveHash(){const h="w="+win+"&tab="+tab+["repos","packages","mods"].map(k=>"&"+k+"="+page[k]).join("");
+if(location.hash.slice(1)!==h)history.replaceState(null,"","#"+h)}
+function loadHash(){const m=new URLSearchParams(location.hash.slice(1));if(D.windows[m.get("w")])win=m.get("w");
+if(m.get("tab")==="mods"||m.get("tab")==="packages")tab=m.get("tab");for(const k of ["repos","packages","mods"])page[k]=+m.get(k)||1}
+function ago(iso){const s=(Date.now()-Date.parse(iso))/1000;if(!(s>=0))return"";const u=[[86400,"day"],[3600,"hour"],[60,"minute"]];
+for(const [d,n] of u)if(s>=d){const v=Math.floor(s/d);return v+" "+n+(v>1?"s":"")+" ago"}return"just now"}
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 function num(v,d){if(v==null)return'<span class="muted">-</span>';const s=v.toLocaleString();
 return d&&v>0?'<span class="pos">+'+s+"</span>":d&&v<0?'<span class="neg">'+s+"</span>":s}
@@ -828,24 +909,34 @@ return `<svg class="spark" width="${w}" height="${h}">`+segs(p,X,Y).map(g=>`<pol
 `stroke-width="1.3" points="${g.join(" ")}"/>`).join("")+`<circle cx="${X(e[0])}" cy="${Y(e[1])}" r="2" fill="${r.color}"/></svg>`}
 function rowId(kind,r){return kind+":"+(r.id||(r.registry?r.registry+"/":"")+r.name)}
 function renderTabs(){document.querySelectorAll("#tabs button").forEach(b=>{b.className=b.dataset.tab===tab?"on":"";
-b.onclick=()=>{tab=b.dataset.tab;renderTabs()}});$("pane-packages").hidden=tab!=="packages";$("pane-mods").hidden=tab!=="mods"}
-function renderWins(){$("wins").innerHTML=D.order.map(w=>`<button class="${w===win?"on":""}" data-w="${w}">`+
+b.setAttribute("aria-pressed",b.dataset.tab===tab);b.onclick=()=>{tab=b.dataset.tab;renderTabs();saveHash()}});$("pane-packages").hidden=tab!=="packages";$("pane-mods").hidden=tab!=="mods"}
+function renderWins(){$("wins").innerHTML=D.order.map(w=>`<button class="${w===win?"on":""}" aria-pressed="${w===win}" data-w="${w}">`+
 `${D.labels[w]}</button>`).join("");document.querySelectorAll("#wins button").forEach(b=>b.onclick=()=>{
-win=b.dataset.w;render()})}
-function renderTable(kind){const W=D.windows[win],[k,dir]=sort[kind],rows=[...W[kind]];
+win=b.dataset.w;page.repos=page.packages=page.mods=1;render()})}
+function renderTable(kind){const W=D.windows[win],[k,dir]=sort[kind],q=(filt[kind]||"").toLowerCase();
+const all=W[kind],rows=all.filter(r=>!q||String(r.name).toLowerCase().includes(q)||String(r.registry||"").toLowerCase().includes(q));
 rows.sort((a,b)=>{const x=a[k],y=b[k];if(typeof x==="string"||typeof y==="string")
 return dir*String(x).localeCompare(String(y));return dir*((x??-1e18)-(y??-1e18))});
-let h="<tr>"+COLS[kind].map(([c,t])=>`<th data-k="${c}" class="${c==="name"||c==="registry"?"l":""}">${head(c,t)}`+
-`${c===k?(dir<0?" &#9660;":" &#9650;"):""}</th>`).join("")+"</tr>";
-for(const r of rows){const id=rowId(kind,r);h+=`<tr class="row ${id===sel?"sel":""}" data-id="${esc(id)}">`+
-COLS[kind].map(([c])=>c==="trend"?`<td>${spark(kind,r)}</td>`:c==="name"&&r.url?`<td class="l"><a href="${esc(r.url)}" target="_blank" rel="noopener">`+
-`${esc(r[c])}</a></td>`:typeof r[c]==="string"?`<td class="l">${esc(r[c])}</td>`:`<td>${num(r[c],c.endsWith("_delta"))}${c==="total"&&r.floor?"≥":""}</td>`)
+const n=rows.length,pages=Math.max(1,Math.ceil(n/PAGE)),pg=Math.min(Math.max(1,page[kind]||1),pages);page[kind]=pg;
+const from=(pg-1)*PAGE,shown=rows.slice(from,from+PAGE);
+let h=`<caption class="sr">${kind}</caption><tr>`+COLS[kind].map(([c,t])=>`<th scope="col" class="${c==="name"||c==="registry"?"l":""}"`+
+(c==="trend"?`>${t}`:` aria-sort="${c===k?(dir<0?"descending":"ascending"):"none"}"><button type="button" data-k="${c}">${head(c,t)}`+
+`${c===k?(dir<0?" &#9660;":" &#9650;"):""}</button>`)+"</th>").join("")+"</tr>";
+for(const r of shown){const id=rowId(kind,r);h+=`<tr class="row ${id===sel?"sel":""}" data-id="${esc(id)}" tabindex="0" aria-selected="${id===sel}">`+
+COLS[kind].map(([c])=>c==="trend"?`<td>${spark(kind,r)}</td>`:c==="name"&&r.url?`<td class="l nm" title="${esc(r[c])}"><a href="${esc(r.url)}" target="_blank" rel="noopener">`+
+`${esc(r[c])}</a></td>`:typeof r[c]==="string"?`<td class="l${c==="name"?" nm":""}" title="${esc(r[c])}">${esc(r[c])}</td>`:`<td>${num(r[c],c.endsWith("_delta"))}${c==="total"&&r.floor?"≥":""}</td>`)
 .join("")+"</tr>"}
-if(!rows.length)h+=`<tr><td class="l muted" colspan="9">nothing in this window</td></tr>`;
-const t=$(kind);t.innerHTML=h;t.querySelectorAll("th").forEach(th=>th.onclick=()=>{const c=th.dataset.k;
-sort[kind]=[c,sort[kind][0]===c?-sort[kind][1]:(c==="name"||c==="registry"?1:-1)];renderTable(kind)});
-t.querySelectorAll("tr.row a").forEach(a=>a.onclick=e=>e.stopPropagation());
-t.querySelectorAll("tr.row").forEach(tr=>tr.onclick=()=>{sel=sel===tr.dataset.id?null:tr.dataset.id;render()})}
+if(!n)h+=`<tr><td class="empty muted" colspan="${COLS[kind].length}">${q?"No "+kind+" match \u201c"+esc(filt[kind])+"\u201d. Clear the filter to see all "+all.length+".":EMPTY[kind]}</td></tr>`;
+const t=$(kind);t.innerHTML=h;t.querySelectorAll("th button").forEach(b=>b.onclick=()=>{const c=b.dataset.k;
+sort[kind]=[c,sort[kind][0]===c?-sort[kind][1]:(c==="name"||c==="registry"?1:-1)];page[kind]=1;renderTable(kind);t.querySelector(`th button[data-k="${c}"]`).focus()});
+t.querySelectorAll("tr.row a").forEach(a=>{a.onclick=e=>e.stopPropagation();a.onkeydown=e=>e.stopPropagation()});
+t.querySelectorAll("tr.row").forEach(tr=>{const go=()=>{sel=sel===tr.dataset.id?null:tr.dataset.id;render()};tr.onclick=go;
+tr.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();go()}}});
+const p=$("p-"+kind);p.innerHTML=n?`<button type="button" data-d="-1"${pg<=1?" disabled":""} aria-label="Previous page of ${kind}">&lsaquo; Prev</button>`+
+`<span>Showing ${(from+1).toLocaleString()}\u2013${Math.min(from+PAGE,n).toLocaleString()} of ${n.toLocaleString()}${q?" (filtered from "+all.length.toLocaleString()+")":""}</span>`+
+`<button type="button" data-d="1"${pg>=pages?" disabled":""} aria-label="Next page of ${kind}">Next &rsaquo;</button>`+(pages>1?`<span class="muted">page ${pg} of ${pages}, ${PAGE} per page</span>`:""):"";
+p.querySelectorAll("button").forEach(b=>b.onclick=()=>{page[kind]=pg+ +b.dataset.d;renderTable(kind);saveHash();
+const nb=$("p-"+kind).querySelector(`button[data-d="${b.dataset.d}"]`);(nb&&!nb.disabled?nb:$(kind)).focus()});saveHash()}
 function drawChart(title,series){$("ctitle").textContent=title;const svg=$("svg"),W=svg.clientWidth||900,H=230,L=80,R=20,T=24,B=28;
 const xs=[...new Set(series.flatMap(s=>s.points.map(q=>q[0])))].sort();
 if(xs.length<2){svg.innerHTML='<text x="10" y="40" fill="#6b7790">'+(D.series.any?"not enough data in this window":
@@ -882,10 +973,13 @@ $("meta").textContent=W.latest?`${W.label}: daily counts from ${W.start_day} (UT
 D.checks.join("; "):""):"Nothing recorded yet.";
 renderTabs();renderTable("repos");renderTable("packages");renderTable("mods");renderChart()}
 if(LIVE){const b=$("capbtn");b.hidden=false;const poll=()=>fetch("/status").then(r=>r.json()).then(s=>{
-$("cap").textContent=s.message;if(s.running)setTimeout(poll,4000);else if(s.message.startsWith("captured"))location.reload()});
-b.onclick=()=>{b.disabled=true;$("cap").textContent="capturing (a few minutes)";
+$("cap").innerHTML=(s.running?'<span class="spin" aria-hidden="true"></span> ':"")+esc(s.message);if(s.running)setTimeout(poll,4000);else if(s.message.startsWith("captured"))location.reload()});
+b.onclick=()=>{b.disabled=true;$("cap").innerHTML='<span class="spin" aria-hidden="true"></span> capturing (a few minutes)';
 fetch("/capture",{method:"POST",headers:{"X-Capture":"1"}}).then(()=>setTimeout(poll,4000))}}
-render();
+for(const k of ["repos","packages","mods"])$("f-"+k).oninput=e=>{filt[k]=e.target.value;page[k]=1;renderTable(k)};
+if(D.generated_at){const g=$("gen");g.title=D.generated_at;const up=()=>g.textContent="Generated "+ago(D.generated_at)+" ("+
+D.generated_at.replace("T"," ").slice(0,16)+" UTC)";up();setInterval(up,60000)}
+loadHash();window.addEventListener("hashchange",()=>{loadHash();render()});render();
 </script></body></html>
 """
 
