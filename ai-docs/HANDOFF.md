@@ -16,3 +16,5 @@ Gotchas:
 - `data/` and `repo_traffic.json` hold private names: never open them beyond a CSV header, never commit them.
 - The auto-mode classifier refuses `gh pr merge` and even `gh pr edit --add-assignee` after a refused merge in the same session: ask the maintainer to merge.
 - Python edits on Windows: text mode writes CRLF (`write_bytes` for repository files); heredocs turn `\\n` into a newline, so edit code with the Edit tool.
+
+2026-11-23: dashboard got paging, filter, sort a11y, empty states, light theme and noscript tables (PR data-ui); see log.
